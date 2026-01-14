@@ -100,9 +100,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
 
-          # !: removed rewards
-          # git add owes-v2.json owes-v3.json REWARDS.md
-          git add owes-v2.json owes-v3.json
+          git add owes-v2.json owes-v3.json REWARDS.md
           
           git diff --cached --quiet || git commit -m "chore: auto-update owes"
           git pull --rebase
