@@ -4,16 +4,16 @@
 
 | Network   | Rewards at contract |       Rewards owed | Rewards delta (at contract - owed) |
 | :-------- | ------------------: | -----------------: | ---------------------------------: |
-| mainnet   |        2394.91 COMP |      79464.51 COMP |                     -77069.60 COMP |
-| arbitrum  |          10.83 COMP |       8998.26 COMP |                      -8987.42 COMP |
-| base      |          10.77 COMP |       5914.09 COMP |                      -5903.32 COMP |
-| optimism  |         248.36 COMP |       2775.72 COMP |                      -2527.35 COMP |
-| mantle    |        1678.62 COMP |       1936.47 COMP |                       -257.85 COMP |
+| mainnet   |        2248.20 COMP |      79540.44 COMP |                     -77292.24 COMP |
+| arbitrum  |           6.89 COMP |       8993.58 COMP |                      -8986.69 COMP |
+| base      |           2.42 COMP |       5889.89 COMP |                      -5887.46 COMP |
+| optimism  |         246.07 COMP |       2791.99 COMP |                      -2545.92 COMP |
+| mantle    |        1678.62 COMP |       1935.87 COMP |                       -257.25 COMP |
 | polygon   |         576.31 COMP |       1756.55 COMP |                      -1180.24 COMP |
-| unichain  |           5.57 COMP |       1519.45 COMP |                      -1513.89 COMP |
-| linea     |        1734.56 COMP |        977.08 COMP |                        757.49 COMP |
+| unichain  |           7.28 COMP |       1530.18 COMP |                      -1522.90 COMP |
+| linea     |        1606.39 COMP |        865.98 COMP |                        740.41 COMP |
 | scroll    |           0.00 COMP |          0.00 COMP |                          0.00 COMP |
-| **TOTAL** |    **6659.93 COMP** | **103342.12 COMP** |                 **-96682.18 COMP** |
+| **TOTAL** |    **6372.18 COMP** | **103304.48 COMP** |                 **-96932.30 COMP** |
 
 ---
 
@@ -21,9 +21,9 @@
 
 | Network   | Rewards at contract |      Rewards owed | Rewards delta (at contract - owed) |
 | :-------- | ------------------: | ----------------: | ---------------------------------: |
-| mainnet   |        7683.92 COMP |     44013.53 COMP |                     -36329.61 COMP |
-| **TOTAL** |    **7683.92 COMP** | **44013.53 COMP** |                 **-36329.61 COMP** |
+| mainnet   |        7683.62 COMP |     44013.24 COMP |                     -36329.62 COMP |
+| **TOTAL** |    **7683.62 COMP** | **44013.24 COMP** |                 **-36329.62 COMP** |
 
 ---
 
-*Last updated:* 2026-03-12 14:31:23.725 UTC
+*Last updated:* 2026-03-13 14:39:43.876 UTC
