@@ -17,49 +17,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1236681887",
             "previousValue": "1236681887",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1055936073",
             "previousValue": "1055936073",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "126839167935",
             "previousValue": "126839167935",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -68,7 +68,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Arbitrum",
             "symbol": "ARB",
             "address": "0x912CE59144191C1204E64559FE8253a0e49E6548",
@@ -85,7 +85,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "GMX",
             "symbol": "GMX",
             "address": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a",
@@ -102,7 +102,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
@@ -119,7 +119,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
@@ -152,49 +152,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -203,7 +203,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Arbitrum",
             "symbol": "ARB",
             "address": "0x912CE59144191C1204E64559FE8253a0e49E6548",
@@ -220,7 +220,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "GMX",
             "symbol": "GMX",
             "address": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a",
@@ -237,7 +237,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
@@ -254,7 +254,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
@@ -271,7 +271,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x5979D7b546E38E414F7E9822514be443A4800529",
@@ -288,7 +288,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Renzo Restaked ETH",
             "symbol": "ezETH",
             "address": "0x2416092f143378750bb29b79eD961ab195CcEea5",
@@ -305,7 +305,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Mountain Protocol USD",
             "symbol": "wUSDM",
             "address": "0x57F5E098CaD7A3D1Eed53991D4d66C45C9AF7812",
@@ -322,7 +322,7 @@
           },
           {
             "idx": 7,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Treehouse ETH",
             "symbol": "tETH",
             "address": "0xd09ACb80C1E8f2291862c4978A008791c9167003",
@@ -339,7 +339,7 @@
           },
           {
             "idx": 8,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Arbitrum tBTC v2",
             "symbol": "tBTC",
             "address": "0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40",
@@ -372,49 +372,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -423,7 +423,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Arbitrum",
             "symbol": "ARB",
             "address": "0x912CE59144191C1204E64559FE8253a0e49E6548",
@@ -440,7 +440,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
@@ -457,7 +457,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x5979D7b546E38E414F7E9822514be443A4800529",
@@ -474,7 +474,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
@@ -491,7 +491,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "GMX",
             "symbol": "GMX",
             "address": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a",
@@ -508,7 +508,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Arbitrum tBTC v2",
             "symbol": "tBTC",
             "address": "0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40",
@@ -525,7 +525,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Treehouse ETH",
             "symbol": "tETH",
             "address": "0xd09ACb80C1E8f2291862c4978A008791c9167003",
@@ -558,49 +558,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "523211567",
             "previousValue": "523211567",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "38051750380",
             "previousValue": "38051750380",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "459791983",
             "previousValue": "459791983",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "47564687975",
             "previousValue": "47564687975",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "317097919",
             "previousValue": "317097919",
             "valueSetDate": "2026-03-17"
@@ -609,7 +609,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
@@ -626,7 +626,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Rocket Pool ETH",
             "symbol": "rETH",
             "address": "0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8",
@@ -643,7 +643,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x5979D7b546E38E414F7E9822514be443A4800529",
@@ -660,7 +660,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
@@ -677,7 +677,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "KelpDao Restaked ETH",
             "symbol": "rsETH",
             "address": "0x4186BFC76E2E237523CBC30FD220FE055156b41F",
@@ -694,7 +694,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD₮0",
             "symbol": "USD₮0",
             "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
@@ -711,7 +711,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
@@ -728,7 +728,7 @@
           },
           {
             "idx": 7,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Renzo Restaked ETH",
             "symbol": "ezETH",
             "address": "0x2416092f143378750bb29b79eD961ab195CcEea5",
@@ -745,7 +745,7 @@
           },
           {
             "idx": 8,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Treehouse ETH",
             "symbol": "tETH",
             "address": "0xd09ACb80C1E8f2291862c4978A008791c9167003",
@@ -780,49 +780,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1268391679",
             "previousValue": "1268391679",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "87940766108",
             "previousValue": "87940766108",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1043252156",
             "previousValue": "1043252156",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "116270294266",
             "previousValue": "116270294266",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "697615423",
             "previousValue": "697615423",
             "valueSetDate": "2026-03-17"
@@ -831,7 +831,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x4200000000000000000000000000000000000006",
@@ -848,7 +848,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
@@ -865,7 +865,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
@@ -882,7 +882,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped BTC",
             "symbol": "cbBTC",
             "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -915,49 +915,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "634195839",
             "previousValue": "634195839",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "28116026128",
             "previousValue": "28116026128",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1119165398",
             "previousValue": "1119165398",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "109927289446",
             "previousValue": "109927289446",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1585489599",
             "previousValue": "1585489599",
             "valueSetDate": "2026-03-17"
@@ -966,7 +966,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped Staked ETH",
             "symbol": "cbETH",
             "address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
@@ -983,7 +983,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x4200000000000000000000000000000000000006",
@@ -1016,49 +1016,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -1067,7 +1067,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped Staked ETH",
             "symbol": "cbETH",
             "address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
@@ -1084,7 +1084,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x4200000000000000000000000000000000000006",
@@ -1101,7 +1101,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
@@ -1118,7 +1118,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped BTC",
             "symbol": "cbBTC",
             "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -1135,7 +1135,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Base tBTC v2",
             "symbol": "tBTC",
             "address": "0x236aa50979D5f3De3Bd1Eeb40E81137F22ab794b",
@@ -1168,49 +1168,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1712328767",
             "previousValue": "1712328767",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "96207508878",
             "previousValue": "96207508878",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1585489599",
             "previousValue": "1585489599",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "107813292744",
             "previousValue": "107813292744",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -1219,7 +1219,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Savings USDS",
             "symbol": "sUSDS",
             "address": "0x5875eEE11Cf8398102FdAd704C9E96607675467a",
@@ -1236,7 +1236,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped BTC",
             "symbol": "cbBTC",
             "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -1269,49 +1269,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "684931506",
             "previousValue": "684931506",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "35673515981",
             "previousValue": "35673515981",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "491501775",
             "previousValue": "491501775",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "39954337899",
             "previousValue": "39954337899",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "317097919",
             "previousValue": "317097919",
             "valueSetDate": "2026-03-17"
@@ -1320,7 +1320,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped Staked ETH",
             "symbol": "cbETH",
             "address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
@@ -1337,7 +1337,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Renzo Restaked ETH",
             "symbol": "ezETH",
             "address": "0x2416092f143378750bb29b79eD961ab195CcEea5",
@@ -1354,7 +1354,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
@@ -1371,7 +1371,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
@@ -1388,7 +1388,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A",
@@ -1405,7 +1405,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "rsETHWrapper",
             "symbol": "wrsETH",
             "address": "0xEDfa23602D0EC14714057867A78d01e94176BEA0",
@@ -1422,7 +1422,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped BTC",
             "symbol": "cbBTC",
             "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -1439,7 +1439,7 @@
           },
           {
             "idx": 7,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Super OETH",
             "symbol": "wsuperOETHb",
             "address": "0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6",
@@ -1474,49 +1474,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1712328767",
             "previousValue": "1712328767",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "96207508878",
             "previousValue": "96207508878",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1585489599",
             "previousValue": "1585489599",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "107813292744",
             "previousValue": "107813292744",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -1525,7 +1525,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f",
@@ -1542,7 +1542,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F",
@@ -1559,7 +1559,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x3aAB2285ddcDdaD8edf438C1bAB47e1a9D05a9b4",
@@ -1592,49 +1592,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "684931506",
             "previousValue": "684931506",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "35673515981",
             "previousValue": "35673515981",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "491501775",
             "previousValue": "491501775",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "39954337899",
             "previousValue": "39954337899",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "317097919",
             "previousValue": "317097919",
             "valueSetDate": "2026-03-17"
@@ -1643,7 +1643,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Renzo Restaked ETH",
             "symbol": "ezETH",
             "address": "0x2416092f143378750bb29b79eD961ab195CcEea5",
@@ -1660,7 +1660,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F",
@@ -1677,7 +1677,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x3aAB2285ddcDdaD8edf438C1bAB47e1a9D05a9b4",
@@ -1694,7 +1694,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0x1Bf74C010E6320bab11e2e5A532b5AC15e0b8aA6",
@@ -1711,7 +1711,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "rsETHWrapper",
             "symbol": "wrsETH",
             "address": "0xD2671165570f41BBB3B0097893300b6EB6101E6C",
@@ -1746,49 +1746,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -1797,7 +1797,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Compound",
             "symbol": "COMP",
             "address": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
@@ -1814,7 +1814,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
@@ -1831,7 +1831,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
@@ -1848,7 +1848,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Uniswap",
             "symbol": "UNI",
             "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
@@ -1865,7 +1865,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "ChainLink Token",
             "symbol": "LINK",
             "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
@@ -1882,7 +1882,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
@@ -1899,7 +1899,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped BTC",
             "symbol": "cbBTC",
             "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -1916,7 +1916,7 @@
           },
           {
             "idx": 7,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "tBTC v2",
             "symbol": "tBTC",
             "address": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
@@ -1933,7 +1933,7 @@
           },
           {
             "idx": 8,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
@@ -1950,7 +1950,7 @@
           },
           {
             "idx": 9,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "deUSD",
             "symbol": "deUSD",
             "address": "0x15700B564Ca08D9439C58cA5053166E8317aa138",
@@ -1967,7 +1967,7 @@
           },
           {
             "idx": 10,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Staked deUSD",
             "symbol": "sdeUSD",
             "address": "0x5C5b196aBE0d54485975D1Ec29617D42D9198326",
@@ -1984,7 +1984,7 @@
           },
           {
             "idx": 11,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "rsETH",
             "symbol": "rsETH",
             "address": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
@@ -2001,7 +2001,7 @@
           },
           {
             "idx": 12,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USDe",
             "symbol": "USDe",
             "address": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
@@ -2034,49 +2034,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -2085,7 +2085,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
@@ -2102,7 +2102,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USDe",
             "symbol": "USDe",
             "address": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
@@ -2119,7 +2119,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped BTC",
             "symbol": "cbBTC",
             "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -2136,7 +2136,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "tBTC v2",
             "symbol": "tBTC",
             "address": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
@@ -2153,7 +2153,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
@@ -2170,7 +2170,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Savings USDS",
             "symbol": "sUSDS",
             "address": "0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD",
@@ -2187,7 +2187,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
@@ -2204,7 +2204,7 @@
           },
           {
             "idx": 7,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "SKY Governance Token",
             "symbol": "SKY",
             "address": "0x56072C95FAA701256059aa122697B133aDEd9279",
@@ -2221,7 +2221,7 @@
           },
           {
             "idx": 8,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "deUSD",
             "symbol": "deUSD",
             "address": "0x15700B564Ca08D9439C58cA5053166E8317aa138",
@@ -2238,7 +2238,7 @@
           },
           {
             "idx": 9,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Staked deUSD",
             "symbol": "sdeUSD",
             "address": "0x5C5b196aBE0d54485975D1Ec29617D42D9198326",
@@ -2271,49 +2271,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -2322,7 +2322,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Compound",
             "symbol": "COMP",
             "address": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
@@ -2339,7 +2339,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
@@ -2356,7 +2356,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
@@ -2373,7 +2373,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Uniswap",
             "symbol": "UNI",
             "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
@@ -2390,7 +2390,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "ChainLink Token",
             "symbol": "LINK",
             "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
@@ -2407,7 +2407,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
@@ -2424,7 +2424,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped BTC",
             "symbol": "cbBTC",
             "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -2441,7 +2441,7 @@
           },
           {
             "idx": 7,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "tBTC v2",
             "symbol": "tBTC",
             "address": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
@@ -2458,7 +2458,7 @@
           },
           {
             "idx": 8,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Mountain Protocol USD",
             "symbol": "wUSDM",
             "address": "0x57F5E098CaD7A3D1Eed53991D4d66C45C9AF7812",
@@ -2475,7 +2475,7 @@
           },
           {
             "idx": 9,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Staked FRAX",
             "symbol": "sFRAX",
             "address": "0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32",
@@ -2492,7 +2492,7 @@
           },
           {
             "idx": 10,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "mETH",
             "symbol": "mETH",
             "address": "0xd5F7838F5C461fefF7FE49ea5ebaF7728bB0ADfa",
@@ -2509,7 +2509,7 @@
           },
           {
             "idx": 11,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
@@ -2526,7 +2526,7 @@
           },
           {
             "idx": 12,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Staked deUSD",
             "symbol": "sdeUSD",
             "address": "0x5C5b196aBE0d54485975D1Ec29617D42D9198326",
@@ -2543,7 +2543,7 @@
           },
           {
             "idx": 13,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "deUSD",
             "symbol": "deUSD",
             "address": "0x15700B564Ca08D9439C58cA5053166E8317aa138",
@@ -2560,7 +2560,7 @@
           },
           {
             "idx": 14,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Tether Gold",
             "symbol": "XAUt",
             "address": "0x68749665FF8D2d112Fa859AA293F07A622782F38",
@@ -2577,7 +2577,7 @@
           },
           {
             "idx": 15,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USDe",
             "symbol": "USDe",
             "address": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
@@ -2610,49 +2610,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "380517503",
             "previousValue": "380517503",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "31709791983",
             "previousValue": "31709791983",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "443937087",
             "previousValue": "443937087",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "36466260781",
             "previousValue": "36466260781",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "317097919",
             "previousValue": "317097919",
             "valueSetDate": "2026-03-17"
@@ -2661,7 +2661,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Lombard Staked Bitcoin",
             "symbol": "LBTC",
             "address": "0x8236a87084f8B84306f72007F36F2618A5634494",
@@ -2678,7 +2678,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "pumpBTC",
             "symbol": "pumpBTC",
             "address": "0xF469fBD2abcd6B9de8E169d128226C0Fc90a012e",
@@ -2695,7 +2695,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
@@ -2712,7 +2712,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Tether USD",
             "symbol": "USDT",
             "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
@@ -2745,49 +2745,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "684931506",
             "previousValue": "684931506",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "35673515981",
             "previousValue": "35673515981",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "491501775",
             "previousValue": "491501775",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "39954337899",
             "previousValue": "39954337899",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "317097919",
             "previousValue": "317097919",
             "valueSetDate": "2026-03-17"
@@ -2796,7 +2796,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped Staked ETH",
             "symbol": "cbETH",
             "address": "0xBe9895146f7AF43049ca1c1AE358B0541Ea49704",
@@ -2813,7 +2813,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
@@ -2830,7 +2830,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Rocket Pool ETH",
             "symbol": "rETH",
             "address": "0xae78736Cd615f374D3085123A210448E74Fc6393",
@@ -2847,7 +2847,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "rsETH",
             "symbol": "rsETH",
             "address": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
@@ -2864,7 +2864,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
@@ -2881,7 +2881,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Staked ETH",
             "symbol": "osETH",
             "address": "0xf1C9acDc66974dFB6dEcB12aA385b9cD01190E38",
@@ -2898,7 +2898,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
@@ -2915,7 +2915,7 @@
           },
           {
             "idx": 7,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Renzo Restaked ETH",
             "symbol": "ezETH",
             "address": "0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
@@ -2932,7 +2932,7 @@
           },
           {
             "idx": 8,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Coinbase Wrapped BTC",
             "symbol": "cbBTC",
             "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -2949,7 +2949,7 @@
           },
           {
             "idx": 9,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "rswETH",
             "symbol": "rswETH",
             "address": "0xFAe103DC9cf190eD75350761e95403b7b8aFa6c0",
@@ -2966,7 +2966,7 @@
           },
           {
             "idx": 10,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "tBTC v2",
             "symbol": "tBTC",
             "address": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",
@@ -2983,7 +2983,7 @@
           },
           {
             "idx": 11,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "ETHx",
             "symbol": "ETHx",
             "address": "0xA35b1B31Ce002FBF2058D22F30f95D405200A15b",
@@ -3000,7 +3000,7 @@
           },
           {
             "idx": 12,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Treehouse ETH",
             "symbol": "tETH",
             "address": "0xD11c452fc99cF405034ee446803b6F6c1F6d5ED8",
@@ -3017,7 +3017,7 @@
           },
           {
             "idx": 13,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "pufETH",
             "symbol": "pufETH",
             "address": "0xD9A442856C234a39a81a089C06451EBAa4306a72",
@@ -3034,7 +3034,7 @@
           },
           {
             "idx": 14,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped OETH",
             "symbol": "wOETH",
             "address": "0xDcEe70654261AF21C44c093C300eD3Bb97b78192",
@@ -3051,7 +3051,7 @@
           },
           {
             "idx": 15,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
@@ -3068,7 +3068,7 @@
           },
           {
             "idx": 16,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Tether USD",
             "symbol": "USDT",
             "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
@@ -3101,49 +3101,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "380517503",
             "previousValue": "380517503",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "31709791983",
             "previousValue": "31709791983",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "443937087",
             "previousValue": "443937087",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "36466260781",
             "previousValue": "36466260781",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "317097919",
             "previousValue": "317097919",
             "valueSetDate": "2026-03-17"
@@ -3152,7 +3152,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "rsETH",
             "symbol": "rsETH",
             "address": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
@@ -3169,7 +3169,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Renzo Restaked ETH",
             "symbol": "ezETH",
             "address": "0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
@@ -3186,7 +3186,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Treehouse ETH",
             "symbol": "tETH",
             "address": "0xD11c452fc99cF405034ee446803b6F6c1F6d5ED8",
@@ -3203,7 +3203,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
@@ -3220,7 +3220,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Tether USD",
             "symbol": "USDT",
             "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
@@ -3237,7 +3237,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
@@ -3254,7 +3254,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
@@ -3289,49 +3289,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1236681887",
             "previousValue": "1236681887",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1055936073",
             "previousValue": "1055936073",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "126839167935",
             "previousValue": "126839167935",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -3340,7 +3340,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "mETH",
             "symbol": "mETH",
             "address": "0xcDA86A272531e8640cD7F1a92c01839911B90bb0",
@@ -3357,7 +3357,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Ether",
             "symbol": "WETH",
             "address": "0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111",
@@ -3374,7 +3374,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Fire Bitcoin",
             "symbol": "FBTC",
             "address": "0xC96dE26018A54D51c097160568752c4E3BD6C364",
@@ -3409,49 +3409,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -3460,7 +3460,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Optimism",
             "symbol": "OP",
             "address": "0x4200000000000000000000000000000000000042",
@@ -3477,7 +3477,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x4200000000000000000000000000000000000006",
@@ -3494,7 +3494,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
@@ -3511,7 +3511,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
@@ -3528,7 +3528,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Mountain Protocol USD",
             "symbol": "wUSDM",
             "address": "0x57F5E098CaD7A3D1Eed53991D4d66C45C9AF7812",
@@ -3561,49 +3561,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -3612,7 +3612,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Optimism",
             "symbol": "OP",
             "address": "0x4200000000000000000000000000000000000042",
@@ -3629,7 +3629,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x4200000000000000000000000000000000000006",
@@ -3646,7 +3646,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
@@ -3663,7 +3663,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
@@ -3680,7 +3680,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Mountain Protocol USD",
             "symbol": "wUSDM",
             "address": "0x57F5E098CaD7A3D1Eed53991D4d66C45C9AF7812",
@@ -3713,49 +3713,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "684931506",
             "previousValue": "684931506",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "35673515981",
             "previousValue": "35673515981",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "491501775",
             "previousValue": "491501775",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "39954337899",
             "previousValue": "39954337899",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "317097919",
             "previousValue": "317097919",
             "valueSetDate": "2026-03-17"
@@ -3764,7 +3764,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
@@ -3781,7 +3781,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Rocket Pool ETH",
             "symbol": "rETH",
             "address": "0x9Bcef72be871e61ED4fBbc7630889beE758eb81D",
@@ -3798,7 +3798,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
@@ -3815,7 +3815,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Tether USD",
             "symbol": "USDT",
             "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
@@ -3832,7 +3832,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
@@ -3849,7 +3849,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Renzo Restaked ETH",
             "symbol": "ezETH",
             "address": "0x2416092f143378750bb29b79eD961ab195CcEea5",
@@ -3866,7 +3866,7 @@
           },
           {
             "idx": 6,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0x5A7fACB970D094B6C7FF1df0eA68D99E6e73CBFF",
@@ -3883,7 +3883,7 @@
           },
           {
             "idx": 7,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "rsETHWrapper",
             "symbol": "wrsETH",
             "address": "0x87eEE96D50Fb761AD85B1c982d28A042169d61b1",
@@ -3918,49 +3918,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -3969,7 +3969,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
@@ -3986,7 +3986,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "(PoS) Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
@@ -4003,7 +4003,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Polygon Ecosystem Token",
             "symbol": "WPOL",
             "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
@@ -4020,7 +4020,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Liquid Staking Matic (PoS)",
             "symbol": "MaticX",
             "address": "0xfa68FB4628DFF1028CFEc22b4162FCcd0d45efb6",
@@ -4037,7 +4037,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Staked MATIC (PoS)",
             "symbol": "stMATIC",
             "address": "0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4",
@@ -4070,49 +4070,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1141552511",
             "previousValue": "1141552511",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "101344495180",
             "previousValue": "101344495180",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "880834601",
             "previousValue": "880834601",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2026-03-17"
@@ -4121,7 +4121,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Polygon Ecosystem Token",
             "symbol": "WPOL",
             "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
@@ -4138,7 +4138,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
@@ -4155,7 +4155,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Liquid Staking Matic (PoS)",
             "symbol": "MaticX",
             "address": "0xfa68FB4628DFF1028CFEc22b4162FCcd0d45efb6",
@@ -4172,7 +4172,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Staked MATIC (PoS)",
             "symbol": "stMATIC",
             "address": "0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4",
@@ -4189,7 +4189,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "(PoS) Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
@@ -4224,49 +4224,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-14"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "634195839",
             "previousValue": "634195839",
             "valueSetDate": "2026-03-14"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "27524479959",
             "previousValue": "27524479959",
             "valueSetDate": "2026-03-14"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-14"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-14"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "559582699",
             "previousValue": "559582699",
             "valueSetDate": "2026-03-14"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "23232718163",
             "previousValue": "23232718163",
             "valueSetDate": "2026-03-14"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "792744799",
             "previousValue": "792744799",
             "valueSetDate": "2026-03-14"
@@ -4275,7 +4275,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ronin",
             "symbol": "WRON",
             "address": "0xe514d9DEB7966c8BE0ca922de8a064264eA6bcd4",
@@ -4292,7 +4292,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0x0B7007c13325C48911F73A2daD5FA5dCBf808aDc",
@@ -4309,7 +4309,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Axie Infinity Shard",
             "symbol": "AXS",
             "address": "0x97a9107C1793BC407d6F527b77e7fff4D812bece",
@@ -4342,49 +4342,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-14"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "634195839",
             "previousValue": "634195839",
             "valueSetDate": "2026-03-14"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "27524479959",
             "previousValue": "27524479959",
             "valueSetDate": "2026-03-14"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-14"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-14"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "559582699",
             "previousValue": "559582699",
             "valueSetDate": "2026-03-14"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "23232718163",
             "previousValue": "23232718163",
             "valueSetDate": "2026-03-14"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "792744799",
             "previousValue": "792744799",
             "valueSetDate": "2026-03-14"
@@ -4393,7 +4393,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "USD Coin",
             "symbol": "USDC",
             "address": "0x0B7007c13325C48911F73A2daD5FA5dCBf808aDc",
@@ -4410,7 +4410,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Axie Infinity Shard",
             "symbol": "AXS",
             "address": "0x97a9107C1793BC407d6F527b77e7fff4D812bece",
@@ -4427,7 +4427,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Ronin Wrapped Ether",
             "symbol": "WETH",
             "address": "0xc99a6A985eD2Cac1ef41640596C5A5f9F4E19Ef5",
@@ -4462,49 +4462,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "3119926433",
             "previousValue": "3119926433",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "102032280568",
             "previousValue": "102032280568",
             "valueSetDate": "2026-03-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "850000000000000000",
             "previousValue": "850000000000000000",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "114155251141",
             "previousValue": "114155251141",
             "valueSetDate": "2026-03-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "3170979198",
             "previousValue": "3170979198",
             "valueSetDate": "2026-03-17"
@@ -4513,7 +4513,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x5300000000000000000000000000000000000004",
@@ -4530,7 +4530,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32",
@@ -4565,49 +4565,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2025-11-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1712328767",
             "previousValue": "1712328767",
             "valueSetDate": "2025-11-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "96207508878",
             "previousValue": "96207508878",
             "valueSetDate": "2025-11-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2025-11-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2025-11-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "1585489599",
             "previousValue": "1585489599",
             "valueSetDate": "2025-11-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "107813292744",
             "previousValue": "107813292744",
             "valueSetDate": "2025-11-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "475646879",
             "previousValue": "475646879",
             "valueSetDate": "2025-11-17"
@@ -4616,7 +4616,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Uniswap",
             "symbol": "UNI",
             "address": "0x8f187aA05619a017077f5308904739877ce9eA21",
@@ -4633,7 +4633,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped Ether",
             "symbol": "WETH",
             "address": "0x4200000000000000000000000000000000000006",
@@ -4666,49 +4666,49 @@
         },
         "curve": {
           "supplyKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2025-11-17"
           },
           "supplyPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "684931506",
             "previousValue": "684931506",
             "valueSetDate": "2025-11-17"
           },
           "supplyPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "35673515981",
             "previousValue": "35673515981",
             "valueSetDate": "2025-11-17"
           },
           "supplyPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "0",
             "previousValue": "0",
             "valueSetDate": "2025-11-17"
           },
           "borrowKink": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "900000000000000000",
             "previousValue": "900000000000000000",
             "valueSetDate": "2025-11-17"
           },
           "borrowPerSecondInterestRateSlopeLow": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "491501775",
             "previousValue": "491501775",
             "valueSetDate": "2025-11-17"
           },
           "borrowPerSecondInterestRateSlopeHigh": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "39954337899",
             "previousValue": "39954337899",
             "valueSetDate": "2025-11-17"
           },
           "borrowPerSecondInterestRateBase": {
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "value": "317097919",
             "previousValue": "317097919",
             "valueSetDate": "2025-11-17"
@@ -4717,7 +4717,7 @@
         "collaterals": [
           {
             "idx": 0,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped liquid staked Ether 2.0",
             "symbol": "wstETH",
             "address": "0xc02fE7317D4eb8753a02c35fe019786854A92001",
@@ -4734,7 +4734,7 @@
           },
           {
             "idx": 1,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped eETH",
             "symbol": "weETH",
             "address": "0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7",
@@ -4751,7 +4751,7 @@
           },
           {
             "idx": 2,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Renzo Restaked ETH",
             "symbol": "ezETH",
             "address": "0x2416092f143378750bb29b79eD961ab195CcEea5",
@@ -4768,7 +4768,7 @@
           },
           {
             "idx": 3,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Uniswap",
             "symbol": "UNI",
             "address": "0x8f187aA05619a017077f5308904739877ce9eA21",
@@ -4785,7 +4785,7 @@
           },
           {
             "idx": 4,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "Wrapped BTC",
             "symbol": "WBTC",
             "address": "0x927B51f251480a681271180DA4de28D44EC4AfB8",
@@ -4802,7 +4802,7 @@
           },
           {
             "idx": 5,
-            "date": "2026-03-17",
+            "date": "2026-03-18",
             "name": "KelpDao Restaked ETH",
             "symbol": "rsETH",
             "address": "0xc3eACf0612346366Db554C991D7858716db09f58",
@@ -4824,217 +4824,217 @@
   "rewards": {
     "marketRewards": [
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "arbitrum",
         "market": "cUSDCev3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 787.754288
+        "compAmountOnRewardContract": 724.940072
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "arbitrum",
         "market": "cUSDCv3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 787.754288
+        "compAmountOnRewardContract": 724.940072
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "arbitrum",
         "market": "cUSDTv3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 787.754288
+        "compAmountOnRewardContract": 724.940072
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "arbitrum",
         "market": "cWETHv3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 787.754288
+        "compAmountOnRewardContract": 724.940072
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "base",
         "market": "cAEROv3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 628.709728
+        "compAmountOnRewardContract": 303.188115
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "base",
         "market": "cUSDbCv3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 628.709728
+        "compAmountOnRewardContract": 303.188115
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "base",
         "market": "cUSDCv3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 628.709728
+        "compAmountOnRewardContract": 303.188115
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "base",
         "market": "cUSDSv3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 628.709728
+        "compAmountOnRewardContract": 303.188115
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "base",
         "market": "cWETHv3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 628.709728
+        "compAmountOnRewardContract": 303.188115
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "linea",
         "market": "cUSDCv3",
         "dailyRewards": 7,
         "yearlyRewards": 2555,
         "lendDailyRewards": 4,
         "borrowDailyRewards": 3,
-        "compAmountOnRewardContract": 1530.958903
+        "compAmountOnRewardContract": 1485.413481
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "linea",
         "market": "cWETHv3",
         "dailyRewards": 10,
         "yearlyRewards": 3650,
         "lendDailyRewards": 6,
         "borrowDailyRewards": 4,
-        "compAmountOnRewardContract": 1530.958903
+        "compAmountOnRewardContract": 1485.413481
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mainnet",
         "market": "cUSDCv3",
         "dailyRewards": 110,
         "yearlyRewards": 40150,
         "lendDailyRewards": 55,
         "borrowDailyRewards": 55,
-        "compAmountOnRewardContract": 1989.665247017
+        "compAmountOnRewardContract": 1973.232268017
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mainnet",
         "market": "cUSDSv3",
         "dailyRewards": 17,
         "yearlyRewards": 6205,
         "lendDailyRewards": 12,
         "borrowDailyRewards": 5,
-        "compAmountOnRewardContract": 1989.665247017
+        "compAmountOnRewardContract": 1973.232268017
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mainnet",
         "market": "cUSDTv3",
         "dailyRewards": 60,
         "yearlyRewards": 21900,
         "lendDailyRewards": 30,
         "borrowDailyRewards": 30,
-        "compAmountOnRewardContract": 1989.665247017
+        "compAmountOnRewardContract": 1973.232268017
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mainnet",
         "market": "cWBTCv3",
         "dailyRewards": 1,
         "yearlyRewards": 365,
         "lendDailyRewards": 1,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 1989.665247017
+        "compAmountOnRewardContract": 1973.232268017
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mainnet",
         "market": "cWETHv3",
         "dailyRewards": 30,
         "yearlyRewards": 10950,
         "lendDailyRewards": 10,
         "borrowDailyRewards": 20,
-        "compAmountOnRewardContract": 1989.665247017
+        "compAmountOnRewardContract": 1973.232268017
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mainnet",
         "market": "cWstETHv3",
         "dailyRewards": 3,
         "yearlyRewards": 1095,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 3,
-        "compAmountOnRewardContract": 1989.665247017
+        "compAmountOnRewardContract": 1973.232268017
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mantle",
         "market": "cUSDev3",
         "dailyRewards": 0,
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 1662.134632
+        "compAmountOnRewardContract": 1661.786927
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "optimism",
         "market": "cUSDCv3",
         "dailyRewards": 6,
         "yearlyRewards": 2190,
         "lendDailyRewards": 2,
         "borrowDailyRewards": 4,
-        "compAmountOnRewardContract": 229.591756
+        "compAmountOnRewardContract": 226.27437
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "optimism",
         "market": "cUSDTv3",
         "dailyRewards": 10,
         "yearlyRewards": 3650,
         "lendDailyRewards": 5,
         "borrowDailyRewards": 5,
-        "compAmountOnRewardContract": 229.591756
+        "compAmountOnRewardContract": 226.27437
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "optimism",
         "market": "cWETHv3",
         "dailyRewards": 2,
         "yearlyRewards": 730,
         "lendDailyRewards": 1,
         "borrowDailyRewards": 1,
-        "compAmountOnRewardContract": 229.591756
+        "compAmountOnRewardContract": 226.27437
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "polygon",
         "market": "cUSDCv3",
         "dailyRewards": 0,
@@ -5044,7 +5044,7 @@
         "compAmountOnRewardContract": 576.2857278826751
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "polygon",
         "market": "cUSDTv3",
         "dailyRewards": 0,
@@ -5054,7 +5054,7 @@
         "compAmountOnRewardContract": 576.2857278826751
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "scroll",
         "market": "cUSDCv3",
         "dailyRewards": 0,
@@ -5064,24 +5064,24 @@
         "compAmountOnRewardContract": 0
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "unichain",
         "market": "cUSDCv3",
         "dailyRewards": 2,
         "yearlyRewards": 730,
         "lendDailyRewards": 1,
         "borrowDailyRewards": 1,
-        "compAmountOnRewardContract": 269.914796
+        "compAmountOnRewardContract": 212.497302
       },
       {
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "unichain",
         "market": "cWETHv3",
         "dailyRewards": 20,
         "yearlyRewards": 7300,
         "lendDailyRewards": 12,
         "borrowDailyRewards": 8,
-        "compAmountOnRewardContract": 269.914796
+        "compAmountOnRewardContract": 212.497302
       }
     ],
     "totalDailyRewards": 278,
@@ -5091,59 +5091,59 @@
     "networks": [
       {
         "idx": 0,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "arbitrum",
-        "currentCompBalance": 787.754288
+        "currentCompBalance": 724.940072
       },
       {
         "idx": 1,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "base",
-        "currentCompBalance": 628.709728
+        "currentCompBalance": 303.188115
       },
       {
         "idx": 2,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "linea",
-        "currentCompBalance": 1530.958903
+        "currentCompBalance": 1485.413481
       },
       {
         "idx": 3,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mainnet",
-        "currentCompBalance": 1989.665247017
+        "currentCompBalance": 1973.232268017
       },
       {
         "idx": 4,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "mantle",
-        "currentCompBalance": 1662.134632
+        "currentCompBalance": 1661.786927
       },
       {
         "idx": 5,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "optimism",
-        "currentCompBalance": 229.591756
+        "currentCompBalance": 226.27437
       },
       {
         "idx": 6,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "polygon",
         "currentCompBalance": 576.2857278826751
       },
       {
         "idx": 7,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "scroll",
         "currentCompBalance": 0
       },
       {
         "idx": 8,
-        "date": "2026-03-17",
+        "date": "2026-03-18",
         "network": "unichain",
-        "currentCompBalance": 269.914796
+        "currentCompBalance": 212.497302
       }
     ],
-    "totalCompBalance": 7675.015077899675
+    "totalCompBalance": 7163.618262899675
   }
 }
