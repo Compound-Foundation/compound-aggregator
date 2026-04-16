@@ -4871,7 +4871,7 @@
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 695.193264
+        "compAmountOnRewardContract": 695.069297
       },
       {
         "date": "2026-04-16",
@@ -4881,7 +4881,7 @@
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 695.193264
+        "compAmountOnRewardContract": 695.069297
       },
       {
         "date": "2026-04-16",
@@ -4891,7 +4891,7 @@
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 695.193264
+        "compAmountOnRewardContract": 695.069297
       },
       {
         "date": "2026-04-16",
@@ -4901,7 +4901,7 @@
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 695.193264
+        "compAmountOnRewardContract": 695.069297
       },
       {
         "date": "2026-04-16",
@@ -4911,7 +4911,7 @@
         "yearlyRewards": 0,
         "lendDailyRewards": 0,
         "borrowDailyRewards": 0,
-        "compAmountOnRewardContract": 695.193264
+        "compAmountOnRewardContract": 695.069297
       },
       {
         "date": "2026-04-16",
@@ -5099,7 +5099,7 @@
         "idx": 1,
         "date": "2026-04-16",
         "network": "base",
-        "currentCompBalance": 695.193264
+        "currentCompBalance": 695.069297
       },
       {
         "idx": 2,
@@ -5144,6 +5144,6 @@
         "currentCompBalance": 16.640995
       }
     ],
-    "totalCompBalance": 5841.760290899674
+    "totalCompBalance": 5841.636323899675
   }
 }
