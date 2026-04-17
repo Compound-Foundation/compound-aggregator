@@ -818,12 +818,12 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0x606174f62cd968d8e684c645080fa694c1D7786E | Main market contract        |
-  |  2  | Comet Implementation        | 0xc59DA41a151C7D70b3Eac29D191207C51E192ed0 | Implementation contract     |
-  |  3  | Comet Extension             | 0xf528B4bCAc12dad0bFa114282b219ad706bA7f18 | Extension delegate contract |
+  |  2  | Comet Implementation        | 0xAC218BB48660436C4F14aE9cf1Ae5d03Da6a5f7c | Implementation contract     |
+  |  3  | Comet Extension             | 0x62623C1374D12F946a9CA8597a137BbfBE015665 | Extension delegate contract |
   |  4  | Configurator                | 0xb77Cd4cD000957283D8BAf53cD782ECf029cF7DB | Market configurator         |
   |  5  | Configurator Implementation | 0x3c851CbE2740747f5cE4e8894842A313e5A3aee3 | Configurator implementation |
   |  6  | Comet Admin                 | 0xe268B436E75648aa0639e2088fa803feA517a0c7 | Admin contract              |
-  |  7  | Comet Factory               | 0x5a1d1C89Da75Bc957BBF9ED61b4B0AdEe0553285 | Factory contract            |
+  |  7  | Comet Factory               | 0x5D173813B4505701e79E654b36A95E6c1FAD4448 | Factory contract            |
   |  8  | Rewards                     | 0xCd83CbBFCE149d141A5171C3D6a0F0fCCeE225Ab | Rewards contract            |
   |  9  | Bulker                      | 0x67DFCa85CcEEFA2C5B1dB4DEe3BEa716A28B9baa | Bulker contract             |
   |  10 | Governor                    | 0xc91EcA15747E73d6dd7f616C49dAFF37b9F1B604 | Governance contract         |
@@ -1003,12 +1003,12 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0xF25212E676D1F7F89Cd72fFEe66158f541246445 | Main market contract        |
-  |  2  | Comet Implementation        | 0xA265E611Cf0ccB49ca9B58c2e1e8aa9B922504e6 | Implementation contract     |
-  |  3  | Comet Extension             | 0xbdE8F31D2DdDA895264e27DD990faB3DC87b372d | Extension delegate contract |
+  |  2  | Comet Implementation        | 0x19D0F32E00b08bcB7B386c72aeb1b768e6472dbb | Implementation contract     |
+  |  3  | Comet Extension             | 0x5Eba6Ec97843163C92Ab48a7aC0CCc8423c652b1 | Extension delegate contract |
   |  4  | Configurator                | 0x83E0F742cAcBE66349E3701B171eE2487a26e738 | Market configurator         |
   |  5  | Configurator Implementation | 0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf | Configurator implementation |
   |  6  | Comet Admin                 | 0xd712ACe4ca490D4F3E92992Ecf3DE12251b975F9 | Admin contract              |
-  |  7  | Comet Factory               | 0x2F9E3953b2Ef89fA265f2a32ed9F80D00229125B | Factory contract            |
+  |  7  | Comet Factory               | 0x3fb418B74Ec30bC3e940221F58A04e16afC6378B | Factory contract            |
   |  8  | Rewards                     | 0x45939657d1CA34A8FA39A924B71D28Fe8431e581 | Rewards contract            |
   |  9  | Bulker                      | 0x59e242D352ae13166B4987aE5c990C232f7f7CD6 | Bulker contract             |
   |  10 | Governor                    | 0x18281dfC4d00905DA1aaA6731414EABa843c468A | Governance contract         |
@@ -1035,7 +1035,7 @@
   |  2  | (PoS) Wrapped BTC               | WBTC    | 0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6 |        8 | 0xDE31F8bFBD8c84b5360CFACCa3539B938dd78ae6 | 75.0% | 85.0% | 10.00% |        4.00x |
   |  3  | Wrapped Polygon Ecosystem Token | WPOL    | 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 |       18 | 0xAB594600376Ec9fD91F8e885dADF0CE036862dE0 | 65.0% | 80.0% | 10.00% |        2.86x |
   |  4  | Liquid Staking Matic (PoS)      | MaticX  | 0xfa68FB4628DFF1028CFEc22b4162FCcd0d45efb6 |       18 | 0x5d37E4b374E6907de8Fc7fb33EE3b0af403C7403 | 55.0% | 60.0% | 20.00% |        2.22x |
-  |  5  | Staked MATIC (PoS)              | stMATIC | 0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4 |       18 | 0x97371dF4492605486e23Da797fA68e55Fc38a13f |  0.0% | 0.01% | 20.00% |        1.00x |
+  |  5  | Staked MATIC (PoS)              | stMATIC | 0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4 |       18 | 0x5D173813B4505701e79E654b36A95E6c1FAD4448 |  0.0% | 0.01% | 20.00% |        1.00x |
 
 </details>
 
@@ -1047,12 +1047,12 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0xaeB318360f27748Acb200CE616E389A6C9409a07 | Main market contract        |
-  |  2  | Comet Implementation        | 0x956c4b84D661ddF746510dbd3733e09655958892 | Implementation contract     |
-  |  3  | Comet Extension             | 0x2F4eAF29dfeeF4654bD091F7112926E108eF4Ed0 | Extension delegate contract |
+  |  2  | Comet Implementation        | 0xEb0DcFa34719663505711D20111d3621B7801c50 | Implementation contract     |
+  |  3  | Comet Extension             | 0xe6eb5B9b85cFF2C84Df3De6e7855bC9E76f034d5 | Extension delegate contract |
   |  4  | Configurator                | 0x83E0F742cAcBE66349E3701B171eE2487a26e738 | Market configurator         |
   |  5  | Configurator Implementation | 0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf | Configurator implementation |
   |  6  | Comet Admin                 | 0xd712ACe4ca490D4F3E92992Ecf3DE12251b975F9 | Admin contract              |
-  |  7  | Comet Factory               | 0x2F9E3953b2Ef89fA265f2a32ed9F80D00229125B | Factory contract            |
+  |  7  | Comet Factory               | 0x3fb418B74Ec30bC3e940221F58A04e16afC6378B | Factory contract            |
   |  8  | Rewards                     | 0x45939657d1CA34A8FA39A924B71D28Fe8431e581 | Rewards contract            |
   |  9  | Bulker                      | 0x59e242D352ae13166B4987aE5c990C232f7f7CD6 | Bulker contract             |
   |  10 | Governor                    | 0x18281dfC4d00905DA1aaA6731414EABa843c468A | Governance contract         |
@@ -1080,94 +1080,6 @@
   |  3  | Liquid Staking Matic (PoS)      | MaticX  | 0xfa68FB4628DFF1028CFEc22b4162FCcd0d45efb6 |       18 | 0x5d37E4b374E6907de8Fc7fb33EE3b0af403C7403 | 60.0% | 70.0% | 20.00% |        2.50x |
   |  4  | Staked MATIC (PoS)              | stMATIC | 0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4 |       18 | 0x5D173813B4505701e79E654b36A95E6c1FAD4448 |  0.0% | 0.01% | 20.00% |        1.00x |
   |  5  | (PoS) Wrapped BTC               | WBTC    | 0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6 |        8 | 0xDE31F8bFBD8c84b5360CFACCa3539B938dd78ae6 | 75.0% | 85.0% | 10.00% |        4.00x |
-
-</details>
-
----
-
-## 🌐 RONIN
-
-<details>
-<summary><strong>cWETHv3</strong></summary>
-
-**📋 Contracts**
-
-  |  #  | Name                        | Address                                    | Note                        |
-  | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
-  |  1  | Comet                       | 0x4006eD4097Ee51c09A04c3B0951D28CCf19e6DFE | Main market contract        |
-  |  2  | Comet Implementation        | 0xaf35616e3a8295b82dC022250CF54EE49B55E223 | Implementation contract     |
-  |  3  | Comet Extension             | 0x2f0D0C958E4679c6b9225387d97260F7481C6131 | Extension delegate contract |
-  |  4  | Configurator                | 0x966c72F456FC248D458784EF3E0b6d042be115F2 | Market configurator         |
-  |  5  | Configurator Implementation | 0xaE0CCa27C15A534BAE106fC9957338549F82e81d | Configurator implementation |
-  |  6  | Comet Admin                 | 0xfa64A82a3d13D4c05d5133E53b2EbB8A0FA9c3F6 | Admin contract              |
-  |  7  | Comet Factory               | 0x4DF9E0f8e94a7A8A9aEa6010CD9d341F8Ecfe4c6 | Factory contract            |
-  |  8  | Rewards                     | 0x31CdEe8609Bc15fD33cc525f101B70a81b2B1E59 | Rewards contract            |
-  |  9  | Bulker                      | 0x840281FaD56DD88afba052B7F18Be2A65796Ecc6 | Bulker contract             |
-  |  10 | Governor                    | 0x2c7EfA766338D33B9192dB1fB5D170Bdc03ef3F9 | Governance contract         |
-  |  11 | Timelock                    | 0xBbb0Ebd903fafbb8fFF58B922fD0CD85E251ac2c | Timelock contract           |
-
-**📈 Interest Rate Curve**
-
-  |  #  | Parameter              |      Current Value |     Previous Value | Date Set   |
-  | :-: | :--------------------- | -----------------: | -----------------: | :--------- |
-  |  1  | Supply Kink            | 850000000000000000 | 850000000000000000 | 2026-04-16 |
-  |  2  | Supply Rate Slope Low  |          634195839 |          634195839 | 2026-04-16 |
-  |  3  | Supply Rate Slope High |        27524479959 |        27524479959 | 2026-04-16 |
-  |  4  | Supply Rate Base       |                  0 |                  0 | 2026-04-16 |
-  |  5  | Borrow Kink            | 850000000000000000 | 850000000000000000 | 2026-04-16 |
-  |  6  | Borrow Rate Slope Low  |          559582699 |          559582699 | 2026-04-16 |
-  |  7  | Borrow Rate Slope High |        23232718163 |        23232718163 | 2026-04-16 |
-  |  8  | Borrow Rate Base       |          792744799 |          792744799 | 2026-04-16 |
-
-**💰 Collaterals**
-
-  |  #  | Name                | Symbol | Address                                    | Decimals | Price Feed                                 |    CF |    LF |     LP | Max Leverage |
-  | :-: | :------------------ | :----- | :----------------------------------------- | -------: | :----------------------------------------- | ----: | ----: | -----: | -----------: |
-  |  1  | Wrapped Ronin       | WRON   | 0xe514d9DEB7966c8BE0ca922de8a064264eA6bcd4 |       18 | 0xAdD81aAF528784531E888317AFcD429b00C9f1b3 | 50.0% | 80.0% | 20.00% |        2.00x |
-  |  2  | USD Coin            | USDC   | 0x0B7007c13325C48911F73A2daD5FA5dCBf808aDc |        6 | 0x0090A563C4832E4E519F5f054483519b1A83c8C3 | 60.0% | 90.0% | 15.00% |        2.50x |
-  |  3  | Axie Infinity Shard | AXS    | 0x97a9107C1793BC407d6F527b77e7fff4D812bece |       18 | 0x41E345A046A73Ef15316191b41f3ABEA4cEF1168 | 50.0% | 75.0% | 25.00% |        2.00x |
-
-</details>
-
-<details>
-<summary><strong>cWRONv3</strong></summary>
-
-**📋 Contracts**
-
-  |  #  | Name                        | Address                                    | Note                        |
-  | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
-  |  1  | Comet                       | 0xc0Afdbd1cEB621Ef576BA969ce9D4ceF78Dbc0c0 | Main market contract        |
-  |  2  | Comet Implementation        | 0xC4aa0764fB17C35B2D4fc717d183314f5654a1C7 | Implementation contract     |
-  |  3  | Comet Extension             | 0x690f8eE32ce906c6288DD97Ce4f9aF57103D00D7 | Extension delegate contract |
-  |  4  | Configurator                | 0x966c72F456FC248D458784EF3E0b6d042be115F2 | Market configurator         |
-  |  5  | Configurator Implementation | 0xaE0CCa27C15A534BAE106fC9957338549F82e81d | Configurator implementation |
-  |  6  | Comet Admin                 | 0xfa64A82a3d13D4c05d5133E53b2EbB8A0FA9c3F6 | Admin contract              |
-  |  7  | Comet Factory               | 0x4DF9E0f8e94a7A8A9aEa6010CD9d341F8Ecfe4c6 | Factory contract            |
-  |  8  | Rewards                     | 0x31CdEe8609Bc15fD33cc525f101B70a81b2B1E59 | Rewards contract            |
-  |  9  | Bulker                      | 0x840281FaD56DD88afba052B7F18Be2A65796Ecc6 | Bulker contract             |
-  |  10 | Governor                    | 0x2c7EfA766338D33B9192dB1fB5D170Bdc03ef3F9 | Governance contract         |
-  |  11 | Timelock                    | 0xBbb0Ebd903fafbb8fFF58B922fD0CD85E251ac2c | Timelock contract           |
-
-**📈 Interest Rate Curve**
-
-  |  #  | Parameter              |      Current Value |     Previous Value | Date Set   |
-  | :-: | :--------------------- | -----------------: | -----------------: | :--------- |
-  |  1  | Supply Kink            | 850000000000000000 | 850000000000000000 | 2026-04-16 |
-  |  2  | Supply Rate Slope Low  |          634195839 |          634195839 | 2026-04-16 |
-  |  3  | Supply Rate Slope High |        27524479959 |        27524479959 | 2026-04-16 |
-  |  4  | Supply Rate Base       |                  0 |                  0 | 2026-04-16 |
-  |  5  | Borrow Kink            | 850000000000000000 | 850000000000000000 | 2026-04-16 |
-  |  6  | Borrow Rate Slope Low  |          559582699 |          559582699 | 2026-04-16 |
-  |  7  | Borrow Rate Slope High |        23232718163 |        23232718163 | 2026-04-16 |
-  |  8  | Borrow Rate Base       |          792744799 |          792744799 | 2026-04-16 |
-
-**💰 Collaterals**
-
-  |  #  | Name                | Symbol | Address                                    | Decimals | Price Feed                                 |    CF |    LF |     LP | Max Leverage |
-  | :-: | :------------------ | :----- | :----------------------------------------- | -------: | :----------------------------------------- | ----: | ----: | -----: | -----------: |
-  |  1  | USD Coin            | USDC   | 0x0B7007c13325C48911F73A2daD5FA5dCBf808aDc |        6 | 0x88f415c12d45d4C6DC018553BBE472A4558ff3f8 | 50.0% | 80.0% | 20.00% |        2.00x |
-  |  2  | Axie Infinity Shard | AXS    | 0x97a9107C1793BC407d6F527b77e7fff4D812bece |       18 | 0x8AC2b57d15c84755A3333aD68025d2496AE3BeBD | 50.0% | 78.0% | 25.00% |        2.00x |
-  |  3  | Ronin Wrapped Ether | WETH   | 0xc99a6A985eD2Cac1ef41640596C5A5f9F4E19Ef5 |       18 | 0x5D173813B4505701e79E654b36A95E6c1FAD4448 | 50.0% | 80.0% | 20.00% |        2.00x |
 
 </details>
 
@@ -1269,7 +1181,7 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0x6C987dDE50dB1dcDd32Cd4175778C2a291978E2a | Main market contract        |
-  |  2  | Comet Implementation        | 0x5E58f8Af3042452F24F3b18B4191e8C111f3714b | Implementation contract     |
+  |  2  | Comet Implementation        | 0xabd0b893F682D9adB96a5ffD921A07509312d916 | Implementation contract     |
   |  3  | Comet Extension             | 0x443EA0340cb75a160F31A440722dec7b5bc3C2E9 | Extension delegate contract |
   |  4  | Configurator                | 0x8df378453Ff9dEFFa513367CDF9b3B53726303e9 | Market configurator         |
   |  5  | Configurator Implementation | 0x5404872d8f2e24b230EC9B9eC64E3855F637FB93 | Configurator implementation |
@@ -1297,12 +1209,12 @@
 
   |  #  | Name                            | Symbol | Address                                    | Decimals | Price Feed                                 |    CF |    LF |     LP | Max Leverage |
   | :-: | :------------------------------ | :----- | :----------------------------------------- | -------: | :----------------------------------------- | ----: | ----: | -----: | -----------: |
-  |  1  | Wrapped liquid staked Ether 2.0 | wstETH | 0xc02fE7317D4eb8753a02c35fe019786854A92001 |       18 | 0x3870FAc3De911c12A57E5a2532D15aD8Ca275A60 | 90.0% | 93.0% |  3.00% |       10.00x |
-  |  2  | Wrapped eETH                    | weETH  | 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7 |       18 | 0x2e44e174f7D53F0212823acC11C01A11d58c5bCB | 90.0% | 93.0% |  4.00% |       10.00x |
-  |  3  | Renzo Restaked ETH              | ezETH  | 0x2416092f143378750bb29b79eD961ab195CcEea5 |       18 | 0x1Ad4CEBa9f8135A557bBe317DB62Aa125C330F26 | 88.0% | 91.0% |  6.00% |        8.33x |
+  |  1  | Wrapped liquid staked Ether 2.0 | wstETH | 0xc02fE7317D4eb8753a02c35fe019786854A92001 |       18 | 0x73D3e8b769bC687AeEc487AAeFCAd31F4d9F84A7 | 90.0% | 93.0% |  3.00% |       10.00x |
+  |  2  | Wrapped eETH                    | weETH  | 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7 |       18 | 0x731564585278f228FB8F93a0BF62729E24367662 | 90.0% | 93.0% |  4.00% |       10.00x |
+  |  3  | Renzo Restaked ETH              | ezETH  | 0x2416092f143378750bb29b79eD961ab195CcEea5 |       18 | 0x8671d5e3a10639a573bACffEF448CA076b2d5cD7 | 88.0% | 91.0% |  6.00% |        8.33x |
   |  4  | Uniswap                         | UNI    | 0x8f187aA05619a017077f5308904739877ce9eA21 |       18 | 0x84E93EC6170ED630f5ebD89A1AAE72d4F63f2713 | 70.0% | 75.0% | 20.00% |        3.33x |
   |  5  | Wrapped BTC                     | WBTC   | 0x927B51f251480a681271180DA4de28D44EC4AfB8 |        8 | 0xFa454dE61b317b6535A0C462267208E8FdB89f45 | 80.0% | 85.0% | 10.00% |        5.00x |
-  |  6  | KelpDao Restaked ETH            | rsETH  | 0xc3eACf0612346366Db554C991D7858716db09f58 |       18 | 0x85C4F855Bc0609D2584405819EdAEa3aDAbfE97D | 90.0% | 93.0% |  4.00% |       10.00x |
+  |  6  | KelpDao Restaked ETH            | rsETH  | 0xc3eACf0612346366Db554C991D7858716db09f58 |       18 | 0x0090A563C4832E4E519F5f054483519b1A83c8C3 | 90.0% | 93.0% |  4.00% |       10.00x |
 
 </details>
 
@@ -1312,32 +1224,32 @@
 
 |  #  | Date       | Network  | Market    | Daily Rewards | Yearly Rewards | Lend Daily Rewards | Borrow Daily Rewards | COMP on Reward Contract |
 | :-: | :--------- | :------- | :-------- | ------------: | -------------: | -----------------: | -------------------: | ----------------------: |
-|  1  | 2026-04-16 | arbitrum | cUSDCev3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             734.28 COMP |
-|  2  | 2026-04-16 | arbitrum | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             734.28 COMP |
-|  3  | 2026-04-16 | arbitrum | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             734.28 COMP |
-|  4  | 2026-04-16 | arbitrum | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             734.28 COMP |
-|  5  | 2026-04-16 | base     | cAEROv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             695.07 COMP |
-|  6  | 2026-04-16 | base     | cUSDbCv3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             695.07 COMP |
-|  7  | 2026-04-16 | base     | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             695.07 COMP |
-|  8  | 2026-04-16 | base     | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             695.07 COMP |
-|  9  | 2026-04-16 | base     | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             695.07 COMP |
-|  10 | 2026-04-16 | linea    | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1018.27 COMP |
-|  11 | 2026-04-16 | linea    | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1018.27 COMP |
-|  12 | 2026-04-16 | mainnet  | cUSDCv3   |      110 COMP |     40150 COMP |            55 COMP |              55 COMP |             520.41 COMP |
-|  13 | 2026-04-16 | mainnet  | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             520.41 COMP |
-|  14 | 2026-04-16 | mainnet  | cUSDTv3   |       60 COMP |     21900 COMP |            30 COMP |              30 COMP |             520.41 COMP |
-|  15 | 2026-04-16 | mainnet  | cWBTCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             520.41 COMP |
-|  16 | 2026-04-16 | mainnet  | cWETHv3   |       30 COMP |     10950 COMP |            10 COMP |              20 COMP |             520.41 COMP |
-|  17 | 2026-04-16 | mainnet  | cWstETHv3 |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             520.41 COMP |
-|  18 | 2026-04-16 | mantle   | cUSDev3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1555.18 COMP |
-|  19 | 2026-04-16 | optimism | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             729.24 COMP |
-|  20 | 2026-04-16 | optimism | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             729.24 COMP |
-|  21 | 2026-04-16 | optimism | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             729.24 COMP |
-|  22 | 2026-04-16 | polygon  | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             572.55 COMP |
-|  23 | 2026-04-16 | polygon  | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             572.55 COMP |
-|  24 | 2026-04-16 | scroll   | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.00 COMP |
-|  25 | 2026-04-16 | unichain | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |              16.64 COMP |
-|  26 | 2026-04-16 | unichain | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |              16.64 COMP |
+|  1  | 2026-04-17 | arbitrum | cUSDCev3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             706.93 COMP |
+|  2  | 2026-04-17 | arbitrum | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             706.93 COMP |
+|  3  | 2026-04-17 | arbitrum | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             706.93 COMP |
+|  4  | 2026-04-17 | arbitrum | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             706.93 COMP |
+|  5  | 2026-04-17 | base     | cAEROv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             694.45 COMP |
+|  6  | 2026-04-17 | base     | cUSDbCv3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             694.45 COMP |
+|  7  | 2026-04-17 | base     | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             694.45 COMP |
+|  8  | 2026-04-17 | base     | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             694.45 COMP |
+|  9  | 2026-04-17 | base     | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             694.45 COMP |
+|  10 | 2026-04-17 | linea    | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1018.09 COMP |
+|  11 | 2026-04-17 | linea    | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1018.09 COMP |
+|  12 | 2026-04-17 | mainnet  | cUSDCv3   |      110 COMP |     40150 COMP |            55 COMP |              55 COMP |             374.49 COMP |
+|  13 | 2026-04-17 | mainnet  | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             374.49 COMP |
+|  14 | 2026-04-17 | mainnet  | cUSDTv3   |       60 COMP |     21900 COMP |            30 COMP |              30 COMP |             374.49 COMP |
+|  15 | 2026-04-17 | mainnet  | cWBTCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             374.49 COMP |
+|  16 | 2026-04-17 | mainnet  | cWETHv3   |       30 COMP |     10950 COMP |            10 COMP |              20 COMP |             374.49 COMP |
+|  17 | 2026-04-17 | mainnet  | cWstETHv3 |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             374.49 COMP |
+|  18 | 2026-04-17 | mantle   | cUSDev3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1555.18 COMP |
+|  19 | 2026-04-17 | optimism | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             729.22 COMP |
+|  20 | 2026-04-17 | optimism | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             729.22 COMP |
+|  21 | 2026-04-17 | optimism | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             729.22 COMP |
+|  22 | 2026-04-17 | polygon  | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             572.55 COMP |
+|  23 | 2026-04-17 | polygon  | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             572.55 COMP |
+|  24 | 2026-04-17 | scroll   | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.00 COMP |
+|  25 | 2026-04-17 | unichain | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |              16.55 COMP |
+|  26 | 2026-04-17 | unichain | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |              16.55 COMP |
 |     | **TOTAL**  |          |           |  **200 COMP** | **73000 COMP** |                    |                      |                         |
 
 ---
@@ -1346,17 +1258,17 @@
 
 |  #  | Date       | Network  | Current COMP Balance |
 | :-: | :--------- | :------- | -------------------: |
-|  1  | 2026-04-16 | arbitrum |          734.28 COMP |
-|  2  | 2026-04-16 | base     |          695.07 COMP |
-|  3  | 2026-04-16 | linea    |         1018.27 COMP |
-|  4  | 2026-04-16 | mainnet  |          520.41 COMP |
-|  5  | 2026-04-16 | mantle   |         1555.18 COMP |
-|  6  | 2026-04-16 | optimism |          729.24 COMP |
-|  7  | 2026-04-16 | polygon  |          572.55 COMP |
-|  8  | 2026-04-16 | scroll   |            0.00 COMP |
-|  9  | 2026-04-16 | unichain |           16.64 COMP |
-|     | **TOTAL**  |          |     **5841.64 COMP** |
+|  1  | 2026-04-17 | arbitrum |          706.93 COMP |
+|  2  | 2026-04-17 | base     |          694.45 COMP |
+|  3  | 2026-04-17 | linea    |         1018.09 COMP |
+|  4  | 2026-04-17 | mainnet  |          374.49 COMP |
+|  5  | 2026-04-17 | mantle   |         1555.18 COMP |
+|  6  | 2026-04-17 | optimism |          729.22 COMP |
+|  7  | 2026-04-17 | polygon  |          572.55 COMP |
+|  8  | 2026-04-17 | scroll   |            0.00 COMP |
+|  9  | 2026-04-17 | unichain |           16.55 COMP |
+|     | **TOTAL**  |          |     **5667.48 COMP** |
 
 ---
 
-*Last updated:* 2026-04-16 14:38:23.188 UTC
+*Last updated:* 2026-04-17 13:19:05.689 UTC
