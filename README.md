@@ -151,7 +151,7 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0x6f7D514bbD4aFf3BcD1140B7344b32f063dEe486 | Main market contract        |
-  |  2  | Comet Implementation        | 0xB4D7D5467bf09E8C75784428815844Ef5C02c389 | Implementation contract     |
+  |  2  | Comet Implementation        | 0x91b8Ac64497140cb435328ca71d57960b4030C9f | Implementation contract     |
   |  3  | Comet Extension             | 0x0be923b1716115d742E35Fa359d415598c50510F | Extension delegate contract |
   |  4  | Configurator                | 0xb21b06D71c75973babdE35b49fFDAc3F82Ad3775 | Market configurator         |
   |  5  | Configurator Implementation | 0x8495AF03fb797E2965bCB42Cb0693e1c15614798 | Configurator implementation |
@@ -167,12 +167,12 @@
   |  #  | Parameter              |      Current Value |     Previous Value | Date Set   |
   | :-: | :--------------------- | -----------------: | -----------------: | :--------- |
   |  1  | Supply Kink            | 900000000000000000 | 900000000000000000 | 2026-03-17 |
-  |  2  | Supply Rate Slope Low  |          523211567 |          523211567 | 2026-03-17 |
-  |  3  | Supply Rate Slope High |        38051750380 |        38051750380 | 2026-03-17 |
+  |  2  | Supply Rate Slope Low  |          475646879 |          523211567 | 2026-05-02 |
+  |  3  | Supply Rate Slope High |         4280821917 |        38051750380 | 2026-05-02 |
   |  4  | Supply Rate Base       |                  0 |                  0 | 2026-03-17 |
   |  5  | Borrow Kink            | 900000000000000000 | 900000000000000000 | 2026-03-17 |
-  |  6  | Borrow Rate Slope Low  |          459791983 |          459791983 | 2026-03-17 |
-  |  7  | Borrow Rate Slope High |        47564687975 |        47564687975 | 2026-03-17 |
+  |  6  | Borrow Rate Slope Low  |          176165511 |          459791983 | 2026-05-02 |
+  |  7  | Borrow Rate Slope High |         4756468797 |        47564687975 | 2026-05-02 |
   |  8  | Borrow Rate Base       |          317097919 |          317097919 | 2026-03-17 |
 
 **💰 Collaterals**
@@ -372,7 +372,7 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0x46e6b214b524310239732D51387075E0e70970bf | Main market contract        |
-  |  2  | Comet Implementation        | 0x69a3aAeb1347B5d1289d6e6d4bBd6805CdB3aaDC | Implementation contract     |
+  |  2  | Comet Implementation        | 0x2937556F01E605dF56c28de4435eeb5860dC368c | Implementation contract     |
   |  3  | Comet Extension             | 0xbd4CfC08d64a848A9116A92Cd06D2f2bDC0a2505 | Extension delegate contract |
   |  4  | Configurator                | 0x45939657d1CA34A8FA39A924B71D28Fe8431e581 | Market configurator         |
   |  5  | Configurator Implementation | 0x83E0F742cAcBE66349E3701B171eE2487a26e738 | Configurator implementation |
@@ -388,12 +388,12 @@
   |  #  | Parameter              |      Current Value |     Previous Value | Date Set   |
   | :-: | :--------------------- | -----------------: | -----------------: | :--------- |
   |  1  | Supply Kink            | 900000000000000000 | 900000000000000000 | 2026-03-17 |
-  |  2  | Supply Rate Slope Low  |          684931506 |          684931506 | 2026-03-17 |
-  |  3  | Supply Rate Slope High |        35673515981 |        35673515981 | 2026-03-17 |
+  |  2  | Supply Rate Slope Low  |          475646879 |          684931506 | 2026-05-02 |
+  |  3  | Supply Rate Slope High |         4280821917 |        35673515981 | 2026-05-02 |
   |  4  | Supply Rate Base       |                  0 |                  0 | 2026-03-17 |
   |  5  | Borrow Kink            | 900000000000000000 | 900000000000000000 | 2026-03-17 |
-  |  6  | Borrow Rate Slope Low  |          491501775 |          491501775 | 2026-03-17 |
-  |  7  | Borrow Rate Slope High |        39954337899 |        39954337899 | 2026-03-17 |
+  |  6  | Borrow Rate Slope Low  |          176165511 |          491501775 | 2026-05-02 |
+  |  7  | Borrow Rate Slope High |         4756468797 |        39954337899 | 2026-05-02 |
   |  8  | Borrow Rate Base       |          317097919 |          317097919 | 2026-03-17 |
 
 **💰 Collaterals**
@@ -465,7 +465,7 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0x60F2058379716A64a7A5d29219397e79bC552194 | Main market contract        |
-  |  2  | Comet Implementation        | 0xBcdECbd2718E3B36a2A662a346Ed51E3928bb401 | Implementation contract     |
+  |  2  | Comet Implementation        | 0xDB4762Fd3d09097aa2aDb79486eDAAbF982733d0 | Implementation contract     |
   |  3  | Comet Extension             | 0xc8E4c3F58d5FC4409522503927Ecea057EbbA1fc | Extension delegate contract |
   |  4  | Configurator                | 0x970FfD8E335B8fa4cd5c869c7caC3a90671d5Dc3 | Market configurator         |
   |  5  | Configurator Implementation | 0xdB7EdFa090061D9367CbEAF6bE16ECbDE596676C | Configurator implementation |
@@ -481,12 +481,12 @@
   |  #  | Parameter              |      Current Value |     Previous Value | Date Set   |
   | :-: | :--------------------- | -----------------: | -----------------: | :--------- |
   |  1  | Supply Kink            | 900000000000000000 | 900000000000000000 | 2026-03-17 |
-  |  2  | Supply Rate Slope Low  |          684931506 |          684931506 | 2026-03-17 |
-  |  3  | Supply Rate Slope High |        35673515981 |        35673515981 | 2026-03-17 |
+  |  2  | Supply Rate Slope Low  |          475646879 |          684931506 | 2026-05-02 |
+  |  3  | Supply Rate Slope High |         4280821917 |        35673515981 | 2026-05-02 |
   |  4  | Supply Rate Base       |                  0 |                  0 | 2026-03-17 |
   |  5  | Borrow Kink            | 900000000000000000 | 900000000000000000 | 2026-03-17 |
-  |  6  | Borrow Rate Slope Low  |          491501775 |          491501775 | 2026-03-17 |
-  |  7  | Borrow Rate Slope High |        39954337899 |        39954337899 | 2026-03-17 |
+  |  6  | Borrow Rate Slope Low  |          176165511 |          491501775 | 2026-05-02 |
+  |  7  | Borrow Rate Slope High |         4756468797 |        39954337899 | 2026-05-02 |
   |  8  | Borrow Rate Base       |          317097919 |          317097919 | 2026-03-17 |
 
 **💰 Collaterals**
@@ -952,7 +952,7 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0xE36A30D249f7761327fd973001A32010b521b6Fd | Main market contract        |
-  |  2  | Comet Implementation        | 0x0a31A5ACad30303133654AEC5833d31b995D8C15 | Implementation contract     |
+  |  2  | Comet Implementation        | 0x53EFD515eB45f7a73a1a819F6168B5ce3C841768 | Implementation contract     |
   |  3  | Comet Extension             | 0xc4aaFC9F0c52FDDa0fed972c55B136bD07552ad0 | Extension delegate contract |
   |  4  | Configurator                | 0x84E93EC6170ED630f5ebD89A1AAE72d4F63f2713 | Market configurator         |
   |  5  | Configurator Implementation | 0x371DB45c7ee248dAFf4Dc1FFB67A20faa0ecFE02 | Configurator implementation |
@@ -968,12 +968,12 @@
   |  #  | Parameter              |      Current Value |     Previous Value | Date Set   |
   | :-: | :--------------------- | -----------------: | -----------------: | :--------- |
   |  1  | Supply Kink            | 900000000000000000 | 900000000000000000 | 2026-03-17 |
-  |  2  | Supply Rate Slope Low  |          684931506 |          684931506 | 2026-03-17 |
-  |  3  | Supply Rate Slope High |        35673515981 |        35673515981 | 2026-03-17 |
+  |  2  | Supply Rate Slope Low  |          475646879 |          684931506 | 2026-05-02 |
+  |  3  | Supply Rate Slope High |         4280821917 |        35673515981 | 2026-05-02 |
   |  4  | Supply Rate Base       |                  0 |                  0 | 2026-03-17 |
   |  5  | Borrow Kink            | 900000000000000000 | 900000000000000000 | 2026-03-17 |
-  |  6  | Borrow Rate Slope Low  |          491501775 |          491501775 | 2026-03-17 |
-  |  7  | Borrow Rate Slope High |        39954337899 |        39954337899 | 2026-03-17 |
+  |  6  | Borrow Rate Slope Low  |          176165511 |          491501775 | 2026-05-02 |
+  |  7  | Borrow Rate Slope High |         4756468797 |        39954337899 | 2026-05-02 |
   |  8  | Borrow Rate Base       |          317097919 |          317097919 | 2026-03-17 |
 
 **💰 Collaterals**
@@ -1269,7 +1269,7 @@
   |  #  | Name                        | Address                                    | Note                        |
   | :-: | :-------------------------- | :----------------------------------------- | :-------------------------- |
   |  1  | Comet                       | 0x6C987dDE50dB1dcDd32Cd4175778C2a291978E2a | Main market contract        |
-  |  2  | Comet Implementation        | 0x5D7C15DfeC7EfB42cf18863AAde05703F3702f68 | Implementation contract     |
+  |  2  | Comet Implementation        | 0x1798D27f85cb1E3e4300297CF769Ff9cFF467D13 | Implementation contract     |
   |  3  | Comet Extension             | 0x443EA0340cb75a160F31A440722dec7b5bc3C2E9 | Extension delegate contract |
   |  4  | Configurator                | 0x8df378453Ff9dEFFa513367CDF9b3B53726303e9 | Market configurator         |
   |  5  | Configurator Implementation | 0x5404872d8f2e24b230EC9B9eC64E3855F637FB93 | Configurator implementation |
@@ -1285,12 +1285,12 @@
   |  #  | Parameter              |      Current Value |     Previous Value | Date Set   |
   | :-: | :--------------------- | -----------------: | -----------------: | :--------- |
   |  1  | Supply Kink            | 900000000000000000 | 900000000000000000 | 2025-11-17 |
-  |  2  | Supply Rate Slope Low  |          684931506 |          684931506 | 2025-11-17 |
-  |  3  | Supply Rate Slope High |        35673515981 |        35673515981 | 2025-11-17 |
+  |  2  | Supply Rate Slope Low  |          475646879 |          684931506 | 2026-05-02 |
+  |  3  | Supply Rate Slope High |         4280821917 |        35673515981 | 2026-05-02 |
   |  4  | Supply Rate Base       |                  0 |                  0 | 2025-11-17 |
   |  5  | Borrow Kink            | 900000000000000000 | 900000000000000000 | 2025-11-17 |
-  |  6  | Borrow Rate Slope Low  |          491501775 |          491501775 | 2025-11-17 |
-  |  7  | Borrow Rate Slope High |        39954337899 |        39954337899 | 2025-11-17 |
+  |  6  | Borrow Rate Slope Low  |          176165511 |          491501775 | 2026-05-02 |
+  |  7  | Borrow Rate Slope High |         4756468797 |        39954337899 | 2026-05-02 |
   |  8  | Borrow Rate Base       |          317097919 |          317097919 | 2025-11-17 |
 
 **💰 Collaterals**
@@ -1312,32 +1312,32 @@
 
 |  #  | Date       | Network  | Market    | Daily Rewards | Yearly Rewards | Lend Daily Rewards | Borrow Daily Rewards | COMP on Reward Contract |
 | :-: | :--------- | :------- | :-------- | ------------: | -------------: | -----------------: | -------------------: | ----------------------: |
-|  1  | 2026-05-01 | arbitrum | cUSDCev3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             464.17 COMP |
-|  2  | 2026-05-01 | arbitrum | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             464.17 COMP |
-|  3  | 2026-05-01 | arbitrum | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             464.17 COMP |
-|  4  | 2026-05-01 | arbitrum | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             464.17 COMP |
-|  5  | 2026-05-01 | base     | cAEROv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             504.32 COMP |
-|  6  | 2026-05-01 | base     | cUSDbCv3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             504.32 COMP |
-|  7  | 2026-05-01 | base     | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             504.32 COMP |
-|  8  | 2026-05-01 | base     | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             504.32 COMP |
-|  9  | 2026-05-01 | base     | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             504.32 COMP |
-|  10 | 2026-05-01 | linea    | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             995.95 COMP |
-|  11 | 2026-05-01 | linea    | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             995.95 COMP |
-|  12 | 2026-05-01 | mainnet  | cUSDCv3   |      110 COMP |     40150 COMP |            55 COMP |              55 COMP |               0.35 COMP |
-|  13 | 2026-05-01 | mainnet  | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.35 COMP |
-|  14 | 2026-05-01 | mainnet  | cUSDTv3   |       60 COMP |     21900 COMP |            30 COMP |              30 COMP |               0.35 COMP |
-|  15 | 2026-05-01 | mainnet  | cWBTCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.35 COMP |
-|  16 | 2026-05-01 | mainnet  | cWETHv3   |       30 COMP |     10950 COMP |            10 COMP |              20 COMP |               0.35 COMP |
-|  17 | 2026-05-01 | mainnet  | cWstETHv3 |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.35 COMP |
-|  18 | 2026-05-01 | mantle   | cUSDev3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1545.35 COMP |
-|  19 | 2026-05-01 | optimism | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             639.84 COMP |
-|  20 | 2026-05-01 | optimism | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             639.84 COMP |
-|  21 | 2026-05-01 | optimism | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             639.84 COMP |
-|  22 | 2026-05-01 | polygon  | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             572.22 COMP |
-|  23 | 2026-05-01 | polygon  | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             572.22 COMP |
-|  24 | 2026-05-01 | scroll   | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.00 COMP |
-|  25 | 2026-05-01 | unichain | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             293.00 COMP |
-|  26 | 2026-05-01 | unichain | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             293.00 COMP |
+|  1  | 2026-05-02 | arbitrum | cUSDCev3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             464.07 COMP |
+|  2  | 2026-05-02 | arbitrum | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             464.07 COMP |
+|  3  | 2026-05-02 | arbitrum | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             464.07 COMP |
+|  4  | 2026-05-02 | arbitrum | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             464.07 COMP |
+|  5  | 2026-05-02 | base     | cAEROv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             480.90 COMP |
+|  6  | 2026-05-02 | base     | cUSDbCv3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             480.90 COMP |
+|  7  | 2026-05-02 | base     | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             480.90 COMP |
+|  8  | 2026-05-02 | base     | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             480.90 COMP |
+|  9  | 2026-05-02 | base     | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             480.90 COMP |
+|  10 | 2026-05-02 | linea    | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             995.95 COMP |
+|  11 | 2026-05-02 | linea    | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             995.95 COMP |
+|  12 | 2026-05-02 | mainnet  | cUSDCv3   |      110 COMP |     40150 COMP |            55 COMP |              55 COMP |               0.15 COMP |
+|  13 | 2026-05-02 | mainnet  | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.15 COMP |
+|  14 | 2026-05-02 | mainnet  | cUSDTv3   |       60 COMP |     21900 COMP |            30 COMP |              30 COMP |               0.15 COMP |
+|  15 | 2026-05-02 | mainnet  | cWBTCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.15 COMP |
+|  16 | 2026-05-02 | mainnet  | cWETHv3   |       30 COMP |     10950 COMP |            10 COMP |              20 COMP |               0.15 COMP |
+|  17 | 2026-05-02 | mainnet  | cWstETHv3 |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.15 COMP |
+|  18 | 2026-05-02 | mantle   | cUSDev3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1545.35 COMP |
+|  19 | 2026-05-02 | optimism | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             636.91 COMP |
+|  20 | 2026-05-02 | optimism | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             636.91 COMP |
+|  21 | 2026-05-02 | optimism | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             636.91 COMP |
+|  22 | 2026-05-02 | polygon  | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             572.08 COMP |
+|  23 | 2026-05-02 | polygon  | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             572.08 COMP |
+|  24 | 2026-05-02 | scroll   | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.00 COMP |
+|  25 | 2026-05-02 | unichain | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             292.91 COMP |
+|  26 | 2026-05-02 | unichain | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             292.91 COMP |
 |     | **TOTAL**  |          |           |  **200 COMP** | **73000 COMP** |                    |                      |                         |
 
 ---
@@ -1346,17 +1346,17 @@
 
 |  #  | Date       | Network  | Current COMP Balance |
 | :-: | :--------- | :------- | -------------------: |
-|  1  | 2026-05-01 | arbitrum |          464.17 COMP |
-|  2  | 2026-05-01 | base     |          504.32 COMP |
-|  3  | 2026-05-01 | linea    |          995.95 COMP |
-|  4  | 2026-05-01 | mainnet  |            0.35 COMP |
-|  5  | 2026-05-01 | mantle   |         1545.35 COMP |
-|  6  | 2026-05-01 | optimism |          639.84 COMP |
-|  7  | 2026-05-01 | polygon  |          572.22 COMP |
-|  8  | 2026-05-01 | scroll   |            0.00 COMP |
-|  9  | 2026-05-01 | unichain |          293.00 COMP |
-|     | **TOTAL**  |          |     **5015.20 COMP** |
+|  1  | 2026-05-02 | arbitrum |          464.07 COMP |
+|  2  | 2026-05-02 | base     |          480.90 COMP |
+|  3  | 2026-05-02 | linea    |          995.95 COMP |
+|  4  | 2026-05-02 | mainnet  |            0.15 COMP |
+|  5  | 2026-05-02 | mantle   |         1545.35 COMP |
+|  6  | 2026-05-02 | optimism |          636.91 COMP |
+|  7  | 2026-05-02 | polygon  |          572.08 COMP |
+|  8  | 2026-05-02 | scroll   |            0.00 COMP |
+|  9  | 2026-05-02 | unichain |          292.91 COMP |
+|     | **TOTAL**  |          |     **4988.32 COMP** |
 
 ---
 
-*Last updated:* 2026-05-01 13:19:07.650 UTC
+*Last updated:* 2026-05-02 13:10:41.874 UTC
