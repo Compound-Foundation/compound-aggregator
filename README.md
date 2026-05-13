@@ -1312,32 +1312,32 @@
 
 |  #  | Date       | Network  | Market    | Daily Rewards | Yearly Rewards | Lend Daily Rewards | Borrow Daily Rewards | COMP on Reward Contract |
 | :-: | :--------- | :------- | :-------- | ------------: | -------------: | -----------------: | -------------------: | ----------------------: |
-|  1  | 2026-05-12 | arbitrum | cUSDCev3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             384.18 COMP |
-|  2  | 2026-05-12 | arbitrum | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             384.18 COMP |
-|  3  | 2026-05-12 | arbitrum | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             384.18 COMP |
-|  4  | 2026-05-12 | arbitrum | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             384.18 COMP |
-|  5  | 2026-05-12 | base     | cAEROv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             451.02 COMP |
-|  6  | 2026-05-12 | base     | cUSDbCv3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             451.02 COMP |
-|  7  | 2026-05-12 | base     | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             451.02 COMP |
-|  8  | 2026-05-12 | base     | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             451.02 COMP |
-|  9  | 2026-05-12 | base     | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             451.02 COMP |
-|  10 | 2026-05-12 | linea    | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             986.00 COMP |
-|  11 | 2026-05-12 | linea    | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             986.00 COMP |
-|  12 | 2026-05-12 | mainnet  | cUSDCv3   |      110 COMP |     40150 COMP |            55 COMP |              55 COMP |               1.14 COMP |
-|  13 | 2026-05-12 | mainnet  | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               1.14 COMP |
-|  14 | 2026-05-12 | mainnet  | cUSDTv3   |       60 COMP |     21900 COMP |            30 COMP |              30 COMP |               1.14 COMP |
-|  15 | 2026-05-12 | mainnet  | cWBTCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               1.14 COMP |
-|  16 | 2026-05-12 | mainnet  | cWETHv3   |       30 COMP |     10950 COMP |            10 COMP |              20 COMP |               1.14 COMP |
-|  17 | 2026-05-12 | mainnet  | cWstETHv3 |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               1.14 COMP |
-|  18 | 2026-05-12 | mantle   | cUSDev3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1543.48 COMP |
-|  19 | 2026-05-12 | optimism | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             615.99 COMP |
-|  20 | 2026-05-12 | optimism | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             615.99 COMP |
-|  21 | 2026-05-12 | optimism | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             615.99 COMP |
-|  22 | 2026-05-12 | polygon  | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             567.06 COMP |
-|  23 | 2026-05-12 | polygon  | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             567.06 COMP |
-|  24 | 2026-05-12 | scroll   | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.00 COMP |
-|  25 | 2026-05-12 | unichain | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             160.67 COMP |
-|  26 | 2026-05-12 | unichain | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             160.67 COMP |
+|  1  | 2026-05-13 | arbitrum | cUSDCev3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             352.25 COMP |
+|  2  | 2026-05-13 | arbitrum | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             352.25 COMP |
+|  3  | 2026-05-13 | arbitrum | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             352.25 COMP |
+|  4  | 2026-05-13 | arbitrum | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             352.25 COMP |
+|  5  | 2026-05-13 | base     | cAEROv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             442.93 COMP |
+|  6  | 2026-05-13 | base     | cUSDbCv3  |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             442.93 COMP |
+|  7  | 2026-05-13 | base     | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             442.93 COMP |
+|  8  | 2026-05-13 | base     | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             442.93 COMP |
+|  9  | 2026-05-13 | base     | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             442.93 COMP |
+|  10 | 2026-05-13 | linea    | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             985.20 COMP |
+|  11 | 2026-05-13 | linea    | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             985.20 COMP |
+|  12 | 2026-05-13 | mainnet  | cUSDCv3   |      110 COMP |     40150 COMP |            55 COMP |              55 COMP |            1000.17 COMP |
+|  13 | 2026-05-13 | mainnet  | cUSDSv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1000.17 COMP |
+|  14 | 2026-05-13 | mainnet  | cUSDTv3   |       60 COMP |     21900 COMP |            30 COMP |              30 COMP |            1000.17 COMP |
+|  15 | 2026-05-13 | mainnet  | cWBTCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1000.17 COMP |
+|  16 | 2026-05-13 | mainnet  | cWETHv3   |       30 COMP |     10950 COMP |            10 COMP |              20 COMP |            1000.17 COMP |
+|  17 | 2026-05-13 | mainnet  | cWstETHv3 |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1000.17 COMP |
+|  18 | 2026-05-13 | mantle   | cUSDev3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |            1530.79 COMP |
+|  19 | 2026-05-13 | optimism | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             613.64 COMP |
+|  20 | 2026-05-13 | optimism | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             613.64 COMP |
+|  21 | 2026-05-13 | optimism | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             613.64 COMP |
+|  22 | 2026-05-13 | polygon  | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             567.06 COMP |
+|  23 | 2026-05-13 | polygon  | cUSDTv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             567.06 COMP |
+|  24 | 2026-05-13 | scroll   | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |               0.00 COMP |
+|  25 | 2026-05-13 | unichain | cUSDCv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             160.38 COMP |
+|  26 | 2026-05-13 | unichain | cWETHv3   |        0 COMP |         0 COMP |             0 COMP |               0 COMP |             160.38 COMP |
 |     | **TOTAL**  |          |           |  **200 COMP** | **73000 COMP** |                    |                      |                         |
 
 ---
@@ -1346,17 +1346,17 @@
 
 |  #  | Date       | Network  | Current COMP Balance |
 | :-: | :--------- | :------- | -------------------: |
-|  1  | 2026-05-12 | arbitrum |          384.18 COMP |
-|  2  | 2026-05-12 | base     |          451.02 COMP |
-|  3  | 2026-05-12 | linea    |          986.00 COMP |
-|  4  | 2026-05-12 | mainnet  |            1.14 COMP |
-|  5  | 2026-05-12 | mantle   |         1543.48 COMP |
-|  6  | 2026-05-12 | optimism |          615.99 COMP |
-|  7  | 2026-05-12 | polygon  |          567.06 COMP |
-|  8  | 2026-05-12 | scroll   |            0.00 COMP |
-|  9  | 2026-05-12 | unichain |          160.67 COMP |
-|     | **TOTAL**  |          |     **4709.53 COMP** |
+|  1  | 2026-05-13 | arbitrum |          352.25 COMP |
+|  2  | 2026-05-13 | base     |          442.93 COMP |
+|  3  | 2026-05-13 | linea    |          985.20 COMP |
+|  4  | 2026-05-13 | mainnet  |         1000.17 COMP |
+|  5  | 2026-05-13 | mantle   |         1530.79 COMP |
+|  6  | 2026-05-13 | optimism |          613.64 COMP |
+|  7  | 2026-05-13 | polygon  |          567.06 COMP |
+|  8  | 2026-05-13 | scroll   |            0.00 COMP |
+|  9  | 2026-05-13 | unichain |          160.38 COMP |
+|     | **TOTAL**  |          |     **5652.42 COMP** |
 
 ---
 
-*Last updated:* 2026-05-12 14:24:01.128 UTC
+*Last updated:* 2026-05-13 14:32:32.471 UTC
