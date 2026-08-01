@@ -73,18 +73,68 @@ export class RuntimeDbService {
 
   //// API
 
+  public fetchIndexedUsersForNetwork(
+    version: CompoundVersion,
+    network: string,
+    limit: number,
+    offset: number,
+  ): Array<{
+    marketAddress: string;
+    userAddress: string;
+    createdAt: number;
+  }> {
+    const rows = this.api.fetchUsersPageByNetworkAndVersion.all(
+      network,
+      toDbVersion(version),
+      limit,
+      offset,
+    ) as Array<{ market: string; user: string; created_at: number }>;
+
+    return rows.map((row) => ({
+      marketAddress: row.market,
+      userAddress: row.user,
+      createdAt: Number(row.created_at),
+    }));
+  }
+
+  public listIndexedMarketsForNetwork(
+    version: CompoundVersion,
+    network: string,
+  ): Array<{ marketAddress: string; firstSeenBlock: number }> {
+    const rows = this.api.listMarketsAll.all(network) as Array<{
+      version: number;
+      market: string;
+      first_seen_block: number;
+    }>;
+
+    const dbVersion = toDbVersion(version);
+    return rows
+      .filter((row) => row.version === dbVersion)
+      .map((row) => ({
+        marketAddress: row.market,
+        firstSeenBlock: Number(row.first_seen_block),
+      }));
+  }
+
+  public getIndexedCursor(network: string): number | null {
+    const row = this.api.getCursor.get(network) as
+      | { last_block: number }
+      | undefined;
+    return row ? Number(row.last_block) : null;
+  }
+
   public async fetchUsersForNetwork(
     version: CompoundVersion,
     network: string,
     limit: number,
     offset: number,
   ): Promise<IndexerUsers[string]> {
-    const rows = this.api.fetchUsersPageByNetworkAndVersion.all(
+    const rows = this.fetchIndexedUsersForNetwork(
+      version,
       network,
-      toDbVersion(version),
       limit,
       offset,
-    ) as Array<{ market: string; user: string }>;
+    );
 
     const rewardsAddress = this.rewardsV3ByNetwork.get(network);
 
@@ -95,8 +145,8 @@ export class RuntimeDbService {
 
     return rows.map((r) => ({
       rewardsAddress,
-      cometAddress: r.market,
-      userAddress: r.user,
+      cometAddress: r.marketAddress,
+      userAddress: r.userAddress,
     }));
   }
 

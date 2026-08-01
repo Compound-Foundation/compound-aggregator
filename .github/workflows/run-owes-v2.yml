@@ -101,8 +101,15 @@ jobs:
 
       - name: Run owes v2 generation
         env:
-          ANKR_KEY: ${{ secrets.ANKR_KEY }}
-          UNICHAIN_QUICKNODE_KEY: ${{ secrets.UNICHAIN_QUICKNODE_KEY }}
+          RPC_MAINNET: ${{ secrets.RPC_MAINNET }}
+          RPC_ARBITRUM: ${{ secrets.RPC_ARBITRUM }}
+          RPC_BASE: ${{ secrets.RPC_BASE }}
+          RPC_OPTIMISM: ${{ secrets.RPC_OPTIMISM }}
+          RPC_POLYGON: ${{ secrets.RPC_POLYGON }}
+          RPC_SCROLL: ${{ secrets.RPC_SCROLL }}
+          RPC_LINEA: ${{ secrets.RPC_LINEA }}
+          RPC_MANTLE: ${{ secrets.RPC_MANTLE }}
+          RPC_UNICHAIN: ${{ secrets.RPC_UNICHAIN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn cli:generate:owes:v2
 
@@ -128,7 +135,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
-          
+
           git add snapshots/owes-detailed-v2.json
           git diff --cached --quiet || git commit -m "chore: update detailed owes v2"
           git fetch origin main

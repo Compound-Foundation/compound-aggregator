@@ -111,7 +111,7 @@ export function createSqliteApi(pathOrDb: string | SqliteDatabase): SqliteApi {
   );
 
   const fetchUsersPageByNetworkAndVersion = db.prepare(`
-    SELECT market, user
+    SELECT market, user, created_at
     FROM users
     WHERE network = ? AND version = ?
     ORDER BY market ASC, user ASC

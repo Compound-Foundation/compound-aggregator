@@ -19,12 +19,21 @@ yarn install
 Create a `.env` file in the project root with the following variables:
 
 ```env
-# Provider keys for blockchain networks (examples)
-ANKR_KEY=your_ankr_api_key_here
-UNICHAIN_QUICKNODE_KEY=your_unichain_api_key_here
+# Full QuickNode HTTP RPC URLs (not API keys)
+RPC_MAINNET=https://your-mainnet-endpoint.quiknode.pro/...
+RPC_ARBITRUM=https://your-arbitrum-endpoint.quiknode.pro/...
+RPC_BASE=https://your-base-endpoint.quiknode.pro/...
+RPC_OPTIMISM=https://your-optimism-endpoint.quiknode.pro/...
+RPC_POLYGON=https://your-polygon-endpoint.quiknode.pro/...
+RPC_SCROLL=https://your-scroll-endpoint.quiknode.pro/...
+RPC_LINEA=https://your-linea-endpoint.quiknode.pro/...
+RPC_MANTLE=https://your-mantle-endpoint.quiknode.pro/...
+RPC_UNICHAIN=https://your-unichain-endpoint.quiknode.pro/...
 ```
 
-> If a network provider URL is configured to require an API key, make sure the corresponding env var is present.
+All nine values are required by the current production configuration. Historical reward
+generation needs archive access at the selected boundary blocks and RPC support for
+historical `eth_call`, `eth_getCode`, and `eth_getLogs`.
 
 ---
 
@@ -35,11 +44,11 @@ This repository (**code repo**) does **not** store large artifacts in Git LFS an
 Instead, heavy data lives in a separate **private artifacts repository** (example: `cryptease/compound-docs-artifacts`) with this structure:
 
 - `storage/` — runtime/indexer DB snapshot (manifests + chunks)
-    - `storage/**/manifest.json` (regular Git)
-    - `storage/**/*.sqlite` (Git LFS)
+  - `storage/**/manifest.json` (regular Git)
+  - `storage/**/*.sqlite` (Git LFS)
 - `snapshots/` — large detailed snapshots
-    - `snapshots/owes-detailed-v2.json` (Git LFS)
-    - `snapshots/owes-detailed-v3.json` (Git LFS)
+  - `snapshots/owes-detailed-v2.json` (Git LFS)
+  - `snapshots/owes-detailed-v3.json` (Git LFS)
 
 CI and local runs **rsync** `artifacts/storage/` into `src/indexer/storage/` before running commands that need the indexed DB.
 
@@ -57,14 +66,15 @@ To do this, the code repo uses a GitHub Actions secret named:
 
 1. GitHub → **Settings** → **Developer settings**
 2. **Personal access tokens** → **Fine-grained tokens** → **Generate new token**
-3. **Repository access** → *Only select repositories* → select your private artifacts repo
+3. **Repository access** → _Only select repositories_ → select your private artifacts repo
 4. **Repository permissions**:
-    - **Contents: Read and write** (required)
+   - **Contents: Read and write** (required)
 5. Create token and copy it.
 
 ### How to add it to the code repo
 
 In the **code repo** (this repo):
+
 - **Settings → Secrets and variables → Actions → New repository secret**
 - Name: `ARTIFACTS_TOKEN`
 - Value: your PAT
@@ -199,11 +209,116 @@ When running locally, ensure `yarn cli:index` completed successfully first — o
 
 ---
 
+## Generate Period Rewards for a Merkl Airdrop
+
+The period reward commands always read `ranges.json` from the repository root. There
+is no `--ranges-file` option. V2 and V3 have independent range sections. Each V3
+network has an inclusive envelope and can define a different start block per Comet:
+
+```json
+{
+  "v2": [
+    {
+      "network": "mainnet",
+      "chainId": 1,
+      "startBlock": 7710671,
+      "endBlock": 24996368
+    }
+  ],
+  "v3": [
+    {
+      "network": "mainnet",
+      "chainId": 1,
+      "startBlock": 15331586,
+      "endBlock": 24996368,
+      "markets": [
+        {
+          "symbol": "cUSDCv3",
+          "address": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+          "startBlock": 15331586
+        },
+        {
+          "symbol": "cWETHv3",
+          "address": "0xA17581A9E3356d9A858b789D68B4d866e593aE94",
+          "startBlock": 16400710
+        }
+      ]
+    }
+  ]
+}
+```
+
+Only include the networks that should be processed in the relevant section. The
+command verifies `chainId`, requires `startBlock >= 1`, treats both ends as inclusive,
+records block hashes and timestamps, and rejects an `endBlock` inside the configured
+reorg window. When `markets` is present, the network `startBlock` must equal the
+earliest market start. For V3, each listed market can have its own start block. For
+V2, `markets` acts as a partial/test filter, every listed market must use the network
+`startBlock`, and only those markets are processed. Filtered V2 output is explicitly
+named `*.partial.merkl.json` and its audit contains `partial: true` plus
+`selectedMarkets`. Remove the V2 `markets` field before a production all-market run.
+V2 ignores the V3 section and V3 ignores the V2 section.
+
+Run the indexer through every selected `endBlock` first, then generate the files:
+
+```bash
+yarn cli:index
+yarn cli:generate:rewards:v2:merkl
+yarn cli:generate:rewards:v3:merkl
+```
+
+V2 currently applies to Ethereum mainnet. Its attribution is strict per cToken and per
+side (`supply` / `borrow`): distributed rewards inside the range plus the change in
+uncheckpointed rewards between `startBlock - 1` and `endBlock`. It does not allocate
+the Comptroller-wide `compAccrued` balance heuristically. The audit keeps this strict
+market-level breakdown for `earned`. User/network totals additionally report
+`earned`, `claimed`, and `remaining`; `claimed` is reconciled as
+`debtBeforeStart + earned - debtAtEnd`, while `remaining` is the actual end debt
+(`compAccrued` plus pending rewards across all processed V2 markets). The V2 Merkl
+payload distributes `remaining`, not gross period earnings.
+
+A V2 `markets` filter is only a partial smoke test. Because `compAccrued` is global,
+the filtered audit reports `claimed: null` and its remaining amount is incomplete;
+never use a `*.partial.merkl.json` file for a real airdrop.
+
+V3 attributes rewards to the individual Comet market. It calculates the change in
+`claimed + owed` between that market's `startBlock - 1` and the network `endBlock`.
+The audit uses the same fields as V2: each market reports `earned`, while user and
+network totals report `earned`, `claimed`, and `remaining`. For V3, `claimed` is the
+change in `rewardsClaimed`, and `remaining` is the actual `getRewardOwed` amount at
+the end block. The V3 Merkl payload distributes this remaining debt per Comet market,
+not gross period earnings.
+Start snapshots are requested only for users whose indexed `created_at` is not later
+than the boundary timestamp; all users still receive the required end snapshot. The
+same user-level pruning is applied to V2 start snapshots.
+
+Historical calls select Multicall3, Multicall2, or Multicall1 according to what was
+deployed at the requested block. Calls use concurrent chunks and adaptively split
+`200 -> 100 -> 50 -> 25` on historical RPC limits before falling back to direct
+`eth_call` requests.
+
+For every network and reward token with a positive result, the generator writes:
+
+- `result/rewards-v2-<network>-<token>-<start>-<end>.merkl.json`, or the V3 equivalent —
+  the Merkl airdrop payload with checksummed addresses and raw integer amounts;
+- the matching `result/*.audit.json` — range block hashes/timestamps, per-market and
+  per-recipient totals, each market's effective range, plus the funding estimate
+  including Merkl's 0.5% fee.
+
+One output file represents one Merkl campaign on one chain for one reward token. V2
+uses one `compound-v2` reason per recipient because actual debt is global rather than
+market-attributed; its audit still contains cToken supply/borrow earnings. V3 reason
+keys include the Comet address. The exporter verifies that reason, recipient, market,
+and network totals match before writing either file.
+
+---
+
 ## GitHub Actions
 
 There are two kinds of workflows:
 
 ### 1) Manually triggered workflows (`run-*`)
+
 - `run-indexing.yml` — runs the user indexer (`yarn cli:index`)  
   **Requires** `ARTIFACTS_TOKEN` (to pull/push DB artifacts)
 - `run-owes-v2.yml` — generates `owes-v2.json`  
@@ -214,6 +329,7 @@ There are two kinds of workflows:
   Does **not** require `ARTIFACTS_TOKEN` (reads public `owes-*.json`)
 
 ### 2) Scheduled / maintenance workflows (`update-*`)
+
 - `update-market-data.yml` — updates market metadata and docs (`output.json` + README)  
   Does **not** require `ARTIFACTS_TOKEN`
 - `update-owes.yml` — updates index + owes + markdown  
@@ -229,6 +345,8 @@ Artifacts committed in the **code repo** (this repo):
 - `owes-v2.json` — Compound v2 owes snapshot
 - `owes-v3.json` — Compound v3 owes snapshot
 - `REWARDS.md` — Markdown summary of owes (generated from the JSON snapshots)
+- `result/rewards-v2-*.merkl.json` / `result/rewards-v3-*.merkl.json` — Merkl airdrop payloads
+- `result/rewards-v2-*.audit.json` / `result/rewards-v3-*.audit.json` — period attribution audit
 
 Artifacts stored in the **private artifacts repo**:
 
@@ -260,6 +378,10 @@ yarn cli:index
 # Generate owes snapshots
 yarn cli:generate:owes:v2
 yarn cli:generate:owes:v3
+
+# Generate period rewards and Merkl airdrop files from ./ranges.json
+yarn cli:generate:rewards:v2:merkl
+yarn cli:generate:rewards:v3:merkl
 
 # Generate Markdown summary for owes
 yarn cli:generate:owes:md

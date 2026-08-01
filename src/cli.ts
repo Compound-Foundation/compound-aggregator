@@ -6,7 +6,14 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const logLevel = ['log', 'error', 'warn', 'debug', 'verbose'] as LogLevel[];
-  await CommandFactory.run(AppModule, { logger: logLevel });
+  await CommandFactory.run(AppModule, {
+    logger: logLevel,
+    serviceErrorHandler: (error: Error) => {
+      console.error('CLI command failed:');
+      console.error(error.stack ?? error.message);
+      process.exitCode = 1;
+    },
+  });
 }
 
 bootstrap().catch((err) => {
