@@ -63,6 +63,7 @@ export interface PeriodRewardRow {
   totalRewardRaw: bigint;
   claimedRaw?: bigint;
   remainingRaw?: bigint;
+  remainingForPeriodRaw?: bigint;
 }
 
 export interface PeriodRewardUserTotal {
@@ -77,6 +78,7 @@ export interface PeriodRewardUserTotal {
   earnedRaw: bigint;
   claimedRaw: bigint | null;
   remainingRaw: bigint;
+  remainingForPeriodRaw: bigint;
 }
 
 export interface PeriodRewardsResult {

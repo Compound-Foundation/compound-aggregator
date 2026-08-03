@@ -113,12 +113,14 @@ describe('period reward start-snapshot pruning', () => {
         earnedRaw: 105n,
         claimedRaw: 15n,
         remainingRaw: 100n,
+        remainingForPeriodRaw: 100n,
       }),
       expect.objectContaining({
         user: newUser,
         earnedRaw: 120n,
         claimedRaw: 20n,
         remainingRaw: 100n,
+        remainingForPeriodRaw: 100n,
       }),
     ]);
   });
@@ -167,11 +169,20 @@ describe('period reward start-snapshot pruning', () => {
       .spyOn(service as any, 'readDistributedRewards')
       .mockResolvedValue(new Map());
     jest.spyOn(service as any, 'readMarketSymbol').mockResolvedValue('cTEST');
-    jest.spyOn(service as any, 'readMarketBoundary').mockResolvedValue({
-      projectedSupplyIndex: 1n,
-      projectedBorrowIndex: 1n,
-      marketBorrowIndex: 1n,
-    });
+    jest
+      .spyOn(service as any, 'readMarketBoundary')
+      .mockImplementation(
+        async (
+          _range: unknown,
+          _comptroller: string,
+          _market: string,
+          blockTag: number,
+        ) => ({
+          projectedSupplyIndex: blockTag === 200 ? 2n : 1n,
+          projectedBorrowIndex: blockTag === 200 ? 2n : 1n,
+          marketBorrowIndex: 1n,
+        }),
+      );
     const readUserPending = jest
       .spyOn(service as any, 'readUserPending')
       .mockImplementation(
@@ -216,12 +227,14 @@ describe('period reward start-snapshot pruning', () => {
         earnedRaw: 90n,
         claimedRaw: 10n,
         remainingRaw: 100n,
+        remainingForPeriodRaw: 90n,
       }),
       expect.objectContaining({
         user: newUser,
         earnedRaw: 100n,
         claimedRaw: 0n,
         remainingRaw: 100n,
+        remainingForPeriodRaw: 100n,
       }),
     ]);
   });

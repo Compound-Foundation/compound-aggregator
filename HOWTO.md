@@ -211,8 +211,9 @@ When running locally, ensure `yarn cli:index` completed successfully first — o
 
 ## Generate Period Rewards for a Merkl Airdrop
 
-The period reward commands always read `ranges.json` from the repository root. There
-is no `--ranges-file` option. V2 and V3 have independent range sections. Each V3
+The period reward commands read `ranges.json` from the repository root by default.
+Passing `--test` selects `ranges-test.json`; there is no arbitrary `--ranges-file`
+option. V2 and V3 have independent range sections. Each V3
 network has an inclusive envelope and can define a different start block per Comet:
 
 ```json
@@ -267,6 +268,13 @@ yarn cli:generate:rewards:v2:merkl
 yarn cli:generate:rewards:v3:merkl
 ```
 
+For a test run using `./ranges-test.json`:
+
+```bash
+yarn cli:generate:rewards:v2:merkl --test
+yarn cli:generate:rewards:v3:merkl --test
+```
+
 V2 currently applies to Ethereum mainnet. Its attribution is strict per cToken and per
 side (`supply` / `borrow`): distributed rewards inside the range plus the change in
 uncheckpointed rewards between `startBlock - 1` and `endBlock`. It does not allocate
@@ -274,8 +282,15 @@ the Comptroller-wide `compAccrued` balance heuristically. The audit keeps this s
 market-level breakdown for `earned`. User/network totals additionally report
 `earned`, `claimed`, and `remaining`; `claimed` is reconciled as
 `debtBeforeStart + earned - debtAtEnd`, while `remaining` is the actual end debt
-(`compAccrued` plus pending rewards across all processed V2 markets). The V2 Merkl
-payload distributes `remaining`, not gross period earnings.
+(`compAccrued` plus pending rewards across all processed V2 markets).
+`remainingForPeriod = min(earned, remaining)` applies FIFO attribution: claims first
+pay debt that existed before the period. The V2 Merkl payload distributes
+`remainingForPeriod`, not the full end debt or gross period earnings.
+
+If a V2 supply or borrow reward index is unchanged across both boundaries, that
+side's period earnings are zero. This also prevents harmless integer-rounding drift
+in `borrowBalanceStored / borrowIndex` from appearing as a negative reward; negative
+results with a changed reward index remain hard errors.
 
 A V2 `markets` filter is only a partial smoke test. Because `compAccrued` is global,
 the filtered audit reports `claimed: null` and its remaining amount is incomplete;
@@ -286,8 +301,9 @@ V3 attributes rewards to the individual Comet market. It calculates the change i
 The audit uses the same fields as V2: each market reports `earned`, while user and
 network totals report `earned`, `claimed`, and `remaining`. For V3, `claimed` is the
 change in `rewardsClaimed`, and `remaining` is the actual `getRewardOwed` amount at
-the end block. The V3 Merkl payload distributes this remaining debt per Comet market,
-not gross period earnings.
+the end block. `remainingForPeriod = min(earned, remaining)` is calculated separately
+for each Comet. The V3 Merkl payload distributes this FIFO-attributed period debt per
+market, not the full end debt or gross period earnings.
 Start snapshots are requested only for users whose indexed `created_at` is not later
 than the boundary timestamp; all users still receive the required end snapshot. The
 same user-level pruning is applied to V2 start snapshots.

@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { Command, CommandRunner } from 'nest-commander';
+import { Command, CommandRunner, Option } from 'nest-commander';
 
 import { CompoundVersion } from 'common/types/compound-version';
 import { RuntimeDbService } from 'indexer/runtime-db.service';
@@ -23,16 +23,32 @@ export class GenerateRewardsV3MerklCommand extends CommandRunner {
     super();
   }
 
-  public async run(): Promise<void> {
-    this.logger.log('Generating strict V3 Merkl airdrop files...');
+  public async run(
+    _passedParams: string[],
+    options?: Record<string, unknown>,
+  ): Promise<void> {
+    const useTestRanges = options?.test === true;
+    this.logger.log(
+      `Generating strict V3 Merkl airdrop files using ${
+        useTestRanges ? 'ranges-test.json' : 'ranges.json'
+      }...`,
+    );
     await this.db.assemble();
     try {
-      const ranges = await this.ranges.load(CompoundVersion.V3);
+      const ranges = await this.ranges.load(CompoundVersion.V3, useTestRanges);
       const result = await this.rewards.calculate(ranges);
       this.merkl.export(result);
       this.logger.log('V3 Merkl generation completed.');
     } finally {
       this.db.closeRuntime();
     }
+  }
+
+  @Option({
+    flags: '--test',
+    description: 'Use ./ranges-test.json instead of ./ranges.json',
+  })
+  public parseTestOption(): boolean {
+    return true;
   }
 }

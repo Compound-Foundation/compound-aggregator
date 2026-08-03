@@ -7,6 +7,7 @@ import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { ProviderFactory } from 'network/provider.factory';
 import { HistoricalCallService } from './historical-call.service';
 import {
+  fifoRemainingForPeriod,
   pendingBorrow,
   pendingSupply,
   periodReward,
@@ -168,6 +169,11 @@ export class V2PeriodRewardsService {
         market,
         range.end.number,
       );
+      if (!endBoundary) {
+        throw new Error(
+          `[V2][${range.network}][${range.end.number}] reward boundary is missing market=${market}`,
+        );
+      }
       const startBoundary =
         firstSeen > range.startBoundary.number
           ? null
@@ -232,11 +238,15 @@ export class V2PeriodRewardsService {
             distributedInRange: events.supply,
             pendingAtEnd: end.supply,
             pendingBeforeStart: start.supply,
+            marketIndexAtEnd: endBoundary.projectedSupplyIndex,
+            marketIndexBeforeStart: startBoundary?.projectedSupplyIndex,
           });
           borrowRewardRaw = periodReward({
             distributedInRange: events.borrow,
             pendingAtEnd: end.borrow,
             pendingBeforeStart: start.borrow,
+            marketIndexAtEnd: endBoundary.projectedBorrowIndex,
+            marketIndexBeforeStart: startBoundary?.projectedBorrowIndex,
           });
         } catch (error) {
           throw new Error(
@@ -315,6 +325,10 @@ export class V2PeriodRewardsService {
             `[V2][${range.network}] negative claimed invariant user=${total.user} startDebt=${debtBeforeStart} earned=${total.earnedRaw} remaining=${remainingRaw}`,
           );
         }
+        const remainingForPeriodRaw = fifoRemainingForPeriod({
+          earned: total.earnedRaw,
+          remaining: remainingRaw,
+        });
         return {
           version: CompoundVersion.V2,
           network: range.network,
@@ -327,6 +341,7 @@ export class V2PeriodRewardsService {
           earnedRaw: total.earnedRaw,
           claimedRaw,
           remainingRaw,
+          remainingForPeriodRaw,
         };
       })
       .filter(

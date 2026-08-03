@@ -18,15 +18,18 @@ import {
 
 @Injectable()
 export class RangesService {
-  private readonly rangesPath = join(process.cwd(), 'ranges.json');
-
   constructor(
     private readonly config: ConfigService,
     private readonly providers: ProviderFactory,
   ) {}
 
-  public async load(version: CompoundVersion): Promise<ResolvedRewardRange[]> {
-    const parsed = this.parseFile();
+  public async load(
+    version: CompoundVersion,
+    useTestRanges = false,
+  ): Promise<ResolvedRewardRange[]> {
+    const fileName = useTestRanges ? 'ranges-test.json' : 'ranges.json';
+    const rangesPath = join(process.cwd(), fileName);
+    const parsed = this.parseFile(rangesPath, fileName);
     const versionRanges = parsed[version];
     const networks = this.config.getOrThrow<NetworkConfig[]>('networks');
     const byName = new Map(
@@ -37,15 +40,15 @@ export class RangesService {
       [];
 
     for (const entry of versionRanges) {
-      this.validateEntry(entry, version);
+      this.validateEntry(entry, version, fileName);
       if (seen.has(entry.network)) {
-        throw new Error(`Duplicate network in ranges.json: ${entry.network}`);
+        throw new Error(`Duplicate network in ${fileName}: ${entry.network}`);
       }
       seen.add(entry.network);
 
       const network = byName.get(entry.network);
       if (!network) {
-        throw new Error(`Unknown network in ranges.json: ${entry.network}`);
+        throw new Error(`Unknown network in ${fileName}: ${entry.network}`);
       }
       if (network.chainId !== entry.chainId) {
         throw new Error(
@@ -65,7 +68,7 @@ export class RangesService {
 
     if (selected.length === 0) {
       throw new Error(
-        `ranges.json has no enabled ${version.toUpperCase()} reward ranges`,
+        `${fileName} has no enabled ${version.toUpperCase()} reward ranges`,
       );
     }
 
@@ -74,13 +77,13 @@ export class RangesService {
     );
   }
 
-  private parseFile(): RangeFile {
+  private parseFile(rangesPath: string, fileName: string): RangeFile {
     let raw: string;
     try {
-      raw = readFileSync(this.rangesPath, 'utf8');
+      raw = readFileSync(rangesPath, 'utf8');
     } catch (error) {
       throw new Error(
-        `Failed to read ${this.rangesPath}: ${(error as Error).message}`,
+        `Failed to read ${rangesPath}: ${(error as Error).message}`,
       );
     }
 
@@ -89,27 +92,31 @@ export class RangesService {
       parsed = JSON.parse(raw);
     } catch (error) {
       throw new Error(
-        `Invalid JSON in ${this.rangesPath}: ${(error as Error).message}`,
+        `Invalid JSON in ${rangesPath}: ${(error as Error).message}`,
       );
     }
 
     if (!parsed || typeof parsed !== 'object') {
-      throw new Error('ranges.json must contain an object');
+      throw new Error(`${fileName} must contain an object`);
     }
     const value = parsed as Partial<RangeFile>;
     if (!Array.isArray(value.v2) || !Array.isArray(value.v3)) {
-      throw new Error('ranges.json v2 and v3 must be arrays');
+      throw new Error(`${fileName} v2 and v3 must be arrays`);
     }
 
     return value as RangeFile;
   }
 
-  private validateEntry(entry: RangeFileEntry, version: CompoundVersion): void {
+  private validateEntry(
+    entry: RangeFileEntry,
+    version: CompoundVersion,
+    fileName: string,
+  ): void {
     if (!entry || typeof entry !== 'object') {
-      throw new Error('Every ranges.json entry must be an object');
+      throw new Error(`Every ${fileName} entry must be an object`);
     }
     if (!entry.network || typeof entry.network !== 'string') {
-      throw new Error('Every ranges.json entry must have a network');
+      throw new Error(`Every ${fileName} entry must have a network`);
     }
     for (const [field, value] of [
       ['chainId', entry.chainId],
@@ -144,12 +151,12 @@ export class RangesService {
       const symbol = market.symbol.toLowerCase();
       if (addresses.has(address)) {
         throw new Error(
-          `Duplicate market address in ranges.json for ${entry.network}: ${market.address}`,
+          `Duplicate market address in ${fileName} for ${entry.network}: ${market.address}`,
         );
       }
       if (symbols.has(symbol)) {
         throw new Error(
-          `Duplicate market symbol in ranges.json for ${entry.network}: ${market.symbol}`,
+          `Duplicate market symbol in ${fileName} for ${entry.network}: ${market.symbol}`,
         );
       }
       addresses.add(address);

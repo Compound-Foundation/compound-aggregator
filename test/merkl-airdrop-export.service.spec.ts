@@ -41,7 +41,8 @@ describe('MerklAirdropExportService', () => {
             user,
             earnedRaw: 15n,
             claimedRaw: 5n,
-            remainingRaw: 10n,
+            remainingRaw: 100n,
+            remainingForPeriodRaw: 15n,
           },
         ],
         rows: [
@@ -76,12 +77,12 @@ describe('MerklAirdropExportService', () => {
       expect(merkl.rewardToken).toBe(token);
       expect(merkl.rewards).toEqual({
         [user]: {
-          'compound-v2': '10',
+          'compound-v2': '15',
         },
       });
 
       const audit = JSON.parse(readFileSync(file!.auditPath, 'utf8'));
-      expect(audit.allocationTotalRaw).toBe('10');
+      expect(audit.allocationTotalRaw).toBe('15');
       expect(audit.marketTotals[0].earnedRaw).toBe('15');
       expect(audit.marketTotals[0].range.start.blockNumber).toBe(100);
       expect(audit.total).toEqual({
@@ -89,10 +90,12 @@ describe('MerklAirdropExportService', () => {
         earned: '0.000000000000000015',
         claimedRaw: '5',
         claimed: '0.000000000000000005',
-        remainingRaw: '10',
-        remaining: '0.00000000000000001',
+        remainingRaw: '100',
+        remaining: '0.0000000000000001',
+        remainingForPeriodRaw: '15',
+        remainingForPeriod: '0.000000000000000015',
       });
-      expect(audit.fundingRequiredRaw).toBe('11');
+      expect(audit.fundingRequiredRaw).toBe('16');
       expect(audit).not.toHaveProperty('schemaVersion');
       expect(audit).not.toHaveProperty('merklFeeRate');
       expect(audit).not.toHaveProperty('merklFeeRaw');
@@ -148,7 +151,8 @@ describe('MerklAirdropExportService', () => {
             user,
             earnedRaw: 7n,
             claimedRaw: 2n,
-            remainingRaw: 5n,
+            remainingRaw: 10n,
+            remainingForPeriodRaw: 7n,
           },
         ],
         rows: [
@@ -166,7 +170,8 @@ describe('MerklAirdropExportService', () => {
             user,
             totalRewardRaw: 7n,
             claimedRaw: 2n,
-            remainingRaw: 5n,
+            remainingRaw: 10n,
+            remainingForPeriodRaw: 7n,
           },
         ],
       });
@@ -174,13 +179,14 @@ describe('MerklAirdropExportService', () => {
       const merkl = JSON.parse(readFileSync(file!.merklPath, 'utf8'));
       expect(merkl.rewards).toEqual({
         [user]: {
-          [`compound-v3:${market}`]: '5',
+          [`compound-v3:${market}`]: '7',
         },
       });
       const audit = JSON.parse(readFileSync(file!.auditPath, 'utf8'));
       expect(audit.range.start.blockNumber).toBe(50);
       expect(audit.marketTotals[0].range.start.blockNumber).toBe(100);
       expect(audit.marketTotals[0].earnedRaw).toBe('7');
+      expect(audit.marketTotals[0].remainingForPeriodRaw).toBe('7');
       expect(audit.marketTotals[0]).not.toHaveProperty('totalRewardRaw');
       expect(audit.recipients[0].markets[0].range.start.blockNumber).toBe(100);
       expect(audit.total).toEqual({
@@ -188,17 +194,20 @@ describe('MerklAirdropExportService', () => {
         earned: '0.000000000000000007',
         claimedRaw: '2',
         claimed: '0.000000000000000002',
-        remainingRaw: '5',
-        remaining: '0.000000000000000005',
+        remainingRaw: '10',
+        remaining: '0.00000000000000001',
+        remainingForPeriodRaw: '7',
+        remainingForPeriod: '0.000000000000000007',
       });
       expect(audit.recipients[0]).toEqual(
         expect.objectContaining({
           earnedRaw: '7',
           claimedRaw: '2',
-          remainingRaw: '5',
+          remainingRaw: '10',
+          remainingForPeriodRaw: '7',
         }),
       );
-      expect(audit.allocationTotalRaw).toBe('5');
+      expect(audit.allocationTotalRaw).toBe('7');
     } finally {
       process.chdir(originalCwd);
       rmSync(temp, { recursive: true, force: true });
@@ -249,6 +258,7 @@ describe('MerklAirdropExportService', () => {
             earnedRaw: 1n,
             claimedRaw: null,
             remainingRaw: 1n,
+            remainingForPeriodRaw: 1n,
           },
         ],
         rows: [

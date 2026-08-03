@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import { CompoundVersion } from 'common/types/compound-version';
 import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { HistoricalCallService } from './historical-call.service';
+import { fifoRemainingForPeriod } from './period-rewards.math';
 import {
   PeriodRewardRow,
   PeriodRewardUserTotal,
@@ -208,6 +209,10 @@ export class V3PeriodRewardsService {
         const earnedRaw = lifetimeEnd - lifetimeStart;
         const claimedRaw = end.claimed - start.claimed;
         const remainingRaw = end.owed;
+        const remainingForPeriodRaw = fifoRemainingForPeriod({
+          earned: earnedRaw,
+          remaining: remainingRaw,
+        });
         if (earnedRaw === 0n && claimedRaw === 0n && remainingRaw === 0n) {
           continue;
         }
@@ -232,6 +237,7 @@ export class V3PeriodRewardsService {
           totalRewardRaw: earnedRaw,
           claimedRaw,
           remainingRaw,
+          remainingForPeriodRaw,
         });
 
         const totalKey = `${rewardToken.toLowerCase()}:${user.toLowerCase()}`;
@@ -240,6 +246,7 @@ export class V3PeriodRewardsService {
           total.earnedRaw += earnedRaw;
           total.claimedRaw = (total.claimedRaw ?? 0n) + claimedRaw;
           total.remainingRaw += remainingRaw;
+          total.remainingForPeriodRaw += remainingForPeriodRaw;
         } else {
           userTotals.set(totalKey, {
             version: CompoundVersion.V3,
@@ -253,6 +260,7 @@ export class V3PeriodRewardsService {
             earnedRaw,
             claimedRaw,
             remainingRaw,
+            remainingForPeriodRaw,
           });
         }
       }

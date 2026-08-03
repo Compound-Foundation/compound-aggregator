@@ -25,6 +25,7 @@ interface MarketAuditAccumulator {
   totalRewardRaw: bigint;
   claimedRaw: bigint;
   remainingRaw: bigint;
+  remainingForPeriodRaw: bigint;
 }
 
 interface RecipientAuditAccumulator {
@@ -139,10 +140,18 @@ export class MerklAirdropExportService {
       }
 
       if (group.version === CompoundVersion.V3) {
-        if (row.claimedRaw == null || row.remainingRaw == null) {
+        if (
+          row.claimedRaw == null ||
+          row.remainingRaw == null ||
+          row.remainingForPeriodRaw == null
+        ) {
           throw new Error(`V3 debt fields are missing: ${market}/${user}`);
         }
-        if (row.claimedRaw < 0n || row.remainingRaw < 0n) {
+        if (
+          row.claimedRaw < 0n ||
+          row.remainingRaw < 0n ||
+          row.remainingForPeriodRaw < 0n
+        ) {
           throw new Error(`Negative V3 debt field: ${market}/${user}`);
         }
         if (
@@ -156,7 +165,7 @@ export class MerklAirdropExportService {
         this.addReason(
           reasonAmounts,
           this.reason(group.version, market),
-          row.remainingRaw,
+          row.remainingForPeriodRaw,
         );
         rewards.set(user, reasonAmounts);
       } else if (row.totalRewardRaw === 0n) {
@@ -215,12 +224,16 @@ export class MerklAirdropExportService {
           (sum, market) => sum + market.remainingRaw,
           0n,
         );
+        const marketRemainingForPeriod = Array.from(
+          recipient.markets.values(),
+        ).reduce((sum, market) => sum + market.remainingForPeriodRaw, 0n);
         if (
           total.claimedRaw !== marketClaimed ||
-          total.remainingRaw !== marketRemaining
+          total.remainingRaw !== marketRemaining ||
+          total.remainingForPeriodRaw !== marketRemainingForPeriod
         ) {
           throw new Error(
-            `V3 user debt mismatch for ${user}: claimed=${marketClaimed}/${total.claimedRaw} remaining=${marketRemaining}/${total.remainingRaw}`,
+            `V3 user debt mismatch for ${user}: claimed=${marketClaimed}/${total.claimedRaw} remaining=${marketRemaining}/${total.remainingRaw} remainingForPeriod=${marketRemainingForPeriod}/${total.remainingForPeriodRaw}`,
           );
         }
       }
@@ -229,7 +242,11 @@ export class MerklAirdropExportService {
 
       if (group.version === CompoundVersion.V2) {
         const reasonAmounts = rewards.get(user) ?? {};
-        this.addReason(reasonAmounts, 'compound-v2', total.remainingRaw);
+        this.addReason(
+          reasonAmounts,
+          'compound-v2',
+          total.remainingForPeriodRaw,
+        );
         rewards.set(user, reasonAmounts);
       }
     }
@@ -253,7 +270,7 @@ export class MerklAirdropExportService {
       }
       if (recipientTotal === 0n) continue;
       const recipient = recipients.get(user);
-      const expectedTotal = recipient?.userTotal?.remainingRaw;
+      const expectedTotal = recipient?.userTotal?.remainingForPeriodRaw;
       if (recipientTotal !== expectedTotal) {
         throw new Error(`Merkl reason total mismatch for ${user}`);
       }
@@ -273,6 +290,10 @@ export class MerklAirdropExportService {
       (sum, total) => sum + total.remainingRaw,
       0n,
     );
+    const remainingForPeriodTotalRaw = group.userTotals.reduce(
+      (sum, total) => sum + total.remainingForPeriodRaw,
+      0n,
+    );
     const claimedTotalRaw = group.userTotals.every(
       (total) => total.claimedRaw !== null,
     )
@@ -286,9 +307,9 @@ export class MerklAirdropExportService {
         `Market/network earned mismatch for ${group.network}: market=${marketTotalRaw} users=${earnedTotalRaw}`,
       );
     }
-    if (allocationTotalRaw !== remainingTotalRaw) {
+    if (allocationTotalRaw !== remainingForPeriodTotalRaw) {
       throw new Error(
-        `Merkl/network debt mismatch for ${group.network}: allocation=${allocationTotalRaw} remaining=${remainingTotalRaw}`,
+        `Merkl/network period debt mismatch for ${group.network}: allocation=${allocationTotalRaw} remainingForPeriod=${remainingForPeriodTotalRaw}`,
       );
     }
 
@@ -316,6 +337,7 @@ export class MerklAirdropExportService {
         earnedTotalRaw,
         claimedTotalRaw,
         remainingTotalRaw,
+        remainingForPeriodTotalRaw,
         group.rewardTokenDecimals,
       ),
       recipientCount: Object.keys(merklRewards).length,
@@ -413,6 +435,7 @@ export class MerklAirdropExportService {
       totalRewardRaw: 0n,
       claimedRaw: 0n,
       remainingRaw: 0n,
+      remainingForPeriodRaw: 0n,
     };
   }
 
@@ -432,6 +455,7 @@ export class MerklAirdropExportService {
     target.totalRewardRaw += row.totalRewardRaw;
     target.claimedRaw += row.claimedRaw ?? 0n;
     target.remainingRaw += row.remainingRaw ?? 0n;
+    target.remainingForPeriodRaw += row.remainingForPeriodRaw ?? 0n;
   }
 
   private serializeMarket(
@@ -452,6 +476,13 @@ export class MerklAirdropExportService {
       market.totalRewardRaw,
       group.rewardTokenDecimals,
     );
+    if (group.version === CompoundVersion.V3) {
+      common.remainingForPeriodRaw = market.remainingForPeriodRaw.toString(10);
+      common.remainingForPeriod = ethers.formatUnits(
+        market.remainingForPeriodRaw,
+        group.rewardTokenDecimals,
+      );
+    }
     return common;
   }
 
@@ -479,6 +510,7 @@ export class MerklAirdropExportService {
         total.earnedRaw,
         total.claimedRaw,
         total.remainingRaw,
+        total.remainingForPeriodRaw,
         group.rewardTokenDecimals,
       ),
     };
@@ -488,6 +520,7 @@ export class MerklAirdropExportService {
     earnedRaw: bigint,
     claimedRaw: bigint | null,
     remainingRaw: bigint,
+    remainingForPeriodRaw: bigint,
     decimals: number,
   ): Record<string, string | null> {
     return {
@@ -498,6 +531,8 @@ export class MerklAirdropExportService {
         claimedRaw === null ? null : ethers.formatUnits(claimedRaw, decimals),
       remainingRaw: remainingRaw.toString(10),
       remaining: ethers.formatUnits(remainingRaw, decimals),
+      remainingForPeriodRaw: remainingForPeriodRaw.toString(10),
+      remainingForPeriod: ethers.formatUnits(remainingForPeriodRaw, decimals),
     };
   }
 

@@ -2,6 +2,7 @@ import {
   COMP_INITIAL_INDEX,
   DOUBLE_SCALE,
   EXP_SCALE,
+  fifoRemainingForPeriod,
   pendingBorrow,
   pendingSupply,
   periodReward,
@@ -77,5 +78,23 @@ describe('Compound V2 period reward math', () => {
         pendingBeforeStart: 2n,
       }),
     ).toThrow('Negative period reward invariant');
+  });
+
+  it('returns zero when only pending rounding changes under an unchanged market index', () => {
+    expect(
+      periodReward({
+        distributedInRange: 0n,
+        pendingAtEnd: 15_443_377_821_831_897n,
+        pendingBeforeStart: 15_443_394_130_774_214n,
+        marketIndexAtEnd: 4_876_532_975n,
+        marketIndexBeforeStart: 4_876_532_975n,
+      }),
+    ).toBe(0n);
+  });
+
+  it('attributes end debt to period earnings using FIFO', () => {
+    expect(fifoRemainingForPeriod({ earned: 20n, remaining: 70n })).toBe(20n);
+    expect(fifoRemainingForPeriod({ earned: 20n, remaining: 10n })).toBe(10n);
+    expect(fifoRemainingForPeriod({ earned: 20n, remaining: 0n })).toBe(0n);
   });
 });

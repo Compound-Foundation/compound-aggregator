@@ -94,11 +94,30 @@ export function periodReward(params: {
   distributedInRange: bigint;
   pendingAtEnd: bigint;
   pendingBeforeStart: bigint;
+  marketIndexAtEnd?: bigint;
+  marketIndexBeforeStart?: bigint;
 }): bigint {
+  if (
+    params.marketIndexAtEnd !== undefined &&
+    params.marketIndexBeforeStart !== undefined &&
+    params.marketIndexAtEnd === params.marketIndexBeforeStart
+  ) {
+    return 0n;
+  }
   const reward =
     params.distributedInRange + params.pendingAtEnd - params.pendingBeforeStart;
   if (reward < 0n) {
     throw new Error(`Negative period reward invariant: ${reward}`);
   }
   return reward;
+}
+
+export function fifoRemainingForPeriod(params: {
+  earned: bigint;
+  remaining: bigint;
+}): bigint {
+  if (params.earned < 0n || params.remaining < 0n) {
+    throw new Error('FIFO reward amounts must be non-negative');
+  }
+  return params.earned < params.remaining ? params.earned : params.remaining;
 }
