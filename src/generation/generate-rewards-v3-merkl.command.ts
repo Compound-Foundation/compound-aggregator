@@ -28,16 +28,17 @@ export class GenerateRewardsV3MerklCommand extends CommandRunner {
     options?: Record<string, unknown>,
   ): Promise<void> {
     const useTestRanges = options?.test === true;
+    const periodOnly = options?.period === true;
     this.logger.log(
       `Generating strict V3 Merkl airdrop files using ${
         useTestRanges ? 'ranges-test.json' : 'ranges.json'
-      }...`,
+      }, allocation=${periodOnly ? 'remainingForPeriod' : 'remaining'}...`,
     );
     await this.db.assemble();
     try {
       const ranges = await this.ranges.load(CompoundVersion.V3, useTestRanges);
       const result = await this.rewards.calculate(ranges);
-      this.merkl.export(result);
+      this.merkl.export(result, { period: periodOnly });
       this.logger.log('V3 Merkl generation completed.');
     } finally {
       this.db.closeRuntime();
@@ -49,6 +50,14 @@ export class GenerateRewardsV3MerklCommand extends CommandRunner {
     description: 'Use ./ranges-test.json instead of ./ranges.json',
   })
   public parseTestOption(): boolean {
+    return true;
+  }
+
+  @Option({
+    flags: '--period',
+    description: 'Allocate remainingForPeriod instead of full remaining',
+  })
+  public parsePeriodOption(): boolean {
     return true;
   }
 }

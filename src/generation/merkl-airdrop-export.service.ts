@@ -56,17 +56,25 @@ export interface MerklExportedFile {
   recipientCount: number;
 }
 
+export interface MerklExportOptions {
+  period?: boolean;
+}
+
 @Injectable()
 export class MerklAirdropExportService {
   private readonly logger = new Logger(MerklAirdropExportService.name);
 
-  public export(result: PeriodRewardsResult): MerklExportedFile[] {
+  public export(
+    result: PeriodRewardsResult,
+    options: MerklExportOptions = {},
+  ): MerklExportedFile[] {
     const groups = this.groupRows(result);
     if (groups.length === 0) {
       this.logger.warn(`[${result.version}] no positive rewards to export`);
       return [];
     }
-    return groups.map((group) => this.exportGroup(group));
+    const periodOnly = options.period === true;
+    return groups.map((group) => this.exportGroup(group, periodOnly));
   }
 
   private groupRows(result: PeriodRewardsResult): ExportGroup[] {
@@ -126,7 +134,10 @@ export class MerklAirdropExportService {
     );
   }
 
-  private exportGroup(group: ExportGroup): MerklExportedFile {
+  private exportGroup(
+    group: ExportGroup,
+    periodOnly: boolean,
+  ): MerklExportedFile {
     const partial = this.isPartial(group);
     const rewards = new Map<string, ReasonAmounts>();
     const marketTotals = new Map<string, MarketAuditAccumulator>();
@@ -165,7 +176,7 @@ export class MerklAirdropExportService {
         this.addReason(
           reasonAmounts,
           this.reason(group.version, market),
-          row.remainingForPeriodRaw,
+          periodOnly ? row.remainingForPeriodRaw : row.remainingRaw,
         );
         rewards.set(user, reasonAmounts);
       } else if (row.totalRewardRaw === 0n) {
@@ -245,7 +256,7 @@ export class MerklAirdropExportService {
         this.addReason(
           reasonAmounts,
           'compound-v2',
-          total.remainingForPeriodRaw,
+          periodOnly ? total.remainingForPeriodRaw : total.remainingRaw,
         );
         rewards.set(user, reasonAmounts);
       }
@@ -270,7 +281,9 @@ export class MerklAirdropExportService {
       }
       if (recipientTotal === 0n) continue;
       const recipient = recipients.get(user);
-      const expectedTotal = recipient?.userTotal?.remainingForPeriodRaw;
+      const expectedTotal = periodOnly
+        ? recipient?.userTotal?.remainingForPeriodRaw
+        : recipient?.userTotal?.remainingRaw;
       if (recipientTotal !== expectedTotal) {
         throw new Error(`Merkl reason total mismatch for ${user}`);
       }
@@ -307,9 +320,16 @@ export class MerklAirdropExportService {
         `Market/network earned mismatch for ${group.network}: market=${marketTotalRaw} users=${earnedTotalRaw}`,
       );
     }
-    if (allocationTotalRaw !== remainingForPeriodTotalRaw) {
+    const expectedAllocationTotalRaw = periodOnly
+      ? remainingForPeriodTotalRaw
+      : remainingTotalRaw;
+    if (allocationTotalRaw !== expectedAllocationTotalRaw) {
       throw new Error(
-        `Merkl/network period debt mismatch for ${group.network}: allocation=${allocationTotalRaw} remainingForPeriod=${remainingForPeriodTotalRaw}`,
+        `Merkl/network allocation mismatch for ${
+          group.network
+        }: allocation=${allocationTotalRaw} expected=${expectedAllocationTotalRaw} mode=${
+          periodOnly ? 'period' : 'remaining'
+        }`,
       );
     }
 
@@ -325,6 +345,7 @@ export class MerklAirdropExportService {
       rewardToken: ethers.getAddress(group.rewardToken),
       rewardTokenSymbol: group.rewardTokenSymbol,
       rewardTokenDecimals: group.rewardTokenDecimals,
+      allocationMode: periodOnly ? 'period' : 'remaining',
       partial,
       selectedMarkets: partial
         ? group.range.markets.map((market) => ({
@@ -383,9 +404,9 @@ export class MerklAirdropExportService {
       );
     }
     this.logger.log(
-      `[${group.version}][${
-        group.network
-      }] Merkl=${merklPath} audit=${auditPath} recipients=${
+      `[${group.version}][${group.network}] mode=${
+        periodOnly ? 'period' : 'remaining'
+      } Merkl=${merklPath} audit=${auditPath} recipients=${
         Object.keys(merklRewards).length
       }`,
     );

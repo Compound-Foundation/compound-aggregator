@@ -275,6 +275,15 @@ yarn cli:generate:rewards:v2:merkl --test
 yarn cli:generate:rewards:v3:merkl --test
 ```
 
+By default, the Merkl payload allocates the full `remaining` debt at the end block.
+Pass `--period` to allocate only FIFO-attributed `remainingForPeriod`. The flag can
+be combined with `--test`:
+
+```bash
+yarn cli:generate:rewards:v2:merkl --period
+yarn cli:generate:rewards:v3:merkl --test --period
+```
+
 V2 currently applies to Ethereum mainnet. Its attribution is strict per cToken and per
 side (`supply` / `borrow`): distributed rewards inside the range plus the change in
 uncheckpointed rewards between `startBlock - 1` and `endBlock`. It does not allocate
@@ -284,8 +293,9 @@ market-level breakdown for `earned`. User/network totals additionally report
 `debtBeforeStart + earned - debtAtEnd`, while `remaining` is the actual end debt
 (`compAccrued` plus pending rewards across all processed V2 markets).
 `remainingForPeriod = min(earned, remaining)` applies FIFO attribution: claims first
-pay debt that existed before the period. The V2 Merkl payload distributes
-`remainingForPeriod`, not the full end debt or gross period earnings.
+pay debt that existed before the period. With `--period`, the V2 Merkl payload
+distributes `remainingForPeriod`; without it, the payload distributes full
+`remaining`.
 
 If a V2 supply or borrow reward index is unchanged across both boundaries, that
 side's period earnings are zero. This also prevents harmless integer-rounding drift
@@ -302,8 +312,8 @@ The audit uses the same fields as V2: each market reports `earned`, while user a
 network totals report `earned`, `claimed`, and `remaining`. For V3, `claimed` is the
 change in `rewardsClaimed`, and `remaining` is the actual `getRewardOwed` amount at
 the end block. `remainingForPeriod = min(earned, remaining)` is calculated separately
-for each Comet. The V3 Merkl payload distributes this FIFO-attributed period debt per
-market, not the full end debt or gross period earnings.
+for each Comet. With `--period`, the V3 Merkl payload distributes this FIFO-attributed
+period debt per market; without it, the payload distributes full end debt.
 Start snapshots are requested only for users whose indexed `created_at` is not later
 than the boundary timestamp; all users still receive the required end snapshot. The
 same user-level pruning is applied to V2 start snapshots.

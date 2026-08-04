@@ -8,7 +8,7 @@ import { MerklAirdropExportService } from '../src/generation/merkl-airdrop-expor
 import { ResolvedRewardRange } from '../src/generation/period-rewards.types';
 
 describe('MerklAirdropExportService', () => {
-  it('writes checksummed recipients and raw market-side reasons', () => {
+  it('writes full remaining debt by default', () => {
     const temp = mkdtempSync(join(tmpdir(), 'compound-merkl-'));
     const originalCwd = process.cwd();
     process.chdir(temp);
@@ -77,12 +77,13 @@ describe('MerklAirdropExportService', () => {
       expect(merkl.rewardToken).toBe(token);
       expect(merkl.rewards).toEqual({
         [user]: {
-          'compound-v2': '15',
+          'compound-v2': '100',
         },
       });
 
       const audit = JSON.parse(readFileSync(file!.auditPath, 'utf8'));
-      expect(audit.allocationTotalRaw).toBe('15');
+      expect(audit.allocationMode).toBe('remaining');
+      expect(audit.allocationTotalRaw).toBe('100');
       expect(audit.marketTotals[0].earnedRaw).toBe('15');
       expect(audit.marketTotals[0].range.start.blockNumber).toBe(100);
       expect(audit.total).toEqual({
@@ -95,7 +96,7 @@ describe('MerklAirdropExportService', () => {
         remainingForPeriodRaw: '15',
         remainingForPeriod: '0.000000000000000015',
       });
-      expect(audit.fundingRequiredRaw).toBe('16');
+      expect(audit.fundingRequiredRaw).toBe('101');
       expect(audit).not.toHaveProperty('schemaVersion');
       expect(audit).not.toHaveProperty('merklFeeRate');
       expect(audit).not.toHaveProperty('merklFeeRaw');
@@ -136,45 +137,48 @@ describe('MerklAirdropExportService', () => {
       const rewardToken = ethers.getAddress(
         '0x00000000000000000000000000000000000000b2',
       );
-      const [file] = service.export({
-        version: CompoundVersion.V3,
-        ranges: [range],
-        userTotals: [
-          {
-            version: CompoundVersion.V3,
-            network: 'base',
-            chainId: 8453,
-            range,
-            rewardToken,
-            rewardTokenSymbol: 'COMP',
-            rewardTokenDecimals: 18,
-            user,
-            earnedRaw: 7n,
-            claimedRaw: 2n,
-            remainingRaw: 10n,
-            remainingForPeriodRaw: 7n,
-          },
-        ],
-        rows: [
-          {
-            version: CompoundVersion.V3,
-            network: 'base',
-            chainId: 8453,
-            range,
-            marketRange,
-            market,
-            marketSymbol: 'cTESTv3',
-            rewardToken,
-            rewardTokenSymbol: 'COMP',
-            rewardTokenDecimals: 18,
-            user,
-            totalRewardRaw: 7n,
-            claimedRaw: 2n,
-            remainingRaw: 10n,
-            remainingForPeriodRaw: 7n,
-          },
-        ],
-      });
+      const [file] = service.export(
+        {
+          version: CompoundVersion.V3,
+          ranges: [range],
+          userTotals: [
+            {
+              version: CompoundVersion.V3,
+              network: 'base',
+              chainId: 8453,
+              range,
+              rewardToken,
+              rewardTokenSymbol: 'COMP',
+              rewardTokenDecimals: 18,
+              user,
+              earnedRaw: 7n,
+              claimedRaw: 2n,
+              remainingRaw: 10n,
+              remainingForPeriodRaw: 7n,
+            },
+          ],
+          rows: [
+            {
+              version: CompoundVersion.V3,
+              network: 'base',
+              chainId: 8453,
+              range,
+              marketRange,
+              market,
+              marketSymbol: 'cTESTv3',
+              rewardToken,
+              rewardTokenSymbol: 'COMP',
+              rewardTokenDecimals: 18,
+              user,
+              totalRewardRaw: 7n,
+              claimedRaw: 2n,
+              remainingRaw: 10n,
+              remainingForPeriodRaw: 7n,
+            },
+          ],
+        },
+        { period: true },
+      );
 
       const merkl = JSON.parse(readFileSync(file!.merklPath, 'utf8'));
       expect(merkl.rewards).toEqual({
@@ -183,6 +187,7 @@ describe('MerklAirdropExportService', () => {
         },
       });
       const audit = JSON.parse(readFileSync(file!.auditPath, 'utf8'));
+      expect(audit.allocationMode).toBe('period');
       expect(audit.range.start.blockNumber).toBe(50);
       expect(audit.marketTotals[0].range.start.blockNumber).toBe(100);
       expect(audit.marketTotals[0].earnedRaw).toBe('7');
