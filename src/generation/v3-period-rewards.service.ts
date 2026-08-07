@@ -47,8 +47,8 @@ export class V3PeriodRewardsService {
     const userTotals: PeriodRewardUserTotal[] = [];
     for (const range of ranges) {
       const network = await this.calculateNetwork(range);
-      rows.push(...network.rows);
-      userTotals.push(...network.userTotals);
+      for (const row of network.rows) rows.push(row);
+      for (const total of network.userTotals) userTotals.push(total);
     }
     return { version: CompoundVersion.V3, ranges, rows, userTotals };
   }

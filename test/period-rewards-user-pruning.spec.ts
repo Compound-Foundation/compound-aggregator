@@ -22,6 +22,22 @@ const block = (number: number, timestamp: number) => ({
 });
 
 describe('period reward start-snapshot pruning', () => {
+  it('V3 merges a large network result without overflowing the call stack', async () => {
+    const service = new V3PeriodRewardsService({} as never, {} as never);
+    const range = {} as ResolvedRewardRange;
+    const row = {} as any;
+    const networkRows = Array.from({ length: 150_000 }, () => row);
+    jest.spyOn(service as any, 'calculateNetwork').mockResolvedValue({
+      rows: networkRows,
+      userTotals: [],
+    });
+
+    const result = await service.calculate([range]);
+
+    expect(result.rows).toHaveLength(networkRows.length);
+    expect(result.rows.at(-1)).toBe(row);
+  });
+
   it('V2 rejects an end block before the COMP token deployment', async () => {
     const providers = {
       get: jest.fn().mockReturnValue({

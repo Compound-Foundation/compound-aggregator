@@ -191,6 +191,55 @@ describe('HistoricalCallService', () => {
     expect(seenChunkSizes.filter((size) => size === 100)).toHaveLength(12);
   });
 
+  it('keeps splitting timed-out Multicalls below 25 calls', async () => {
+    const multicallInterface = new ethers.Interface(MULTICALL2_ABI);
+    const seenChunkSizes: number[] = [];
+    const provider = {
+      getCode: jest
+        .fn()
+        .mockResolvedValueOnce('0x')
+        .mockResolvedValueOnce('0x6000'),
+      call: jest
+        .fn()
+        .mockImplementation(
+          async (request: { data: string }): Promise<string> => {
+            const decoded = multicallInterface.decodeFunctionData(
+              'tryAggregate',
+              request.data,
+            );
+            const batch = decoded[1] as Array<unknown>;
+            seenChunkSizes.push(batch.length);
+            if (batch.length > 5) {
+              throw Object.assign(new Error('request timeout'), {
+                code: 'TIMEOUT',
+              });
+            }
+            return multicallInterface.encodeFunctionResult('tryAggregate', [
+              Array.from({ length: batch.length }, () => ({
+                success: true,
+                returnData: '0x1234',
+              })),
+            ]);
+          },
+        ),
+    };
+    const providers = { get: jest.fn().mockReturnValue(provider) };
+    const service = new HistoricalCallService(providers as never);
+    const manyCalls = Array.from(
+      { length: 25 },
+      (_, index) => calls[index % calls.length]!,
+    );
+
+    await expect(
+      service.callMany({
+        network: 'base',
+        blockTag: 177,
+        calls: manyCalls,
+      }),
+    ).resolves.toHaveLength(25);
+    expect(seenChunkSizes).toEqual([25, 13, 7, 4, 3, 6, 3, 3, 12, 6, 3, 3, 6, 3, 3]);
+  });
+
   it('runs at most five Multicall chunks concurrently and preserves order', async () => {
     const multicallInterface = new ethers.Interface(MULTICALL2_ABI);
     let active = 0;
@@ -326,5 +375,53 @@ describe('HistoricalCallService', () => {
       }),
     ).resolves.toEqual([{ success: true, returnData: '0x1234' }]);
     expect(provider.call).toHaveBeenCalledTimes(2);
+  });
+
+  it('aborts a Multicall DNS outage without expanding it into direct calls', async () => {
+    const dnsError = Object.assign(
+      new Error('getaddrinfo ENOTFOUND base-mainnet.example'),
+      { code: 'ENOTFOUND' },
+    );
+    const provider = {
+      getCode: jest.fn().mockResolvedValue('0x6000'),
+      call: jest.fn().mockRejectedValue(dnsError),
+    };
+    const providers = { get: jest.fn().mockReturnValue(provider) };
+    const service = new HistoricalCallService(providers as never);
+
+    await expect(
+      service.callMany({
+        network: 'base',
+        blockTag: 500,
+        calls: calls.slice(0, 1),
+      }),
+    ).rejects.toThrow(
+      '[historical][base][500] RPC endpoint unavailable after retries; aborting without direct fallback',
+    );
+    expect(provider.call).toHaveBeenCalledTimes(3);
+  });
+
+  it('aborts a direct-call DNS outage after bounded retries', async () => {
+    const dnsError = Object.assign(
+      new Error('getaddrinfo ENOTFOUND base-mainnet.example'),
+      { code: 'ENOTFOUND' },
+    );
+    const provider = {
+      getCode: jest.fn().mockResolvedValue('0x'),
+      call: jest.fn().mockRejectedValue(dnsError),
+    };
+    const providers = { get: jest.fn().mockReturnValue(provider) };
+    const service = new HistoricalCallService(providers as never);
+
+    await expect(
+      service.callMany({
+        network: 'base',
+        blockTag: 501,
+        calls: calls.slice(0, 1),
+      }),
+    ).rejects.toThrow(
+      '[historical][base][501] RPC endpoint unavailable after retries; aborting without direct fallback',
+    );
+    expect(provider.call).toHaveBeenCalledTimes(3);
   });
 });

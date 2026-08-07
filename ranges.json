@@ -12,7 +12,7 @@
       "network": "mainnet",
       "chainId": 1,
       "startBlock": 15331586,
-      "endBlock": 24996368,
+      "endBlock": 25697251,
       "markets": [
         {
           "symbol": "cUSDCv3",
@@ -50,7 +50,7 @@
       "network": "arbitrum",
       "chainId": 42161,
       "startBlock": 87335214,
-      "endBlock": 458085625,
+      "endBlock": 491769300,
       "markets": [
         {
           "symbol": "cUSDCev3",

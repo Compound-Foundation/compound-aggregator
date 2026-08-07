@@ -43,7 +43,7 @@ export class HistoricalCallService {
   >();
   private readonly multicallChunkLimits = new Map<string, number>();
   private readonly chunkSize = 200;
-  private readonly minMulticallChunkSize = 25;
+  private readonly minMulticallChunkSize = 5;
   private readonly multicallConcurrency = 5;
   private readonly directConcurrency = 20;
   private directActive = 0;
@@ -308,6 +308,9 @@ export class HistoricalCallService {
     error: unknown,
   ): Promise<HistoricalCallResult[]> {
     const message = this.errorMessage(error);
+    if (this.isEndpointUnavailableError(error)) {
+      throw this.endpointUnavailableError(network, blockTag, message, error);
+    }
     if (
       this.isSplittableMulticallError(error) &&
       calls.length > this.minMulticallChunkSize
@@ -419,6 +422,7 @@ export class HistoricalCallService {
         const index = nextIndex++;
         if (index >= calls.length) return;
         results[index] = await this.callDirectOne(
+          network,
           provider,
           blockTag,
           calls[index]!,
@@ -436,6 +440,7 @@ export class HistoricalCallService {
       );
       for (const index of failedIndexes) {
         results[index] = await this.callDirectOne(
+          network,
           provider,
           blockTag,
           calls[index]!,
@@ -447,6 +452,7 @@ export class HistoricalCallService {
   }
 
   private async callDirectOne(
+    network: string,
     provider: ethers.JsonRpcProvider,
     blockTag: number,
     call: HistoricalCall,
@@ -466,6 +472,14 @@ export class HistoricalCallService {
           ? { success: false, returnData, error: 'empty return data' }
           : { success: true, returnData };
       } catch (error) {
+        if (this.isEndpointUnavailableError(error)) {
+          throw this.endpointUnavailableError(
+            network,
+            blockTag,
+            this.errorMessage(error),
+            error,
+          );
+        }
         return {
           success: false,
           returnData: '0x',
@@ -505,5 +519,34 @@ export class HistoricalCallService {
     if (!error || typeof error !== 'object') return String(error);
     const value = error as { shortMessage?: unknown; message?: unknown };
     return String(value.shortMessage ?? value.message ?? error);
+  }
+
+  private isEndpointUnavailableError(error: unknown): boolean {
+    if (!error || typeof error !== 'object') return false;
+    const value = error as {
+      code?: unknown;
+      shortMessage?: unknown;
+      message?: unknown;
+    };
+    const message = String(value.shortMessage ?? value.message ?? '');
+    return (
+      value.code === 'NETWORK_ERROR' ||
+      /ECONNRESET|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|socket hang up|fetch failed|Client network socket disconnected|429|502|503|504|rate limit|too many requests/i.test(
+        message,
+      )
+    );
+  }
+
+  private endpointUnavailableError(
+    network: string,
+    blockTag: number,
+    message: string,
+    cause: unknown,
+  ): Error {
+    const error = new Error(
+      `[historical][${network}][${blockTag}] RPC endpoint unavailable after retries; aborting without direct fallback: ${message}`,
+    );
+    (error as Error & { cause?: unknown }).cause = cause;
+    return error;
   }
 }

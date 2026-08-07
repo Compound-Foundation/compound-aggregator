@@ -18,7 +18,7 @@ export const isRetryableRpcError = (e: any): boolean => {
     e?.code === 'SERVER_ERROR' ||
     e?.code === 'TIMEOUT' ||
     // transient transport errors
-    /ECONNRESET|ETIMEDOUT|EAI_AGAIN|socket hang up|fetch failed|Client network socket disconnected/i.test(
+    /ECONNRESET|ECONNREFUSED|ENOTFOUND|ETIMEDOUT|EAI_AGAIN|socket hang up|fetch failed|Client network socket disconnected/i.test(
       msg,
     ) ||
     // RPC throttling / gateway hiccups

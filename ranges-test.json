@@ -28,13 +28,23 @@
     {
       "network": "mainnet",
       "chainId": 1,
-      "startBlock": 20683535,
-      "endBlock": 24996368,
+      "startBlock": 15331586,
+      "endBlock": 25702040,
       "markets": [
+        {
+          "symbol": "cUSDCv3",
+          "address": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+          "startBlock": 15331586
+        },
         {
           "symbol": "cUSDSv3",
           "address": "0x5D409e56D886231aDAf00c8775665AD0f9897b56",
           "startBlock": 20987551
+        },
+        {
+          "symbol": "cUSDTv3",
+          "address": "0x3Afdc9BCA9213A35503b077a6072F3D0d5AB0840",
+          "startBlock": 20190637
         },
         {
           "symbol": "cWBTCv3",
@@ -42,40 +52,14 @@
           "startBlock": 21820087
         },
         {
+          "symbol": "cWETHv3",
+          "address": "0xA17581A9E3356d9A858b789D68B4d866e593aE94",
+          "startBlock": 16400710
+        },
+        {
           "symbol": "cWstETHv3",
           "address": "0x3D0bb1ccaB520A66e607822fC55BC921738fAFE3",
           "startBlock": 20683535
-        }
-      ]
-    },
-    {
-      "network": "arbitrum",
-      "chainId": 42161,
-      "startBlock": 87335214,
-      "endBlock": 458085625,
-      "markets": [
-        {
-          "symbol": "cUSDCev3",
-          "address": "0xA5EDBDD9646f8dFF606d7448e414884C7d905dCA",
-          "startBlock": 87335214
-        },
-        {
-          "symbol": "cUSDTv3",
-          "address": "0xd98Be00b5D27fc98112BdE293e487f8D4cA57d07",
-          "startBlock": 223796350
-        }
-      ]
-    },
-    {
-      "network": "optimism",
-      "chainId": 10,
-      "startBlock": 120295564,
-      "endBlock": 150997412,
-      "markets": [
-        {
-          "symbol": "cUSDTv3",
-          "address": "0x995E394b8B2437aC8Ce61Ee0bC610D617962B214",
-          "startBlock": 120295564
         }
       ]
     }
