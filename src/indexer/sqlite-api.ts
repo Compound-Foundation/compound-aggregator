@@ -97,11 +97,14 @@ export function createSqliteApi(pathOrDb: string | SqliteDatabase): SqliteApi {
       updated_at = excluded.updated_at
   `);
 
-  // ✅ IMPORTANT: no UPDATE, append-friendly
   const insertUser = db.prepare(`
     INSERT INTO users(network, version, market, user, created_at)
     VALUES (?, ?, ?, ?, ?)
-    ON CONFLICT(network, version, market, user) DO NOTHING
+    ON CONFLICT(network, version, market, user) DO UPDATE SET
+      created_at = CASE
+        WHEN excluded.created_at < users.created_at THEN excluded.created_at
+        ELSE users.created_at
+      END
   `);
 
   const txUpsertUsers = db.transaction(
