@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
+import type { ConfigType } from '@nestjs/config';
 import networksConfig from '../config/networks.config';
 import { NetworkConfig } from './network.types';
 

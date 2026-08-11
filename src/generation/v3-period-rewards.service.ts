@@ -6,9 +6,9 @@ import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { HistoricalCallService } from './historical-call.service';
 import { fifoRemainingForPeriod } from './period-rewards.math';
 import {
-  PeriodRewardRow,
-  PeriodRewardUserTotal,
-  PeriodRewardsResult,
+  V3PeriodRewardRow,
+  V3PeriodRewardUserTotal,
+  V3PeriodRewardsResult,
   ResolvedMarketRewardRange,
   ResolvedRewardRange,
 } from './period-rewards.types';
@@ -42,9 +42,9 @@ export class V3PeriodRewardsService {
 
   public async calculate(
     ranges: ResolvedRewardRange[],
-  ): Promise<PeriodRewardsResult> {
-    const rows: PeriodRewardRow[] = [];
-    const userTotals: PeriodRewardUserTotal[] = [];
+  ): Promise<V3PeriodRewardsResult> {
+    const rows: V3PeriodRewardRow[] = [];
+    const userTotals: V3PeriodRewardUserTotal[] = [];
     for (const range of ranges) {
       const network = await this.calculateNetwork(range);
       for (const row of network.rows) rows.push(row);
@@ -54,8 +54,8 @@ export class V3PeriodRewardsService {
   }
 
   private async calculateNetwork(range: ResolvedRewardRange): Promise<{
-    rows: PeriodRewardRow[];
-    userTotals: PeriodRewardUserTotal[];
+    rows: V3PeriodRewardRow[];
+    userTotals: V3PeriodRewardUserTotal[];
   }> {
     const rewardsAddress = range.config.rewardsV3;
     if (!rewardsAddress) {
@@ -64,19 +64,40 @@ export class V3PeriodRewardsService {
     this.assertIndexedThrough(range);
 
     const usersByMarket = this.loadUsersByMarket(range);
-    const firstSeenByMarket = new Map(
-      this.db
-        .listIndexedMarketsForNetwork(CompoundVersion.V3, range.network)
-        .map((market) => [
-          market.marketAddress.toLowerCase(),
-          market.firstSeenBlock,
-        ]),
+    const indexedMarkets = this.db.listIndexedMarketsForNetwork(
+      CompoundVersion.V3,
+      range.network,
     );
-    const out: PeriodRewardRow[] = [];
-    const userTotals = new Map<string, PeriodRewardUserTotal>();
+    const firstSeenByMarket = new Map(
+      indexedMarkets.map((market) => [
+        market.marketAddress.toLowerCase(),
+        market.firstSeenBlock,
+      ]),
+    );
+    const out: V3PeriodRewardRow[] = [];
+    const userTotals = new Map<string, V3PeriodRewardUserTotal>();
     const configuredMarketRanges = new Map(
       range.markets.map((market) => [market.address.toLowerCase(), market]),
     );
+    const omittedMarkets =
+      range.markets.length === 0
+        ? []
+        : indexedMarkets
+            .filter(
+              (market) =>
+                market.firstSeenBlock <= range.end.number &&
+                !configuredMarketRanges.has(market.marketAddress.toLowerCase()),
+            )
+            .map((market) => ethers.getAddress(market.marketAddress))
+            .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+    range.omittedMarkets = omittedMarkets;
+    if (omittedMarkets.length > 0) {
+      this.logger.warn(
+        `[V3][${range.network}] PARTIAL calculation: ranges file omits ${
+          omittedMarkets.length
+        } indexed market(s): ${omittedMarkets.join(',')}`,
+      );
+    }
 
     for (const marketRange of range.markets) {
       if (!firstSeenByMarket.has(marketRange.address.toLowerCase())) {

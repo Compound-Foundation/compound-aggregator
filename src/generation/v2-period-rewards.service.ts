@@ -15,9 +15,9 @@ import {
   projectSupplyIndex,
 } from './period-rewards.math';
 import {
-  PeriodRewardRow,
-  PeriodRewardUserTotal,
-  PeriodRewardsResult,
+  V2PeriodRewardRow,
+  V2PeriodRewardUserTotal,
+  V2PeriodRewardsResult,
   ResolvedRewardRange,
 } from './period-rewards.types';
 
@@ -86,9 +86,9 @@ export class V2PeriodRewardsService {
 
   public async calculate(
     ranges: ResolvedRewardRange[],
-  ): Promise<PeriodRewardsResult> {
-    const rows: PeriodRewardRow[] = [];
-    const userTotals: PeriodRewardUserTotal[] = [];
+  ): Promise<V2PeriodRewardsResult> {
+    const rows: V2PeriodRewardRow[] = [];
+    const userTotals: V2PeriodRewardUserTotal[] = [];
     for (const range of ranges) {
       const network = await this.calculateNetwork(range);
       for (const row of network.rows) rows.push(row);
@@ -98,8 +98,8 @@ export class V2PeriodRewardsService {
   }
 
   private async calculateNetwork(range: ResolvedRewardRange): Promise<{
-    rows: PeriodRewardRow[];
-    userTotals: PeriodRewardUserTotal[];
+    rows: V2PeriodRewardRow[];
+    userTotals: V2PeriodRewardUserTotal[];
   }> {
     const comptroller = range.config.comptrollerV2;
     const rewardToken = range.config.comp;
@@ -141,7 +141,7 @@ export class V2PeriodRewardsService {
         );
       }
     }
-    const out: PeriodRewardRow[] = [];
+    const out: V2PeriodRewardRow[] = [];
     const totalsByUser = new Map<string, UserTotalAccumulator>();
     let hasStartRewardBoundary = false;
 
@@ -310,7 +310,7 @@ export class V2PeriodRewardsService {
         : Promise.resolve(new Map<string, bigint>()),
     ]);
     const userTotals = Array.from(totalsByUser.values())
-      .map((total) => {
+      .map((total): V2PeriodRewardUserTotal => {
         const userLower = total.user.toLowerCase();
         const debtBeforeStart =
           (compAccruedBeforeStart.get(userLower) ?? 0n) +

@@ -83,9 +83,10 @@ describe('period reward start-snapshot pruning', () => {
     } satisfies ResolvedRewardRange;
     const db = {
       getIndexedCursor: jest.fn().mockReturnValue(200),
-      listIndexedMarketsForNetwork: jest
-        .fn()
-        .mockReturnValue([{ marketAddress: market, firstSeenBlock: 50 }]),
+      listIndexedMarketsForNetwork: jest.fn().mockReturnValue([
+        { marketAddress: market, firstSeenBlock: 50 },
+        { marketAddress: ignoredMarket, firstSeenBlock: 150 },
+      ]),
       fetchIndexedUsersForNetwork: jest.fn().mockReturnValue([
         { marketAddress: market, userAddress: oldUser, createdAt: 900 },
         { marketAddress: market, userAddress: newUser, createdAt: 1500 },
@@ -97,32 +98,40 @@ describe('period reward start-snapshot pruning', () => {
       .mockResolvedValue(rewardToken);
     jest
       .spyOn(service as any, 'readString')
-      .mockImplementation(
-        async (_range: unknown, _block: number, target: string) =>
-          target.toLowerCase() === market.toLowerCase() ? 'cTESTv3' : 'COMP',
+      .mockImplementation(async (...args: any[]) =>
+        String(args[2]).toLowerCase() === market.toLowerCase()
+          ? 'cTESTv3'
+          : 'COMP',
       );
     jest.spyOn(service as any, 'readUint').mockResolvedValue(18n);
     const readSnapshots = jest
       .spyOn(service as any, 'readSnapshots')
-      .mockImplementation(
-        async (params: { users: string[]; blockTag: number }) =>
-          new Map(
-            params.users.map((user) => [
-              user.toLowerCase(),
-              {
-                claimed: params.blockTag === 200 ? 20n : 5n,
-                owed: params.blockTag === 200 ? 100n : 10n,
-              },
-            ]),
-          ),
-      );
+      .mockImplementation(async (...args: any[]) => {
+        const params = args[0] as { users: string[]; blockTag: number };
+        return new Map(
+          params.users.map((user) => [
+            user.toLowerCase(),
+            {
+              claimed: params.blockTag === 200 ? 20n : 5n,
+              owed: params.blockTag === 200 ? 100n : 10n,
+            },
+          ]),
+        );
+      });
 
     const result = await service.calculate([range]);
 
-    expect(readSnapshots.mock.calls[0]![0].users).toHaveLength(2);
-    expect(readSnapshots.mock.calls[1]![0].users).toEqual([oldUser]);
+    expect(
+      (readSnapshots.mock.calls[0]![0] as { users: string[] }).users,
+    ).toHaveLength(2);
+    expect(
+      (readSnapshots.mock.calls[1]![0] as { users: string[] }).users,
+    ).toEqual([oldUser]);
     expect(result.rows.map((row) => row.totalRewardRaw)).toEqual([105n, 120n]);
     expect(result.rows[0]!.marketRange?.start.number).toBe(100);
+    expect((range as ResolvedRewardRange).omittedMarkets).toEqual([
+      ignoredMarket,
+    ]);
     expect(result.userTotals).toEqual([
       expect.objectContaining({
         user: oldUser,
@@ -187,53 +196,46 @@ describe('period reward start-snapshot pruning', () => {
     jest.spyOn(service as any, 'readMarketSymbol').mockResolvedValue('cTEST');
     jest
       .spyOn(service as any, 'readMarketBoundary')
-      .mockImplementation(
-        async (
-          _range: unknown,
-          _comptroller: string,
-          _market: string,
-          blockTag: number,
-        ) => ({
+      .mockImplementation(async (...args: any[]) => {
+        const blockTag = Number(args[3]);
+        return {
           projectedSupplyIndex: blockTag === 200 ? 2n : 1n,
           projectedBorrowIndex: blockTag === 200 ? 2n : 1n,
           marketBorrowIndex: 1n,
-        }),
-      );
+        };
+      });
     const readUserPending = jest
       .spyOn(service as any, 'readUserPending')
-      .mockImplementation(
-        async (params: { users: string[]; blockTag: number }) =>
-          new Map(
-            params.users.map((user) => [
-              user.toLowerCase(),
-              {
-                supply: params.blockTag === 200 ? 100n : 10n,
-                borrow: 0n,
-              },
-            ]),
-          ),
-      );
+      .mockImplementation(async (...args: any[]) => {
+        const params = args[0] as { users: string[]; blockTag: number };
+        return new Map(
+          params.users.map((user) => [
+            user.toLowerCase(),
+            {
+              supply: params.blockTag === 200 ? 100n : 10n,
+              borrow: 0n,
+            },
+          ]),
+        );
+      });
     jest
       .spyOn(service as any, 'readCompAccrued')
-      .mockImplementation(
-        async (
-          _range: unknown,
-          _comptroller: string,
-          users: string[],
-          blockTag: number,
-        ) =>
-          new Map(
-            users.map((user) => [
-              user.toLowerCase(),
-              blockTag === 99 ? 10n : 0n,
-            ]),
-          ),
-      );
+      .mockImplementation(async (...args: any[]) => {
+        const users = args[2] as string[];
+        const blockTag = Number(args[3]);
+        return new Map(
+          users.map((user) => [user.toLowerCase(), blockTag === 99 ? 10n : 0n]),
+        );
+      });
 
     const result = await service.calculate([range]);
 
-    expect(readUserPending.mock.calls[0]![0].users).toHaveLength(2);
-    expect(readUserPending.mock.calls[1]![0].users).toEqual([oldUser]);
+    expect(
+      (readUserPending.mock.calls[0]![0] as { users: string[] }).users,
+    ).toHaveLength(2);
+    expect(
+      (readUserPending.mock.calls[1]![0] as { users: string[] }).users,
+    ).toEqual([oldUser]);
     expect(result.version).toBe(CompoundVersion.V2);
     expect(result.rows.map((row) => row.totalRewardRaw)).toEqual([90n, 100n]);
     expect(result.rows.every((row) => row.market === market)).toBe(true);

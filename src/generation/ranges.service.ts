@@ -73,7 +73,7 @@ export class RangesService {
     }
 
     return Promise.all(
-      selected.map(({ entry, config }) => this.resolve(entry, config, version)),
+      selected.map(({ entry, config }) => this.resolve(entry, config)),
     );
   }
 
@@ -216,7 +216,6 @@ export class RangesService {
   private async resolve(
     entry: RangeFileEntry,
     config: NetworkConfig,
-    version: CompoundVersion,
   ): Promise<ResolvedRewardRange> {
     const provider = this.providers.get(entry.network);
     const head = await provider.getBlockNumber();

@@ -237,7 +237,9 @@ describe('HistoricalCallService', () => {
         calls: manyCalls,
       }),
     ).resolves.toHaveLength(25);
-    expect(seenChunkSizes).toEqual([25, 13, 7, 4, 3, 6, 3, 3, 12, 6, 3, 3, 6, 3, 3]);
+    expect(seenChunkSizes).toEqual([
+      25, 13, 7, 4, 3, 6, 3, 3, 12, 6, 3, 3, 6, 3, 3,
+    ]);
   });
 
   it('runs at most five Multicall chunks concurrently and preserves order', async () => {

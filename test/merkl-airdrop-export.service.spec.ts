@@ -1,4 +1,10 @@
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ethers } from 'ethers';
@@ -71,9 +77,6 @@ describe('MerklAirdropExportService', () => {
       const token = ethers.getAddress(
         '0x00000000000000000000000000000000000000b2',
       );
-      const market = ethers.getAddress(
-        '0x00000000000000000000000000000000000000a1',
-      );
       expect(merkl.rewardToken).toBe(token);
       expect(merkl.rewards).toEqual({
         [user]: {
@@ -114,6 +117,9 @@ describe('MerklAirdropExportService', () => {
       const market = ethers.getAddress(
         '0x00000000000000000000000000000000000000a1',
       );
+      const omittedMarket = ethers.getAddress(
+        '0x00000000000000000000000000000000000000a2',
+      );
       const marketRange = {
         symbol: 'cTESTv3',
         address: market,
@@ -129,6 +135,7 @@ describe('MerklAirdropExportService', () => {
         start: { number: 50, hash: '0x02', timestamp: 500 },
         end: marketRange.end,
         markets: [marketRange],
+        omittedMarkets: [omittedMarket],
       } satisfies ResolvedRewardRange;
       const service = new MerklAirdropExportService();
       const user = ethers.getAddress(
@@ -181,6 +188,7 @@ describe('MerklAirdropExportService', () => {
       );
 
       const merkl = JSON.parse(readFileSync(file!.merklPath, 'utf8'));
+      expect(file!.merklPath).toContain('.partial.merkl.json');
       expect(merkl.rewards).toEqual({
         [user]: {
           [`compound-v3:${market}`]: '7',
@@ -188,6 +196,8 @@ describe('MerklAirdropExportService', () => {
       });
       const audit = JSON.parse(readFileSync(file!.auditPath, 'utf8'));
       expect(audit.allocationMode).toBe('period');
+      expect(audit.partial).toBe(true);
+      expect(audit.omittedMarkets).toEqual([omittedMarket]);
       expect(audit.range.start.blockNumber).toBe(50);
       expect(audit.marketTotals[0].range.start.blockNumber).toBe(100);
       expect(audit.marketTotals[0].earnedRaw).toBe('7');
@@ -295,6 +305,101 @@ describe('MerklAirdropExportService', () => {
       expect(audit.selectedMarkets).toEqual([
         { symbol: 'cTEST', address: market },
       ]);
+    } finally {
+      process.chdir(originalCwd);
+      rmSync(temp, { recursive: true, force: true });
+    }
+  });
+
+  it('does not publish an earlier group when a later group is invalid', () => {
+    const temp = mkdtempSync(join(tmpdir(), 'compound-merkl-'));
+    const originalCwd = process.cwd();
+    process.chdir(temp);
+    try {
+      const range = {
+        network: 'base',
+        chainId: 8453,
+        config: {} as any,
+        startBoundary: { number: 99, hash: '0x01', timestamp: 999 },
+        start: { number: 100, hash: '0x02', timestamp: 1000 },
+        end: { number: 200, hash: '0x03', timestamp: 2000 },
+        markets: [],
+      } satisfies ResolvedRewardRange;
+      const user = ethers.getAddress(
+        '0x00000000000000000000000000000000000000c3',
+      );
+      const validToken = ethers.getAddress(
+        '0x00000000000000000000000000000000000000b2',
+      );
+      const invalidToken = ethers.getAddress(
+        '0x00000000000000000000000000000000000000b3',
+      );
+      const market = ethers.getAddress(
+        '0x00000000000000000000000000000000000000a1',
+      );
+      const service = new MerklAirdropExportService();
+      const result = {
+        version: CompoundVersion.V3,
+        ranges: [range],
+        userTotals: [validToken, invalidToken].map((rewardToken) => ({
+          version: CompoundVersion.V3,
+          network: 'base',
+          chainId: 8453,
+          range,
+          rewardToken,
+          rewardTokenSymbol: 'COMP',
+          rewardTokenDecimals: 18,
+          user,
+          earnedRaw: 1n,
+          claimedRaw: 0n,
+          remainingRaw: 1n,
+          remainingForPeriodRaw: 1n,
+        })),
+        rows: [
+          {
+            version: CompoundVersion.V3,
+            network: 'base',
+            chainId: 8453,
+            range,
+            marketRange: {
+              symbol: 'cTESTv3',
+              address: market,
+              startBoundary: range.startBoundary,
+              start: range.start,
+              end: range.end,
+            },
+            market,
+            marketSymbol: 'cTESTv3',
+            rewardToken: validToken,
+            rewardTokenSymbol: 'COMP',
+            rewardTokenDecimals: 18,
+            user,
+            totalRewardRaw: 1n,
+            claimedRaw: 0n,
+            remainingRaw: 1n,
+            remainingForPeriodRaw: 1n,
+          },
+          {
+            version: CompoundVersion.V3,
+            network: 'base',
+            chainId: 8453,
+            range,
+            market,
+            marketSymbol: 'cBROKENv3',
+            rewardToken: invalidToken,
+            rewardTokenSymbol: 'COMP',
+            rewardTokenDecimals: 18,
+            user,
+            totalRewardRaw: 1n,
+          } as any,
+        ],
+      };
+
+      expect(() => service.export(result as any)).toThrow(
+        'V3 debt fields are missing',
+      );
+      const resultDir = join(temp, 'result');
+      expect(existsSync(resultDir) ? readdirSync(resultDir) : []).toEqual([]);
     } finally {
       process.chdir(originalCwd);
       rmSync(temp, { recursive: true, force: true });

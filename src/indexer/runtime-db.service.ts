@@ -521,7 +521,14 @@ export class RuntimeDbService {
   public async assemble(): Promise<void> {
     const cfg = this.cfg;
 
+    if (!fs.existsSync(cfg.manifestPath)) {
+      throw new Error(`manifest.json not found at: ${cfg.manifestPath}`);
+    }
+    if (!fs.existsSync(cfg.repoUsersDir)) {
+      throw new Error(`users dir not found at: ${cfg.repoUsersDir}`);
+    }
     this.manifestSvc.load(cfg.manifestPath);
+    this.chunksSvc.validateManifestChunks(cfg.repoUsersDir);
 
     const runtimeExists = fs.existsSync(cfg.runtimePath);
 
@@ -549,6 +556,11 @@ export class RuntimeDbService {
         `Runtime DB exists, skipping assemble: ${cfg.runtimePath}`,
       );
     }
+    this.chunksSvc.assertRuntimeContainsManifestUsers({
+      runtimeDb: this.runtimeDb,
+      repoUsersDir: cfg.repoUsersDir,
+    });
+    this.logger.log('Runtime DB user coverage validated against all chunks.');
   }
 
   public async flush(): Promise<void> {

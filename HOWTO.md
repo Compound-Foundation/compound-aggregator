@@ -320,8 +320,15 @@ same user-level pruning is applied to V2 start snapshots.
 
 Historical calls select Multicall3, Multicall2, or Multicall1 according to what was
 deployed at the requested block. Calls use concurrent chunks and adaptively split
-`200 -> 100 -> 50 -> 25` on historical RPC limits before falling back to direct
-`eth_call` requests.
+timed-out batches recursively down to five calls (for example,
+`200 -> 100 -> 50 -> 25 -> 13 -> 7 -> 4/3`). Direct `eth_call` fallback starts only
+when a batch of five or fewer calls still fails.
+
+For V3, a non-empty `markets` list is an explicit selection. Indexed markets omitted
+from that list are skipped, the run logs a `PARTIAL` warning, and the audit records
+both `partial: true` and `omittedMarkets`. Keep every deployed V3 market in
+`ranges.json` for a full production distribution; use a subset only for an intentional
+partial/test calculation.
 
 For every network and reward token with a positive result, the generator writes:
 
@@ -335,7 +342,9 @@ One output file represents one Merkl campaign on one chain for one reward token.
 uses one `compound-v2` reason per recipient because actual debt is global rather than
 market-attributed; its audit still contains cToken supply/borrow earnings. V3 reason
 keys include the Comet address. The exporter verifies that reason, recipient, market,
-and network totals match before writing either file.
+and network totals match before publishing any file. All Merkl/audit groups are first
+serialized to temporary files and then promoted together; an in-process failure rolls
+back the whole export and restores any previous files.
 
 ---
 
@@ -371,6 +380,10 @@ Artifacts committed in the **code repo** (this repo):
 - `owes-v2.json` — Compound v2 owes snapshot
 - `owes-v3.json` — Compound v3 owes snapshot
 - `REWARDS.md` — Markdown summary of owes (generated from the JSON snapshots)
+
+Generated **local artifacts** (ignored by Git through `result/*`; review and publish
+them through the chosen external airdrop process):
+
 - `result/rewards-v2-*.merkl.json` / `result/rewards-v3-*.merkl.json` — Merkl airdrop payloads
 - `result/rewards-v2-*.audit.json` / `result/rewards-v3-*.audit.json` — period attribution audit
 

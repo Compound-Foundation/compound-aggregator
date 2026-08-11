@@ -1,6 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ethers } from 'ethers';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { join } from 'node:path';
 
 import { CompoundVersion } from 'common/types/compound-version';
@@ -47,6 +53,14 @@ interface ExportGroup {
   userTotals: PeriodRewardUserTotal[];
 }
 
+interface PreparedExport {
+  file: MerklExportedFile;
+  merklContent: string;
+  auditContent: string;
+  partial: boolean;
+  selectedMarketCount: number;
+}
+
 export interface MerklExportedFile {
   network: string;
   rewardToken: string;
@@ -74,12 +88,30 @@ export class MerklAirdropExportService {
       return [];
     }
     const periodOnly = options.period === true;
-    return groups.map((group) => this.exportGroup(group, periodOnly));
+    const prepared = groups.map((group) =>
+      this.prepareGroup(group, periodOnly),
+    );
+    this.writePreparedExports(prepared);
+    for (const item of prepared) {
+      if (item.partial) {
+        this.logger.warn(
+          `[${result.version}][${item.file.network}] PARTIAL export: selectedMarkets=${item.selectedMarketCount}`,
+        );
+      }
+      this.logger.log(
+        `[${result.version}][${item.file.network}] mode=${
+          periodOnly ? 'period' : 'remaining'
+        } Merkl=${item.file.merklPath} audit=${
+          item.file.auditPath
+        } recipients=${item.file.recipientCount}`,
+      );
+    }
+    return prepared.map((item) => item.file);
   }
 
   private groupRows(result: PeriodRewardsResult): ExportGroup[] {
     const groups = new Map<string, ExportGroup>();
-    for (const total of result.userTotals ?? []) {
+    for (const total of result.userTotals) {
       const token = ethers.getAddress(total.rewardToken);
       const key = `${total.network}:${token.toLowerCase()}`;
       const existing = groups.get(key);
@@ -134,10 +166,10 @@ export class MerklAirdropExportService {
     );
   }
 
-  private exportGroup(
+  private prepareGroup(
     group: ExportGroup,
     periodOnly: boolean,
-  ): MerklExportedFile {
+  ): PreparedExport {
     const partial = this.isPartial(group);
     const rewards = new Map<string, ReasonAmounts>();
     const marketTotals = new Map<string, MarketAuditAccumulator>();
@@ -149,8 +181,11 @@ export class MerklAirdropExportService {
       if (row.totalRewardRaw < 0n) {
         throw new Error(`Non-positive reward row: ${market}/${user}`);
       }
+      if (row.version !== group.version) {
+        throw new Error(`Protocol version mismatch: ${market}/${user}`);
+      }
 
-      if (group.version === CompoundVersion.V3) {
+      if (row.version === CompoundVersion.V3) {
         if (
           row.claimedRaw == null ||
           row.remainingRaw == null ||
@@ -353,6 +388,10 @@ export class MerklAirdropExportService {
             address: ethers.getAddress(market.address),
           }))
         : undefined,
+      omittedMarkets:
+        group.range.omittedMarkets && group.range.omittedMarkets.length > 0
+          ? group.range.omittedMarkets
+          : undefined,
       range: this.auditRange(group.range),
       total: this.serializeUserTotal(
         earnedTotalRaw,
@@ -395,34 +434,75 @@ export class MerklAirdropExportService {
     mkdirSync(resultDir, { recursive: true });
     const merklPath = join(resultDir, `${prefix}${partialSuffix}.merkl.json`);
     const auditPath = join(resultDir, `${prefix}${partialSuffix}.audit.json`);
-    writeFileSync(merklPath, JSON.stringify(merkl, null, 2) + '\n', 'utf8');
-    writeFileSync(auditPath, JSON.stringify(audit, null, 2) + '\n', 'utf8');
-
-    if (partial) {
-      this.logger.warn(
-        `[${group.version}][${group.network}] PARTIAL export: selectedMarkets=${group.range.markets.length}`,
-      );
-    }
-    this.logger.log(
-      `[${group.version}][${group.network}] mode=${
-        periodOnly ? 'period' : 'remaining'
-      } Merkl=${merklPath} audit=${auditPath} recipients=${
-        Object.keys(merklRewards).length
-      }`,
-    );
     return {
-      network: group.network,
-      rewardToken: group.rewardToken,
-      merklPath,
-      auditPath,
-      allocationTotalRaw: allocationTotalRaw.toString(10),
-      recipientCount: Object.keys(merklRewards).length,
+      file: {
+        network: group.network,
+        rewardToken: group.rewardToken,
+        merklPath,
+        auditPath,
+        allocationTotalRaw: allocationTotalRaw.toString(10),
+        recipientCount: Object.keys(merklRewards).length,
+      },
+      merklContent: JSON.stringify(merkl, null, 2) + '\n',
+      auditContent: JSON.stringify(audit, null, 2) + '\n',
+      partial,
+      selectedMarketCount: group.range.markets.length,
     };
+  }
+
+  private writePreparedExports(prepared: PreparedExport[]): void {
+    const transactionId = `${process.pid}-${Date.now()}-${Math.random()
+      .toString(16)
+      .slice(2)}`;
+    const files = prepared.flatMap((item) => [
+      { target: item.file.merklPath, content: item.merklContent },
+      { target: item.file.auditPath, content: item.auditContent },
+    ]);
+    const staged = files.map((file, index) => ({
+      ...file,
+      temp: `${file.target}.${transactionId}.${index}.tmp`,
+      backup: `${file.target}.${transactionId}.${index}.bak`,
+      hadTarget: false,
+      promoted: false,
+    }));
+    let committed = false;
+
+    try {
+      for (const file of staged) {
+        writeFileSync(file.temp, file.content, 'utf8');
+      }
+      for (const file of staged) {
+        file.hadTarget = existsSync(file.target);
+        if (file.hadTarget) renameSync(file.target, file.backup);
+      }
+      for (const file of staged) {
+        renameSync(file.temp, file.target);
+        file.promoted = true;
+      }
+      committed = true;
+    } catch (error) {
+      for (const file of [...staged].reverse()) {
+        if (file.promoted) rmSync(file.target, { force: true });
+      }
+      for (const file of [...staged].reverse()) {
+        if (file.hadTarget && existsSync(file.backup)) {
+          renameSync(file.backup, file.target);
+        }
+      }
+      throw error;
+    } finally {
+      for (const file of staged) {
+        rmSync(file.temp, { force: true });
+        if (committed) rmSync(file.backup, { force: true });
+      }
+    }
   }
 
   private isPartial(group: ExportGroup): boolean {
     return (
-      group.version === CompoundVersion.V2 && group.range.markets.length > 0
+      (group.version === CompoundVersion.V2 &&
+        group.range.markets.length > 0) ||
+      Boolean(group.range.omittedMarkets?.length)
     );
   }
 
@@ -471,12 +551,15 @@ export class MerklAirdropExportService {
     ) {
       throw new Error(`Inconsistent market range for ${target.market}`);
     }
-    target.supplyRewardRaw += row.supplyRewardRaw ?? 0n;
-    target.borrowRewardRaw += row.borrowRewardRaw ?? 0n;
     target.totalRewardRaw += row.totalRewardRaw;
-    target.claimedRaw += row.claimedRaw ?? 0n;
-    target.remainingRaw += row.remainingRaw ?? 0n;
-    target.remainingForPeriodRaw += row.remainingForPeriodRaw ?? 0n;
+    if (row.version === CompoundVersion.V2) {
+      target.supplyRewardRaw += row.supplyRewardRaw;
+      target.borrowRewardRaw += row.borrowRewardRaw;
+    } else {
+      target.claimedRaw += row.claimedRaw;
+      target.remainingRaw += row.remainingRaw;
+      target.remainingForPeriodRaw += row.remainingForPeriodRaw;
+    }
   }
 
   private serializeMarket(

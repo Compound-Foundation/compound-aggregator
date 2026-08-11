@@ -34,6 +34,7 @@ export interface ResolvedRewardRange {
   start: ResolvedBlock;
   end: ResolvedBlock;
   markets: ResolvedMarketRewardRange[];
+  omittedMarkets?: string[];
 }
 
 export interface ResolvedMarketRewardRange {
@@ -46,28 +47,37 @@ export interface ResolvedMarketRewardRange {
 
 export type RewardSide = 'supply' | 'borrow';
 
-export interface PeriodRewardRow {
-  version: CompoundVersion;
+interface PeriodRewardRowBase {
   network: string;
   chainId: number;
   range: ResolvedRewardRange;
-  marketRange?: ResolvedMarketRewardRange;
   market: string;
   marketSymbol: string;
   rewardToken: string;
   rewardTokenSymbol: string;
   rewardTokenDecimals: number;
   user: string;
-  supplyRewardRaw?: bigint;
-  borrowRewardRaw?: bigint;
   totalRewardRaw: bigint;
-  claimedRaw?: bigint;
-  remainingRaw?: bigint;
-  remainingForPeriodRaw?: bigint;
 }
 
-export interface PeriodRewardUserTotal {
-  version: CompoundVersion;
+export interface V2PeriodRewardRow extends PeriodRewardRowBase {
+  version: CompoundVersion.V2;
+  marketRange?: ResolvedMarketRewardRange;
+  supplyRewardRaw: bigint;
+  borrowRewardRaw: bigint;
+}
+
+export interface V3PeriodRewardRow extends PeriodRewardRowBase {
+  version: CompoundVersion.V3;
+  marketRange: ResolvedMarketRewardRange;
+  claimedRaw: bigint;
+  remainingRaw: bigint;
+  remainingForPeriodRaw: bigint;
+}
+
+export type PeriodRewardRow = V2PeriodRewardRow | V3PeriodRewardRow;
+
+interface PeriodRewardUserTotalBase {
   network: string;
   chainId: number;
   range: ResolvedRewardRange;
@@ -76,14 +86,38 @@ export interface PeriodRewardUserTotal {
   rewardTokenDecimals: number;
   user: string;
   earnedRaw: bigint;
-  claimedRaw: bigint | null;
   remainingRaw: bigint;
   remainingForPeriodRaw: bigint;
 }
 
-export interface PeriodRewardsResult {
-  version: CompoundVersion;
-  ranges: ResolvedRewardRange[];
-  rows: PeriodRewardRow[];
-  userTotals?: PeriodRewardUserTotal[];
+export interface V2PeriodRewardUserTotal extends PeriodRewardUserTotalBase {
+  version: CompoundVersion.V2;
+  claimedRaw: bigint | null;
 }
+
+export interface V3PeriodRewardUserTotal extends PeriodRewardUserTotalBase {
+  version: CompoundVersion.V3;
+  claimedRaw: bigint;
+}
+
+export type PeriodRewardUserTotal =
+  | V2PeriodRewardUserTotal
+  | V3PeriodRewardUserTotal;
+
+interface PeriodRewardsResultBase {
+  ranges: ResolvedRewardRange[];
+}
+
+export interface V2PeriodRewardsResult extends PeriodRewardsResultBase {
+  version: CompoundVersion.V2;
+  rows: V2PeriodRewardRow[];
+  userTotals: V2PeriodRewardUserTotal[];
+}
+
+export interface V3PeriodRewardsResult extends PeriodRewardsResultBase {
+  version: CompoundVersion.V3;
+  rows: V3PeriodRewardRow[];
+  userTotals: V3PeriodRewardUserTotal[];
+}
+
+export type PeriodRewardsResult = V2PeriodRewardsResult | V3PeriodRewardsResult;
