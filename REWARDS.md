@@ -4,7 +4,7 @@
 
 | Network   | Rewards at contract |      Rewards owed | Rewards delta (at contract - owed) |
 | :-------- | ------------------: | ----------------: | ---------------------------------: |
-| mainnet   |           0.00 COMP |     47919.98 COMP |                     -47919.98 COMP |
+| mainnet   |           0.00 COMP |     48121.21 COMP |                     -48121.21 COMP |
 | arbitrum  |           0.00 COMP |      7278.81 COMP |                      -7278.81 COMP |
 | base      |           0.00 COMP |      3658.69 COMP |                      -3658.69 COMP |
 | mantle    |        1492.16 COMP |      1750.01 COMP |                       -257.85 COMP |
@@ -13,7 +13,7 @@
 | polygon   |           0.05 COMP |       625.29 COMP |                       -625.24 COMP |
 | linea     |         809.45 COMP |       360.94 COMP |                        448.51 COMP |
 | scroll    |           0.00 COMP |         0.00 COMP |                          0.00 COMP |
-| **TOTAL** |    **2301.99 COMP** | **64011.18 COMP** |                 **-61709.19 COMP** |
+| **TOTAL** |    **2301.99 COMP** | **64212.41 COMP** |                 **-61910.42 COMP** |
 
 ---
 
@@ -26,4 +26,4 @@
 
 ---
 
-*Last updated:* 2026-08-12 14:55:26.207 UTC
+*Last updated:* 2026-08-13 15:04:00.602 UTC
