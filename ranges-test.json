@@ -1,0 +1,67 @@
+{
+  "v2": [
+    {
+      "network": "mainnet",
+      "chainId": 1,
+      "startBlock": 14331586,
+      "endBlock": 15000000,
+      "markets": [
+        {
+          "symbol": "cLINK",
+          "address": "0xFAce851a4921ce59e912d19329929CE6da6EB0c7",
+          "startBlock": 14331586
+        },
+        {
+          "symbol": "cWBTC",
+          "address": "0xccF4429DB6322D5C611ee964527D42E5d685DD6a",
+          "startBlock": 14331586
+        },
+        {
+          "symbol": "cUNI",
+          "address": "0x35A18000230DA775CAc24873d00Ff85BccdeD550",
+          "startBlock": 14331586
+        }
+      ]
+    }
+  ],
+  "v3": [
+    {
+      "network": "mainnet",
+      "chainId": 1,
+      "startBlock": 15331586,
+      "endBlock": 25702040,
+      "markets": [
+        {
+          "symbol": "cUSDCv3",
+          "address": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+          "startBlock": 15331586
+        },
+        {
+          "symbol": "cUSDSv3",
+          "address": "0x5D409e56D886231aDAf00c8775665AD0f9897b56",
+          "startBlock": 20987551
+        },
+        {
+          "symbol": "cUSDTv3",
+          "address": "0x3Afdc9BCA9213A35503b077a6072F3D0d5AB0840",
+          "startBlock": 20190637
+        },
+        {
+          "symbol": "cWBTCv3",
+          "address": "0xe85Dc543813B8c2CFEaAc371517b925a166a9293",
+          "startBlock": 21820087
+        },
+        {
+          "symbol": "cWETHv3",
+          "address": "0xA17581A9E3356d9A858b789D68B4d866e593aE94",
+          "startBlock": 16400710
+        },
+        {
+          "symbol": "cWstETHv3",
+          "address": "0x3D0bb1ccaB520A66e607822fC55BC921738fAFE3",
+          "startBlock": 20683535
+        }
+      ]
+    }
+  ]
+}

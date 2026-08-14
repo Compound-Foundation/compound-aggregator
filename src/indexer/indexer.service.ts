@@ -479,11 +479,13 @@ export class IndexerService {
             topics: req.topics,
           }),
         );
-        out.push(...logs);
+        for (const log of logs) out.push(log);
       } catch (e) {
         if (a >= b) throw e;
         const mid = Math.floor((a + b) / 2);
-        stack.push([a, mid], [mid + 1, b]);
+        // LIFO stack: push the later half first so the earlier half is popped
+        // and processed first.
+        stack.push([mid + 1, b], [a, mid]);
       }
     }
 

@@ -10,9 +10,12 @@
     "cli:generate:owes:v2": "nest build && node dist/src/cli.js owes:generate-v2",
     "cli:generate:owes:v3": "nest build && node dist/src/cli.js owes:generate-v3",
     "cli:generate:owes:md": "nest build && node dist/src/cli.js owes:generate:md",
+    "cli:generate:rewards:v2:merkl": "nest build && node dist/src/cli.js rewards:generate-v2-merkl",
+    "cli:generate:rewards:v3:merkl": "nest build && node dist/src/cli.js rewards:generate-v3-merkl",
     "cli:generate:md": "nest build && node dist/src/cli.js markdown:generate",
     "full-index": "RETRY_COMMAND=cli:index ts-node src/retry.ts",
     "build": "nest build",
+    "test": "jest --runInBand",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
@@ -59,15 +62,24 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.spec.json"
+        }
+      ]
     },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
+    "moduleDirectories": [
+      "node_modules",
+      "src"
     ],
-    "coverageDirectory": "../coverage",
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageDirectory": "coverage",
     "testEnvironment": "node"
   }
 }

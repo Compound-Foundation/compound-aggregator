@@ -16,6 +16,131 @@ export class ChunksService {
 
   constructor(private readonly manifestSvc: ManifestsService) {}
 
+  public validateManifestChunks(repoUsersDir: string): void {
+    const root = path.resolve(repoUsersDir);
+    const seenFiles = new Set<string>();
+    const seenSeries = new Set<string>();
+
+    for (const series of this.manifestSvc.value.series) {
+      const seriesKey = `${series.network}:v${series.version}`;
+      if (seenSeries.has(seriesKey)) {
+        throw new Error(`[users-storage] duplicate series: ${seriesKey}`);
+      }
+      seenSeries.add(seriesKey);
+
+      for (const chunk of series.chunks) {
+        if (seenFiles.has(chunk.file)) {
+          throw new Error(
+            `[users-storage] duplicate chunk declaration: ${chunk.file}`,
+          );
+        }
+        seenFiles.add(chunk.file);
+
+        const chunkPath = path.resolve(root, chunk.file);
+        if (chunkPath !== root && !chunkPath.startsWith(`${root}${path.sep}`)) {
+          throw new Error(
+            `[users-storage] chunk escapes users directory: ${chunk.file}`,
+          );
+        }
+        if (!fs.existsSync(chunkPath)) {
+          throw new Error(
+            `[users-storage] declared chunk is missing: ${chunk.file} (${seriesKey})`,
+          );
+        }
+
+        const db = new Database(chunkPath, {
+          readonly: true,
+          fileMustExist: true,
+        });
+        try {
+          const stats = db
+            .prepare(
+              `
+                SELECT
+                  COUNT(*) AS rows,
+                  SUM(CASE WHEN network != ? OR version != ? THEN 1 ELSE 0 END) AS foreign_rows,
+                  MAX(created_at) AS max_created_at
+                FROM users
+              `,
+            )
+            .get(series.network, series.version) as {
+            rows: number;
+            foreign_rows: number | null;
+            max_created_at: number | null;
+          };
+          if (Number(stats.rows) !== chunk.rows) {
+            throw new Error(
+              `[users-storage] row count mismatch for ${chunk.file}: manifest=${chunk.rows} actual=${stats.rows}`,
+            );
+          }
+          if (Number(stats.foreign_rows ?? 0) !== 0) {
+            throw new Error(
+              `[users-storage] ${chunk.file} contains rows outside ${seriesKey}`,
+            );
+          }
+          if (
+            chunk.rows > 0 &&
+            Number(stats.max_created_at) !== chunk.endCreatedAt
+          ) {
+            throw new Error(
+              `[users-storage] endCreatedAt mismatch for ${chunk.file}: manifest=${chunk.endCreatedAt} actual=${stats.max_created_at}`,
+            );
+          }
+        } catch (error) {
+          throw new Error(
+            `[users-storage] invalid chunk ${chunk.file}: ${
+              (error as Error).message
+            }`,
+          );
+        } finally {
+          db.close();
+        }
+      }
+    }
+  }
+
+  public assertRuntimeContainsManifestUsers(args: {
+    runtimeDb: SqliteDatabase;
+    repoUsersDir: string;
+  }): void {
+    const { runtimeDb, repoUsersDir } = args;
+    let chunkIndex = 0;
+    for (const series of this.manifestSvc.value.series) {
+      for (const chunk of series.chunks) {
+        const alias = `users_check_${chunkIndex++}`;
+        const chunkPath = path.resolve(repoUsersDir, chunk.file);
+        runtimeDb.exec(
+          `ATTACH '${chunkPath.replaceAll("'", "''")}' AS ${alias}`,
+        );
+        try {
+          const missing = runtimeDb
+            .prepare(
+              `
+                SELECT COUNT(*) AS rows
+                FROM ${alias}.users AS source
+                WHERE NOT EXISTS (
+                  SELECT 1
+                  FROM main.users AS runtime
+                  WHERE runtime.network = source.network
+                    AND runtime.version = source.version
+                    AND runtime.market = source.market
+                    AND runtime.user = source.user
+                )
+              `,
+            )
+            .get() as { rows: number };
+          if (Number(missing.rows) > 0) {
+            throw new Error(
+              `[users-storage] runtime DB is missing ${missing.rows} user row(s) from ${chunk.file}; remove the runtime DB and assemble it again`,
+            );
+          }
+        } finally {
+          runtimeDb.exec(`DETACH ${alias}`);
+        }
+      }
+    }
+  }
+
   private ensureUsersChunkSchema(db: SqliteDatabase): void {
     db.exec(`
       CREATE TABLE IF NOT EXISTS users (

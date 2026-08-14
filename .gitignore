@@ -71,3 +71,5 @@ gcp-credentials.json
 
 .vscode
 .github-cache.json
+
+result/*
