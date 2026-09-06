@@ -11,9 +11,9 @@
 | optimism  |           0.00 COMP |      1499.37 COMP |                      -1499.37 COMP |
 | unichain  |           0.01 COMP |       917.77 COMP |                       -917.76 COMP |
 | polygon   |           0.01 COMP |       625.25 COMP |                       -625.24 COMP |
-| linea     |         768.40 COMP |       319.89 COMP |                        448.51 COMP |
+| linea     |         611.57 COMP |       159.22 COMP |                        452.35 COMP |
 | scroll    |           0.00 COMP |         0.00 COMP |                          0.00 COMP |
-| **TOTAL** |    **2260.16 COMP** | **68577.71 COMP** |                 **-66317.55 COMP** |
+| **TOTAL** |    **2103.33 COMP** | **68417.04 COMP** |                 **-66313.71 COMP** |
 
 ---
 
@@ -21,9 +21,9 @@
 
 | Network   | Rewards at contract |      Rewards owed | Rewards delta (at contract - owed) |
 | :-------- | ------------------: | ----------------: | ---------------------------------: |
-| mainnet   |           0.00 COMP |     37555.92 COMP |                     -37555.92 COMP |
-| **TOTAL** |       **0.00 COMP** | **37555.92 COMP** |                 **-37555.92 COMP** |
+| mainnet   |           0.00 COMP |     37556.04 COMP |                     -37556.04 COMP |
+| **TOTAL** |       **0.00 COMP** | **37556.04 COMP** |                 **-37556.04 COMP** |
 
 ---
 
-*Last updated:* 2026-09-05 16:31:54.737 UTC
+*Last updated:* 2026-09-06 16:42:18.996 UTC
