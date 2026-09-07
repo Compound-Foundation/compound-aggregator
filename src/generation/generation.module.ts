@@ -17,6 +17,7 @@ import { V3PeriodRewardsService } from './v3-period-rewards.service';
 import { MerklAirdropExportService } from './merkl-airdrop-export.service';
 import { GenerateRewardsV2MerklCommand } from './generate-rewards-v2-merkl.command';
 import { GenerateRewardsV3MerklCommand } from './generate-rewards-v3-merkl.command';
+import { V2CompStateService } from './v2-comp-state.service';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { GenerateRewardsV3MerklCommand } from './generate-rewards-v3-merkl.comma
     GenerateOwesMarkdown,
     HistoricalCallService,
     RangesService,
+    V2CompStateService,
     V2PeriodRewardsService,
     V3PeriodRewardsService,
     MerklAirdropExportService,

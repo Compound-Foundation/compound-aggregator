@@ -9,6 +9,11 @@ import { fmtPct } from 'common/utils/fmt-pct';
 import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { NetworkConfig } from 'network/network.types';
 import { OwesExportService } from './owes-export.service';
+import {
+  V2CompStateService,
+  V2MarketRewardBoundary,
+} from './v2-comp-state.service';
+import { addUserAmount, remainingV2OwedRows } from './v2-owes.math';
 
 @Command({ name: 'owes:generate-v2', description: 'Generate V2 owes' })
 export class GenerateOwesV2Command extends CommandRunner {
@@ -27,6 +32,7 @@ export class GenerateOwesV2Command extends CommandRunner {
     private readonly db: RuntimeDbService,
     private readonly rewards: RewardsService,
     private readonly exp: OwesExportService,
+    private readonly v2State: V2CompStateService,
     private readonly config: ConfigService,
   ) {
     super();
@@ -85,6 +91,13 @@ export class GenerateOwesV2Command extends CommandRunner {
           CompoundVersion.V2,
           network,
         );
+        const blockTag = await this.v2State.latestBlock(network);
+        const pendingByUser = new Map<string, bigint>();
+        const boundaryCache = new Map<string, V2MarketRewardBoundary | null>();
+
+        this.logger.log(
+          `[V2][${network}] remaining = compAccrued + pending at block=${blockTag} users=${totalUsers}`,
+        );
 
         let offset = 0;
         let page = 0;
@@ -98,7 +111,7 @@ export class GenerateOwesV2Command extends CommandRunner {
             2,
           );
           this.logger.verbose(
-            `[V2][${network}] page=${page} (${pct}) offset=${offset}/${totalUsers}`,
+            `[V2][${network}][pending] page=${page} (${pct}) offset=${offset}/${totalUsers}`,
           );
 
           const batch = await this.db.fetchUsersForNetwork(
@@ -110,34 +123,140 @@ export class GenerateOwesV2Command extends CommandRunner {
 
           if (batch.length === 0) break;
 
-          // RewardsService V2 only needs userAddress
-          const v2Users = batch.map((u) => ({ userAddress: u.userAddress }));
+          const usersByMarket = new Map<string, string[]>();
+          for (const row of batch) {
+            const market = row.cometAddress.toLowerCase();
+            const users = usersByMarket.get(market);
+            if (users) users.push(row.userAddress);
+            else usersByMarket.set(market, [row.userAddress]);
+          }
 
-          try {
-            const owedRows = await this.rewards.owedForUsers({
-              version: CompoundVersion.V2,
-              network,
-              market: comptroller, // V2 "market" = comptroller
-              users: v2Users,
-              chunkSize: PAGE, // multicall chunk
-            });
+          for (const [market, users] of usersByMarket) {
+            let boundary = boundaryCache.get(market);
+            if (boundary === undefined) {
+              try {
+                boundary = await this.v2State.readMarketBoundary({
+                  network,
+                  comptroller,
+                  market,
+                  blockTag,
+                });
+              } catch (err) {
+                this.logger.error(
+                  `[V2][owes][${network}] market boundary failed market=${market}`,
+                  err as any,
+                );
+                boundary = null;
+              }
+              boundaryCache.set(market, boundary);
+            }
+            if (!boundary) continue;
 
-            this.db.upsertOwesBatch({
-              network,
-              version: CompoundVersion.V2,
-              rows: owedRows,
-            });
-          } catch (err) {
-            this.logger.error(
-              `[V2][owes][${network}][page=${page}] owedForUsers failed`,
-              err as any,
-            );
-            // Skip this page and continue
+            try {
+              const pending = await this.v2State.readPendingByUser({
+                network,
+                comptroller,
+                market,
+                users,
+                blockTag,
+                boundary,
+              });
+              for (const [user, amount] of pending) {
+                addUserAmount(pendingByUser, user, amount);
+              }
+            } catch (err) {
+              this.logger.error(
+                `[V2][owes][${network}][page=${page}] pending failed market=${market}`,
+                err as any,
+              );
+            }
           }
 
           offset += batch.length;
           if (batch.length < PAGE) break;
         }
+
+        const written = new Set<string>();
+        offset = 0;
+        page = 0;
+
+        while (true) {
+          page += 1;
+
+          const pct = fmtPct(
+            Math.min(offset, totalUsers),
+            Math.max(1, totalUsers),
+            2,
+          );
+          this.logger.verbose(
+            `[V2][${network}][accrued] page=${page} (${pct}) offset=${offset}/${totalUsers}`,
+          );
+
+          const batch = await this.db.fetchUsersForNetwork(
+            CompoundVersion.V2,
+            network,
+            PAGE,
+            offset,
+          );
+
+          if (batch.length === 0) break;
+
+          const users = [
+            ...new Set(batch.map((u) => u.userAddress.toLowerCase())),
+          ].filter((user) => !written.has(user));
+
+          if (users.length === 0) {
+            offset += batch.length;
+            if (batch.length < PAGE) break;
+            continue;
+          }
+
+          try {
+            const accruedRows = await this.rewards.owedForUsers({
+              version: CompoundVersion.V2,
+              network,
+              market: comptroller,
+              users,
+              chunkSize: PAGE,
+              includeZero: true,
+              blockTag,
+            });
+            const accruedByUser = new Map(
+              accruedRows.map((row) => [
+                row.userAddress.toLowerCase(),
+                row.owed,
+              ]),
+            );
+
+            this.db.upsertOwesBatch({
+              network,
+              version: CompoundVersion.V2,
+              rows: remainingV2OwedRows({
+                marketAddress: comptroller,
+                users,
+                accruedByUser,
+                pendingByUser,
+              }),
+            });
+            for (const user of users) written.add(user);
+          } catch (err) {
+            this.logger.error(
+              `[V2][owes][${network}][page=${page}] owedForUsers failed`,
+              err as any,
+            );
+          }
+
+          offset += batch.length;
+          if (batch.length < PAGE) break;
+        }
+
+        let pendingTotal = 0n;
+        for (const amount of pendingByUser.values()) pendingTotal += amount;
+        this.logger.log(
+          `[V2][${network}] pending users=${
+            pendingByUser.size
+          } pendingRaw=${pendingTotal.toString()}`,
+        );
       },
     );
 
