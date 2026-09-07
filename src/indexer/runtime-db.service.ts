@@ -320,12 +320,28 @@ export class RuntimeDbService {
   private assembleRuntime(): void {
     const cfg = this.cfg;
 
-    if (!fs.existsSync(cfg.repoMetaPath)) {
-      throw new Error(`meta.sqlite not found at: ${cfg.repoMetaPath}`);
+    const hasMeta = fs.existsSync(cfg.repoMetaPath);
+    const hasChunks = this.manifestSvc.value.series.some(
+      (s) => s.chunks.length > 0,
+    );
+
+    // Cold start: no meta.sqlite means there is no prior indexing progress.
+    // The runtime schema is already created (empty), so there is nothing to
+    // import — indexing will begin from each network's baseline block.
+    if (!hasMeta) {
+      if (hasChunks) {
+        // Chunks without meta is a corrupt/partial snapshot: we'd have users
+        // but no cursors, which would re-index and duplicate. Fail loudly.
+        throw new Error(
+          `Corrupt snapshot: user chunks are declared but meta.sqlite is missing at: ${cfg.repoMetaPath}`,
+        );
+      }
+      this.logger.log(
+        'Cold start: no meta.sqlite found, initializing empty runtime DB.',
+      );
+      return;
     }
-    if (!fs.existsSync(cfg.manifestPath)) {
-      throw new Error(`manifest.json not found at: ${cfg.manifestPath}`);
-    }
+
     if (!fs.existsSync(cfg.repoUsersDir)) {
       throw new Error(`users dir not found at: ${cfg.repoUsersDir}`);
     }
@@ -521,12 +537,13 @@ export class RuntimeDbService {
   public async assemble(): Promise<void> {
     const cfg = this.cfg;
 
-    if (!fs.existsSync(cfg.manifestPath)) {
-      throw new Error(`manifest.json not found at: ${cfg.manifestPath}`);
-    }
-    if (!fs.existsSync(cfg.repoUsersDir)) {
-      throw new Error(`users dir not found at: ${cfg.repoUsersDir}`);
-    }
+    // Cold start support: on a fresh workspace there is no repo snapshot yet
+    // (no manifest.json / no users chunks / no meta.sqlite). Rather than
+    // failing, we bootstrap from an empty state so indexing can start from
+    // each network's baseline block. Ensure the users dir exists; a missing
+    // manifest is loaded as an empty manifest by ManifestsService.load().
+    fs.mkdirSync(cfg.repoUsersDir, { recursive: true });
+
     this.manifestSvc.load(cfg.manifestPath);
     this.chunksSvc.validateManifestChunks(cfg.repoUsersDir);
 
