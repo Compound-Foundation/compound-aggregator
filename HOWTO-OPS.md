@@ -154,6 +154,25 @@ For long-running local indexing (fresh sync / flaky RPC), use:
 yarn full-index
 ```
 
+### Cold start (no artifacts snapshot)
+
+The indexer normally refuses to run without `meta.sqlite`, because in CI a
+missing snapshot almost always means the artifacts checkout or `git lfs pull`
+came back empty — and re-indexing from scratch would then push a stub snapshot
+back over the good one.
+
+To bootstrap a fresh workspace that genuinely has no snapshot (e.g. no
+`ARTIFACTS_TOKEN`), opt in explicitly:
+
+```bash
+ALLOW_COLD_START=1 yarn cli:index
+```
+
+Every network is then indexed from its baseline `startBlock`, which takes a long
+time — mainnet alone starts at block 7710671. Chunk files present without
+`meta.sqlite` are still a hard error even with the flag: that combination means a
+partially downloaded snapshot, and continuing would duplicate users.
+
 ---
 
 ## Generate Protocol Owes

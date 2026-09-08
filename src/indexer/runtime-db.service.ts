@@ -18,6 +18,13 @@ import { ManifestsService } from './manifests.service';
 import { ChunksService } from './chunks.service';
 import { createSqliteApi } from './sqlite-api';
 
+/**
+ * Opt-in for indexing from scratch. Kept opt-in so that a CI run whose
+ * artifacts snapshot failed to download fails loudly instead of quietly
+ * rebuilding the whole index and pushing the stub back over the good one.
+ */
+const COLD_START_ENV = 'ALLOW_COLD_START';
+
 const sqlQuotePath = (p: string): string => `'${p.replaceAll("'", "''")}'`;
 
 const normAddr = (a: string) => getAddress(a).toLowerCase();
@@ -317,13 +324,28 @@ export class RuntimeDbService {
     }
   }
 
+  private get coldStartAllowed(): boolean {
+    return process.env[COLD_START_ENV] === '1';
+  }
+
+  private hasChunkFiles(repoUsersDir: string): boolean {
+    if (!fs.existsSync(repoUsersDir)) return false;
+    return fs
+      .readdirSync(repoUsersDir)
+      .some((file) => file.endsWith('.sqlite'));
+  }
+
   private assembleRuntime(): void {
     const cfg = this.cfg;
 
     const hasMeta = fs.existsSync(cfg.repoMetaPath);
-    const hasChunks = this.manifestSvc.value.series.some(
-      (s) => s.chunks.length > 0,
-    );
+
+    // Chunks count as present if the manifest declares them or if the files are
+    // simply sitting there: a snapshot whose manifest.json failed to arrive
+    // would otherwise look empty and get silently overwritten.
+    const hasChunks =
+      this.manifestSvc.value.series.some((s) => s.chunks.length > 0) ||
+      this.hasChunkFiles(cfg.repoUsersDir);
 
     // Cold start: no meta.sqlite means there is no prior indexing progress.
     // The runtime schema is already created (empty), so there is nothing to
@@ -333,17 +355,29 @@ export class RuntimeDbService {
         // Chunks without meta is a corrupt/partial snapshot: we'd have users
         // but no cursors, which would re-index and duplicate. Fail loudly.
         throw new Error(
-          `Corrupt snapshot: user chunks are declared but meta.sqlite is missing at: ${cfg.repoMetaPath}`,
+          `Corrupt snapshot: user chunks are present but meta.sqlite is missing at: ${cfg.repoMetaPath}`,
         );
       }
-      this.logger.log(
-        'Cold start: no meta.sqlite found, initializing empty runtime DB.',
+
+      // Indexing from scratch has to be asked for. The usual reason meta.sqlite
+      // is missing in CI is that the artifacts checkout or `git lfs pull` came
+      // back empty — and a silent cold start there would re-index every network
+      // from its baseline block and then push the resulting stub snapshot back
+      // over the good one.
+      if (!this.coldStartAllowed) {
+        throw new Error(
+          `meta.sqlite not found at: ${cfg.repoMetaPath}. ` +
+            `If this is a fresh workspace with no artifacts snapshot, set ` +
+            `${COLD_START_ENV}=1 to index from each network's baseline block.`,
+        );
+      }
+
+      this.logger.warn(
+        `Cold start (${COLD_START_ENV}=1): no meta.sqlite found, initializing ` +
+          `an empty runtime DB. Every network will be indexed from its ` +
+          `baseline block.`,
       );
       return;
-    }
-
-    if (!fs.existsSync(cfg.repoUsersDir)) {
-      throw new Error(`users dir not found at: ${cfg.repoUsersDir}`);
     }
 
     // ----------------------------
@@ -538,10 +572,9 @@ export class RuntimeDbService {
     const cfg = this.cfg;
 
     // Cold start support: on a fresh workspace there is no repo snapshot yet
-    // (no manifest.json / no users chunks / no meta.sqlite). Rather than
-    // failing, we bootstrap from an empty state so indexing can start from
-    // each network's baseline block. Ensure the users dir exists; a missing
-    // manifest is loaded as an empty manifest by ManifestsService.load().
+    // (no manifest.json / no users chunks / no meta.sqlite). Create the users
+    // dir and let ManifestsService.load() fall back to an empty manifest, so
+    // the missing-snapshot decision is made in one place, assembleRuntime().
     fs.mkdirSync(cfg.repoUsersDir, { recursive: true });
 
     this.manifestSvc.load(cfg.manifestPath);
