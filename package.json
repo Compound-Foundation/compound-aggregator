@@ -13,6 +13,7 @@
     "cli:generate:rewards:v2:merkl": "nest build && node dist/src/cli.js rewards:generate-v2-merkl",
     "cli:generate:rewards:v3:merkl": "nest build && node dist/src/cli.js rewards:generate-v3-merkl",
     "cli:generate:md": "nest build && node dist/src/cli.js markdown:generate",
+    "cli:ranges:update:v3": "nest build && node dist/src/cli.js ranges:update-v3",
     "full-index": "RETRY_COMMAND=cli:index ts-node src/retry.ts",
     "build": "nest build",
     "test": "jest --runInBand",
