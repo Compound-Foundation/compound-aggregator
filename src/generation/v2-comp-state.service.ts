@@ -11,6 +11,38 @@ import {
   projectSupplyIndex,
 } from './period-rewards.math';
 
+/**
+ * Non-fatal problems collected over a run. The daily job must still produce a
+ * number, so a failed read degrades that user's contribution to 0 instead of
+ * aborting; these counters are what lets the caller tell a partial result from
+ * a complete one afterwards, and refuse to publish the former.
+ */
+export interface V2PendingStats {
+  /** Users whose pending could not be read, and are therefore counted as 0. */
+  failures: number;
+  /** Users whose stored index was above the market index — should be zero. */
+  anomalies: number;
+  /** Markets whose reward state could not be read at all. */
+  skippedMarkets: string[];
+  /** Users dropped because their market was skipped. */
+  skippedUsers: number;
+  /** Warnings already emitted, so a bad run cannot flood the CI log. */
+  logged: number;
+}
+
+export const emptyPendingStats = (): V2PendingStats => ({
+  failures: 0,
+  anomalies: 0,
+  skippedMarkets: [],
+  skippedUsers: 0,
+  logged: 0,
+});
+
+export const isPendingComplete = (stats: V2PendingStats): boolean =>
+  stats.failures === 0 &&
+  stats.anomalies === 0 &&
+  stats.skippedMarkets.length === 0;
+
 const COMPTROLLER_ABI = [
   'function compSupplyState(address) view returns (uint224 index, uint32 blockNumber)',
   'function compBorrowState(address) view returns (uint224 index, uint32 blockNumber)',
@@ -34,11 +66,31 @@ export interface V2MarketRewardBoundary {
   marketBorrowIndex: bigint;
 }
 
+interface UserPosition {
+  supplyBalance: bigint;
+  borrowBalance: bigint;
+}
+
+interface UserCompIndexes {
+  supplierIndex: bigint;
+  borrowerIndex: bigint;
+}
+
 @Injectable()
 export class V2CompStateService {
   private readonly logger = new Logger(V2CompStateService.name);
   private readonly comptrollerInterface = new ethers.Interface(COMPTROLLER_ABI);
   private readonly cTokenInterface = new ethers.Interface(CTOKEN_ABI);
+
+  // The node meters these head-block reads per sub-call rather than per
+  // request, so a wider multicall than the archive default is a straight win.
+  // Concurrency is deliberately left at the service default: measured against
+  // the production RPC, raising it changed nothing while chunk width halved
+  // the time per sub-call.
+  private readonly callChunkSize = 500;
+
+  // Cap on warnings per run, so a degraded RPC cannot bury the Actions log.
+  private readonly maxLoggedWarnings = 20;
 
   constructor(
     private readonly providers: ProviderFactory,
@@ -195,6 +247,14 @@ export class V2CompStateService {
     };
   }
 
+  /**
+   * Reads in two passes: balances first, then the checkpointed index only for
+   * users who actually hold a position on that side. A zero balance yields zero
+   * pending whatever the index is (`pendingSupply` multiplies by the balance,
+   * `pendingBorrow` by the normalized debt), so skipping is exact, not a
+   * heuristic — and roughly half of the indexed (market, user) pairs are
+   * long-closed positions.
+   */
   public async readPendingByUser(params: {
     network: string;
     comptroller: string;
@@ -202,93 +262,252 @@ export class V2CompStateService {
     users: string[];
     blockTag: number;
     boundary: V2MarketRewardBoundary;
+    stats: V2PendingStats;
   }): Promise<Map<string, bigint>> {
-    const { network, comptroller, market, users, blockTag, boundary } = params;
+    const { network, comptroller, market, users, blockTag, boundary, stats } =
+      params;
     const out = new Map<string, bigint>();
     if (users.length === 0) return out;
 
-    const calls = users.flatMap((user) => [
-      {
-        target: comptroller,
-        callData: this.comptrollerInterface.encodeFunctionData(
-          'compSupplierIndex',
-          [market, user],
-        ),
-      },
-      {
-        target: market,
-        callData: this.cTokenInterface.encodeFunctionData('balanceOf', [user]),
-      },
-      {
-        target: comptroller,
-        callData: this.comptrollerInterface.encodeFunctionData(
-          'compBorrowerIndex',
-          [market, user],
-        ),
-      },
-      {
-        target: market,
-        callData: this.cTokenInterface.encodeFunctionData(
-          'borrowBalanceStored',
-          [user],
-        ),
-      },
-    ]);
+    const positions = await this.readPositions({
+      network,
+      market,
+      users,
+      blockTag,
+      stats,
+    });
+    const indexes = await this.readUserIndexes({
+      network,
+      comptroller,
+      market,
+      positions,
+      blockTag,
+      stats,
+    });
+
+    for (const [user, position] of positions) {
+      const userIndexes = indexes.get(user);
+      if (!userIndexes) continue;
+
+      // Each side is guarded separately: an anomaly on one must not discard the
+      // other side's valid amount. A user index above the market index should
+      // be impossible, so treat it as a signal, not a reason to abort the run.
+      const side = (label: string, compute: () => bigint): bigint => {
+        try {
+          return compute();
+        } catch (error) {
+          stats.anomalies += 1;
+          this.warnWithinBudget(
+            stats,
+            `[V2][${network}][${blockTag}] ${label} math rejected market=${market} user=${user}: ${
+              (error as Error).message
+            }`,
+          );
+          return 0n;
+        }
+      };
+
+      const pending =
+        side('supply', () =>
+          pendingSupply({
+            projectedIndex: boundary.projectedSupplyIndex,
+            userIndex: userIndexes.supplierIndex,
+            userBalance: position.supplyBalance,
+          }),
+        ) +
+        side('borrow', () =>
+          pendingBorrow({
+            projectedIndex: boundary.projectedBorrowIndex,
+            userIndex: userIndexes.borrowerIndex,
+            borrowBalanceStored: position.borrowBalance,
+            marketBorrowIndex: boundary.marketBorrowIndex,
+          }),
+        );
+
+      if (pending !== 0n) out.set(user, pending);
+    }
+
+    return out;
+  }
+
+  /** Pass 1: balances. This is what lets pass 2 skip closed positions. */
+  private async readPositions(params: {
+    network: string;
+    market: string;
+    users: string[];
+    blockTag: number;
+    stats: V2PendingStats;
+  }): Promise<Map<string, UserPosition>> {
+    const { network, market, users, blockTag, stats } = params;
+
     const results = await this.historical.callMany({
       network,
       blockTag,
-      calls,
+      chunkSize: this.callChunkSize,
+      calls: users.flatMap((user) => [
+        {
+          target: market,
+          callData: this.cTokenInterface.encodeFunctionData('balanceOf', [
+            user,
+          ]),
+        },
+        {
+          target: market,
+          callData: this.cTokenInterface.encodeFunctionData(
+            'borrowBalanceStored',
+            [user],
+          ),
+        },
+      ]),
     });
 
+    const out = new Map<string, UserPosition>();
+
     for (let i = 0; i < users.length; i++) {
-      const user = users[i]!;
-      const chunk = results.slice(i * 4, i * 4 + 4);
-      if (chunk.some((result) => !result?.success)) {
-        this.logger.warn(
-          `[V2][${network}][${blockTag}] pending state failed market=${market} user=${user}`,
+      const user = users[i]!.toLowerCase();
+      const balanceResult = results[i * 2];
+      const borrowResult = results[i * 2 + 1];
+
+      if (!balanceResult?.success || !borrowResult?.success) {
+        stats.failures += 1;
+        this.warnWithinBudget(
+          stats,
+          `[V2][${network}][${blockTag}] position read failed market=${market} user=${user}`,
         );
         continue;
       }
 
+      // Decoding is guarded per user: a single malformed response must cost one
+      // user, not throw out of here and zero the whole market page.
+      let supplyBalance: bigint;
+      let borrowBalance: bigint;
       try {
-        const supplierIndex = this.decodeUint(
-          this.comptrollerInterface,
-          'compSupplierIndex',
-          chunk[0]!.returnData,
-        );
-        const balance = this.decodeUint(
+        supplyBalance = this.decodeUint(
           this.cTokenInterface,
           'balanceOf',
-          chunk[1]!.returnData,
+          balanceResult.returnData,
         );
-        const borrowerIndex = this.decodeUint(
-          this.comptrollerInterface,
-          'compBorrowerIndex',
-          chunk[2]!.returnData,
-        );
-        const borrowBalance = this.decodeUint(
+        borrowBalance = this.decodeUint(
           this.cTokenInterface,
           'borrowBalanceStored',
-          chunk[3]!.returnData,
+          borrowResult.returnData,
         );
-        const pending =
-          pendingSupply({
-            projectedIndex: boundary.projectedSupplyIndex,
-            userIndex: supplierIndex,
-            userBalance: balance,
-          }) +
-          pendingBorrow({
-            projectedIndex: boundary.projectedBorrowIndex,
-            userIndex: borrowerIndex,
-            borrowBalanceStored: borrowBalance,
-            marketBorrowIndex: boundary.marketBorrowIndex,
-          });
-        if (pending !== 0n) out.set(user.toLowerCase(), pending);
       } catch (error) {
-        this.logger.warn(
-          `[V2][${network}][${blockTag}] pending decode failed market=${market} user=${user}: ${
+        stats.failures += 1;
+        this.warnWithinBudget(
+          stats,
+          `[V2][${network}][${blockTag}] position decode failed market=${market} user=${user}: ${
             (error as Error).message
           }`,
+        );
+        continue;
+      }
+
+      if (supplyBalance === 0n && borrowBalance === 0n) continue;
+      out.set(user, { supplyBalance, borrowBalance });
+    }
+
+    return out;
+  }
+
+  /**
+   * Pass 2: the checkpointed index, read only on the side where the user holds
+   * a position — so 0, 1 or 2 calls per user rather than a flat 2.
+   */
+  private async readUserIndexes(params: {
+    network: string;
+    comptroller: string;
+    market: string;
+    positions: Map<string, UserPosition>;
+    blockTag: number;
+    stats: V2PendingStats;
+  }): Promise<Map<string, UserCompIndexes>> {
+    const { network, comptroller, market, positions, blockTag, stats } = params;
+    const out = new Map<string, UserCompIndexes>();
+    if (positions.size === 0) return out;
+
+    const wanted: Array<{ user: string; supply: boolean; borrow: boolean }> =
+      [];
+    const calls: Array<{ target: string; callData: string }> = [];
+
+    for (const [user, position] of positions) {
+      const supply = position.supplyBalance > 0n;
+      const borrow = position.borrowBalance > 0n;
+      wanted.push({ user, supply, borrow });
+
+      if (supply) {
+        calls.push({
+          target: comptroller,
+          callData: this.comptrollerInterface.encodeFunctionData(
+            'compSupplierIndex',
+            [market, user],
+          ),
+        });
+      }
+      if (borrow) {
+        calls.push({
+          target: comptroller,
+          callData: this.comptrollerInterface.encodeFunctionData(
+            'compBorrowerIndex',
+            [market, user],
+          ),
+        });
+      }
+    }
+
+    const results = await this.historical.callMany({
+      network,
+      blockTag,
+      chunkSize: this.callChunkSize,
+      calls,
+    });
+
+    // Results are flat, so walk them with a cursor that advances by exactly the
+    // number of calls each user asked for.
+    let cursor = 0;
+    for (const entry of wanted) {
+      const supplyResult = entry.supply ? results[cursor++] : undefined;
+      const borrowResult = entry.borrow ? results[cursor++] : undefined;
+
+      if (
+        (entry.supply && !supplyResult?.success) ||
+        (entry.borrow && !borrowResult?.success)
+      ) {
+        stats.failures += 1;
+        this.warnWithinBudget(
+          stats,
+          `[V2][${network}][${blockTag}] user index read failed market=${market} user=${entry.user}`,
+        );
+        continue;
+      }
+
+      // Guarded per user for the same reason as the balance decode above. Note
+      // the cursor has already advanced, so a throw here cannot desynchronise
+      // the remaining entries.
+      try {
+        out.set(entry.user, {
+          supplierIndex: supplyResult
+            ? this.decodeUint(
+                this.comptrollerInterface,
+                'compSupplierIndex',
+                supplyResult.returnData,
+              )
+            : 0n,
+          borrowerIndex: borrowResult
+            ? this.decodeUint(
+                this.comptrollerInterface,
+                'compBorrowerIndex',
+                borrowResult.returnData,
+              )
+            : 0n,
+        });
+      } catch (error) {
+        stats.failures += 1;
+        this.warnWithinBudget(
+          stats,
+          `[V2][${network}][${blockTag}] user index decode failed market=${market} user=${
+            entry.user
+          }: ${(error as Error).message}`,
         );
       }
     }
@@ -302,5 +521,22 @@ export class V2CompStateService {
     data: string,
   ): bigint {
     return BigInt(iface.decodeFunctionResult(functionName, data)[0]);
+  }
+
+  /**
+   * Per-user failures can run into the hundreds of thousands if the RPC
+   * degrades, so warnings get their own budget. It has to be a separate counter
+   * rather than a threshold on `failures`: the caller bumps that one by a whole
+   * page at a time, which would silence every later diagnostic after one bad
+   * market.
+   */
+  private warnWithinBudget(stats: V2PendingStats, message: string): void {
+    if (stats.logged >= this.maxLoggedWarnings) return;
+    stats.logged += 1;
+    this.logger.warn(
+      stats.logged === this.maxLoggedWarnings
+        ? `${message} (further warnings suppressed)`
+        : message,
+    );
   }
 }

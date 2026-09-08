@@ -1,5 +1,29 @@
 {
-  "v2": [],
+  "v2": [
+    {
+      "network": "mainnet",
+      "chainId": 1,
+      "startBlock": 14331586,
+      "endBlock": 15000000,
+      "markets": [
+        {
+          "symbol": "cLINK",
+          "address": "0xFAce851a4921ce59e912d19329929CE6da6EB0c7",
+          "startBlock": 14331586
+        },
+        {
+          "symbol": "cWBTC",
+          "address": "0xccF4429DB6322D5C611ee964527D42E5d685DD6a",
+          "startBlock": 14331586
+        },
+        {
+          "symbol": "cUNI",
+          "address": "0x35A18000230DA775CAc24873d00Ff85BccdeD550",
+          "startBlock": 14331586
+        }
+      ]
+    }
+  ],
   "v3": [
     {
       "network": "mainnet",
