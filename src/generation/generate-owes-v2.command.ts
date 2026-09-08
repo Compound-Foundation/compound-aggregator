@@ -10,6 +10,7 @@ import { fmtPct } from 'common/utils/fmt-pct';
 import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { NetworkConfig } from 'network/network.types';
 import { OwesExportService } from './owes-export.service';
+import { RangesService } from './ranges.service';
 import {
   V2CompStateService,
   V2MarketRewardBoundary,
@@ -37,6 +38,7 @@ export class GenerateOwesV2Command extends CommandRunner {
     private readonly exp: OwesExportService,
     private readonly v2State: V2CompStateService,
     private readonly config: ConfigService,
+    private readonly ranges: RangesService,
   ) {
     super();
 
@@ -81,6 +83,11 @@ export class GenerateOwesV2Command extends CommandRunner {
     const networks = this.networksList.map((n) => n.network);
     const incompleteNetworks: string[] = [];
 
+    // Snapshot each network at its fixed reward-range endBlock (from
+    // ranges.json) instead of the live chain head, so repeated runs are
+    // reproducible. Reading state at `endBlock` is inclusive of that block.
+    const endBlockByNetwork = await this.resolveEndBlocks();
+
     const PAGE = this.pageSize;
 
     await this.runWithConcurrency(
@@ -98,13 +105,15 @@ export class GenerateOwesV2Command extends CommandRunner {
           CompoundVersion.V2,
           network,
         );
-        const blockTag = await this.v2State.latestBlock(network);
+        const endBlock = endBlockByNetwork.get(network);
+        const blockTag = endBlock ?? (await this.v2State.latestBlock(network));
+        const blockSource = endBlock == null ? 'latestBlock' : 'ranges.json';
         const pendingByUser = new Map<string, bigint>();
         const boundaryCache = new Map<string, V2MarketRewardBoundary>();
         const stats = emptyPendingStats();
 
         this.logger.log(
-          `[V2][${network}] remaining = compAccrued + pending at block=${blockTag} users=${totalUsers}`,
+          `[V2][${network}] remaining = compAccrued + pending at block=${blockTag} (${blockSource}) users=${totalUsers}`,
         );
 
         let offset = 0;
@@ -303,6 +312,26 @@ export class GenerateOwesV2Command extends CommandRunner {
     for (const n of Object.keys(owes)) owes[n] = totals[n] ?? 0n;
 
     return { owes, incompleteNetworks };
+  }
+
+  /**
+   * Fixed snapshot block per network, taken from the V2 reward range endBlock
+   * in ranges.json. Networks absent from ranges.json fall back to the live head
+   * (logged), so a missing entry degrades gracefully instead of aborting owes.
+   */
+  private async resolveEndBlocks(): Promise<Map<string, number>> {
+    const out = new Map<string, number>();
+    try {
+      const ranges = await this.ranges.load(CompoundVersion.V2);
+      for (const range of ranges) out.set(range.network, range.end.number);
+    } catch (err) {
+      this.logger.warn(
+        `[V2][owes] could not resolve endBlocks from ranges.json; falling back to latestBlock: ${
+          (err as Error).message
+        }`,
+      );
+    }
+    return out;
   }
 
   private saveDetailedOwesV2() {

@@ -9,6 +9,7 @@ import { fmtPct } from 'common/utils/fmt-pct';
 import { NetworkConfig } from 'network/network.types';
 import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { OwesExportService } from './owes-export.service';
+import { RangesService } from './ranges.service';
 
 @Command({ name: 'owes:generate-v3', description: 'Generate V3 owes' })
 export class GenerateOwesV3Command extends CommandRunner {
@@ -29,6 +30,7 @@ export class GenerateOwesV3Command extends CommandRunner {
     private readonly rewards: RewardsService,
     private readonly exp: OwesExportService,
     private readonly config: ConfigService,
+    private readonly ranges: RangesService,
   ) {
     super();
   }
@@ -64,15 +66,27 @@ export class GenerateOwesV3Command extends CommandRunner {
     const owes = this.rewards.zeroOwes(CompoundVersion.V3);
     const networks = this.networksList.map((n) => n.network);
 
+    // Snapshot each network at its fixed reward-range endBlock (from
+    // ranges.json) instead of the live chain head. getRewardOwed is a live
+    // on-chain balance that shrinks whenever a user claims (even dust), so a
+    // fixed block is required for reproducible owes. endBlock is inclusive.
+    const endBlockByNetwork = await this.resolveEndBlocks();
+
     const PAGE = this.pageSize;
 
     await this.runWithConcurrency(
       networks,
       this.maxParallelNetworks,
       async (network) => {
+        const blockTag = endBlockByNetwork.get(network);
         const totalUsers = this.db.countUsersForNetwork(
           CompoundVersion.V3,
           network,
+        );
+        this.logger.log(
+          `[V3][${network}] owed at block=${
+            blockTag ?? 'latest'
+          } (${blockTag == null ? 'latestBlock' : 'ranges.json'}) users=${totalUsers}`,
         );
 
         let offset = 0;
@@ -107,6 +121,7 @@ export class GenerateOwesV3Command extends CommandRunner {
               network,
               users: batch,
               chunkSize: this.multicallChunkSize,
+              blockTag,
             });
 
             this.db.upsertOwesBatch({
@@ -133,6 +148,26 @@ export class GenerateOwesV3Command extends CommandRunner {
     for (const n of Object.keys(owes)) owes[n] = totals[n] ?? 0n;
 
     return owes;
+  }
+
+  /**
+   * Fixed snapshot block per network, taken from the V3 reward range endBlock
+   * in ranges.json. Networks absent from ranges.json fall back to the live head
+   * (logged), so a missing entry degrades gracefully instead of aborting owes.
+   */
+  private async resolveEndBlocks(): Promise<Map<string, number>> {
+    const out = new Map<string, number>();
+    try {
+      const ranges = await this.ranges.load(CompoundVersion.V3);
+      for (const range of ranges) out.set(range.network, range.end.number);
+    } catch (err) {
+      this.logger.warn(
+        `[V3][owes] could not resolve endBlocks from ranges.json; falling back to latest: ${
+          (err as Error).message
+        }`,
+      );
+    }
+    return out;
   }
 
   async run(): Promise<void> {

@@ -463,6 +463,7 @@ export class RewardsService {
           chunkSize?: number;
           maxLoggedFailuresPerChunk?: number;
           includeZero?: boolean;
+          blockTag?: number;
         },
   ): Promise<OwedRow[]> {
     const includeZero = params.includeZero ?? false;
@@ -572,8 +573,12 @@ export class RewardsService {
     }
 
     // V3
-    const { network, users } = params;
+    const { network, users, blockTag } = params;
     const chunkSize = params.chunkSize ?? 400;
+    // Pin the read to a fixed block when provided: getRewardOwed is a live
+    // on-chain balance that decreases whenever a user claims (even dust), so
+    // reading at `latest` is not reproducible.
+    const callOverrides = blockTag == null ? {} : { blockTag };
 
     if (!users.length) return [];
 
@@ -607,7 +612,7 @@ export class RewardsService {
           `[V3][owes][${network}] Multicall3.aggregate3 chunk=${i}-${
             i + chunk.length - 1
           }`,
-          () => multicall3.aggregate3!.staticCall(calls),
+          () => multicall3.aggregate3!.staticCall(calls, callOverrides),
         );
       } catch (err) {
         this.logger.error(
