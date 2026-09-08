@@ -29,7 +29,7 @@
       "network": "mainnet",
       "chainId": 1,
       "startBlock": 15331586,
-      "endBlock": 25702040,
+      "endBlock": 25925800,
       "markets": [
         {
           "symbol": "cUSDCv3",

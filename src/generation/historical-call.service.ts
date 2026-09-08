@@ -51,17 +51,24 @@ export class HistoricalCallService {
 
   constructor(private readonly providers: ProviderFactory) {}
 
+  /**
+   * `chunkSize` widens the multicall for cheap head-block reads (owes), where
+   * the node bills per sub-call rather than per request. Archive callers should
+   * leave it alone. The adaptive shrink on failure still wins over it.
+   */
   public async callMany(params: {
     network: string;
     blockTag: number;
     calls: HistoricalCall[];
+    chunkSize?: number;
   }): Promise<HistoricalCallResult[]> {
     const { network, blockTag, calls } = params;
     if (calls.length === 0) return [];
 
+    const chunkSize = params.chunkSize ?? this.chunkSize;
     const multicallVersion = await this.getMulticallVersion(network, blockTag);
     if (!multicallVersion) {
-      return this.callDirectInChunks(network, blockTag, calls);
+      return this.callDirectInChunks(network, blockTag, calls, chunkSize);
     }
 
     return this.callMulticallConcurrently(
@@ -69,6 +76,7 @@ export class HistoricalCallService {
       network,
       blockTag,
       calls,
+      chunkSize,
     );
   }
 
@@ -77,24 +85,25 @@ export class HistoricalCallService {
     network: string,
     blockTag: number,
     calls: HistoricalCall[],
+    requestedChunkSize: number,
   ): Promise<HistoricalCallResult[]> {
     const out: HistoricalCallResult[] = [];
     let nextOffset = 0;
-    const initialChunkSize =
-      this.multicallChunkLimits.get(
-        this.multicallChunkKey(network, blockTag, version),
-      ) ?? this.chunkSize;
+    const chunkSizeNow = () =>
+      Math.min(
+        requestedChunkSize,
+        this.multicallChunkLimits.get(
+          this.multicallChunkKey(network, blockTag, version),
+        ) ?? requestedChunkSize,
+      );
     const workerCount = Math.min(
       this.multicallConcurrency,
-      Math.ceil(calls.length / initialChunkSize),
+      Math.ceil(calls.length / chunkSizeNow()),
     );
 
     const workers = Array.from({ length: workerCount }, async () => {
       while (true) {
-        const chunkSize =
-          this.multicallChunkLimits.get(
-            this.multicallChunkKey(network, blockTag, version),
-          ) ?? this.chunkSize;
+        const chunkSize = chunkSizeNow();
         const offset = nextOffset;
         if (offset >= calls.length) return;
         const end = Math.min(offset + chunkSize, calls.length);
@@ -125,14 +134,15 @@ export class HistoricalCallService {
     network: string,
     blockTag: number,
     calls: HistoricalCall[],
+    chunkSize: number,
   ): Promise<HistoricalCallResult[]> {
     const out: HistoricalCallResult[] = [];
-    for (let offset = 0; offset < calls.length; offset += this.chunkSize) {
+    for (let offset = 0; offset < calls.length; offset += chunkSize) {
       out.push(
         ...(await this.callDirect(
           network,
           blockTag,
-          calls.slice(offset, offset + this.chunkSize),
+          calls.slice(offset, offset + chunkSize),
         )),
       );
     }
@@ -396,7 +406,11 @@ export class HistoricalCallService {
     chunkSize: number,
   ): void {
     const key = this.multicallChunkKey(network, blockTag, version);
-    const current = this.multicallChunkLimits.get(key) ?? this.chunkSize;
+    // Baseline on the observed split point, not on the default chunk size:
+    // seeding with this.chunkSize would clamp every caller to <= 200 after the
+    // first split, including ones that asked for a wider chunk.
+    const current =
+      this.multicallChunkLimits.get(key) ?? Number.MAX_SAFE_INTEGER;
     this.multicallChunkLimits.set(key, Math.min(current, chunkSize));
   }
 

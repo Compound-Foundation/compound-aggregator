@@ -454,6 +454,7 @@ export class RewardsService {
           chunkSize?: number;
           maxLoggedFailuresPerChunk?: number;
           includeZero?: boolean;
+          blockTag?: number;
         }
       | {
           version: CompoundVersion.V3;
@@ -468,8 +469,9 @@ export class RewardsService {
     const maxLoggedFailuresPerChunk = params.maxLoggedFailuresPerChunk ?? 5;
 
     if (params.version === CompoundVersion.V2) {
-      const { network, market: comptroller } = params;
+      const { network, market: comptroller, blockTag } = params;
       const chunkSize = params.chunkSize ?? 1000;
+      const callOverrides = blockTag == null ? {} : { blockTag };
 
       if (!params.users.length) return [];
 
@@ -506,7 +508,7 @@ export class RewardsService {
             `[V2][owes][${network}] Multicall3.aggregate3 chunk=${i}-${
               i + chunk.length - 1
             }`,
-            () => multicall3.aggregate3!.staticCall(calls),
+            () => multicall3.aggregate3!.staticCall(calls, callOverrides),
           );
         } catch (err) {
           this.logger.error(

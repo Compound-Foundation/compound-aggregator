@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { Command, CommandRunner } from 'nest-commander';
 import { ConfigService } from '@nestjs/config';
+import { formatUnits } from 'ethers';
 
 import { RewardsService } from 'contract/rewards.service';
 import { JsonService } from 'json/json.service';
@@ -9,6 +10,13 @@ import { fmtPct } from 'common/utils/fmt-pct';
 import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { NetworkConfig } from 'network/network.types';
 import { OwesExportService } from './owes-export.service';
+import {
+  V2CompStateService,
+  V2MarketRewardBoundary,
+  emptyPendingStats,
+  isPendingComplete,
+} from './v2-comp-state.service';
+import { addUserAmount, remainingV2OwedRows } from './v2-owes.math';
 
 @Command({ name: 'owes:generate-v2', description: 'Generate V2 owes' })
 export class GenerateOwesV2Command extends CommandRunner {
@@ -27,6 +35,7 @@ export class GenerateOwesV2Command extends CommandRunner {
     private readonly db: RuntimeDbService,
     private readonly rewards: RewardsService,
     private readonly exp: OwesExportService,
+    private readonly v2State: V2CompStateService,
     private readonly config: ConfigService,
   ) {
     super();
@@ -64,9 +73,13 @@ export class GenerateOwesV2Command extends CommandRunner {
     await Promise.all(workers);
   }
 
-  private async calcOwesV2(): Promise<Record<string, bigint>> {
+  private async calcOwesV2(): Promise<{
+    owes: Record<string, bigint>;
+    incompleteNetworks: string[];
+  }> {
     const owes = this.rewards.zeroOwes(CompoundVersion.V2);
     const networks = this.networksList.map((n) => n.network);
+    const incompleteNetworks: string[] = [];
 
     const PAGE = this.pageSize;
 
@@ -85,6 +98,14 @@ export class GenerateOwesV2Command extends CommandRunner {
           CompoundVersion.V2,
           network,
         );
+        const blockTag = await this.v2State.latestBlock(network);
+        const pendingByUser = new Map<string, bigint>();
+        const boundaryCache = new Map<string, V2MarketRewardBoundary>();
+        const stats = emptyPendingStats();
+
+        this.logger.log(
+          `[V2][${network}] remaining = compAccrued + pending at block=${blockTag} users=${totalUsers}`,
+        );
 
         let offset = 0;
         let page = 0;
@@ -98,7 +119,7 @@ export class GenerateOwesV2Command extends CommandRunner {
             2,
           );
           this.logger.verbose(
-            `[V2][${network}] page=${page} (${pct}) offset=${offset}/${totalUsers}`,
+            `[V2][${network}][pending] page=${page} (${pct}) offset=${offset}/${totalUsers}`,
           );
 
           const batch = await this.db.fetchUsersForNetwork(
@@ -110,33 +131,169 @@ export class GenerateOwesV2Command extends CommandRunner {
 
           if (batch.length === 0) break;
 
-          // RewardsService V2 only needs userAddress
-          const v2Users = batch.map((u) => ({ userAddress: u.userAddress }));
+          const usersByMarket = new Map<string, string[]>();
+          for (const row of batch) {
+            const market = row.cometAddress.toLowerCase();
+            const users = usersByMarket.get(market);
+            if (users) users.push(row.userAddress);
+            else usersByMarket.set(market, [row.userAddress]);
+          }
 
-          try {
-            const owedRows = await this.rewards.owedForUsers({
-              version: CompoundVersion.V2,
-              network,
-              market: comptroller, // V2 "market" = comptroller
-              users: v2Users,
-              chunkSize: PAGE, // multicall chunk
-            });
+          for (const [market, users] of usersByMarket) {
+            let boundary: V2MarketRewardBoundary | null =
+              boundaryCache.get(market) ?? null;
+            if (!boundary) {
+              try {
+                boundary = await this.v2State.readMarketBoundary({
+                  network,
+                  comptroller,
+                  market,
+                  blockTag,
+                });
+              } catch (err) {
+                this.logger.error(
+                  `[V2][owes][${network}] market boundary failed market=${market}`,
+                  err as any,
+                );
+                boundary = null;
+              }
+              // Only successes are cached: caching a transient RPC failure
+              // would disable the market for the rest of a multi-hour run.
+              if (boundary) boundaryCache.set(market, boundary);
+            }
+            if (!boundary) {
+              stats.skippedUsers += users.length;
+              if (!stats.skippedMarkets.includes(market)) {
+                stats.skippedMarkets.push(market);
+              }
+              continue;
+            }
 
-            this.db.upsertOwesBatch({
-              network,
-              version: CompoundVersion.V2,
-              rows: owedRows,
-            });
-          } catch (err) {
-            this.logger.error(
-              `[V2][owes][${network}][page=${page}] owedForUsers failed`,
-              err as any,
-            );
-            // Skip this page and continue
+            try {
+              const pending = await this.v2State.readPendingByUser({
+                network,
+                comptroller,
+                market,
+                users,
+                stats,
+                blockTag,
+                boundary,
+              });
+              for (const [user, amount] of pending) {
+                addUserAmount(pendingByUser, user, amount);
+              }
+            } catch (err) {
+              stats.failures += users.length;
+              this.logger.error(
+                `[V2][owes][${network}][page=${page}] pending failed market=${market}`,
+                err as any,
+              );
+            }
           }
 
           offset += batch.length;
           if (batch.length < PAGE) break;
+        }
+
+        const written = new Set<string>();
+        offset = 0;
+        page = 0;
+
+        while (true) {
+          page += 1;
+
+          const pct = fmtPct(
+            Math.min(offset, totalUsers),
+            Math.max(1, totalUsers),
+            2,
+          );
+          this.logger.verbose(
+            `[V2][${network}][accrued] page=${page} (${pct}) offset=${offset}/${totalUsers}`,
+          );
+
+          const batch = await this.db.fetchUsersForNetwork(
+            CompoundVersion.V2,
+            network,
+            PAGE,
+            offset,
+          );
+
+          if (batch.length === 0) break;
+
+          const users = [
+            ...new Set(batch.map((u) => u.userAddress.toLowerCase())),
+          ].filter((user) => !written.has(user));
+
+          if (users.length === 0) {
+            offset += batch.length;
+            if (batch.length < PAGE) break;
+            continue;
+          }
+
+          try {
+            const accruedRows = await this.rewards.owedForUsers({
+              version: CompoundVersion.V2,
+              network,
+              market: comptroller,
+              users,
+              chunkSize: PAGE,
+              includeZero: true,
+              blockTag,
+            });
+            const accruedByUser = new Map(
+              accruedRows.map((row) => [
+                row.userAddress.toLowerCase(),
+                row.owed,
+              ]),
+            );
+
+            this.db.upsertOwesBatch({
+              network,
+              version: CompoundVersion.V2,
+              rows: remainingV2OwedRows({
+                marketAddress: comptroller,
+                users,
+                accruedByUser,
+                pendingByUser,
+              }),
+            });
+            for (const user of users) written.add(user);
+          } catch (err) {
+            stats.failures += users.length;
+            this.logger.error(
+              `[V2][owes][${network}][page=${page}] owedForUsers failed`,
+              err as any,
+            );
+          }
+
+          offset += batch.length;
+          if (batch.length < PAGE) break;
+        }
+
+        let pendingTotal = 0n;
+        for (const amount of pendingByUser.values()) pendingTotal += amount;
+        this.logger.log(
+          `[V2][${network}] pending users=${
+            pendingByUser.size
+          } pending=${formatUnits(
+            pendingTotal,
+            18,
+          )} COMP pendingRaw=${pendingTotal.toString()} failures=${
+            stats.failures
+          } anomalies=${stats.anomalies} skippedMarkets=${
+            stats.skippedMarkets.length
+          } skippedUsers=${stats.skippedUsers}`,
+        );
+
+        if (!isPendingComplete(stats)) {
+          incompleteNetworks.push(network);
+          this.logger.error(
+            `[V2][owes][${network}] result is incomplete: ${
+              stats.failures
+            } failed reads, ${stats.anomalies} anomalies, ${
+              stats.skippedUsers
+            } users dropped with markets [${stats.skippedMarkets.join(', ')}]`,
+          );
         }
       },
     );
@@ -145,7 +302,7 @@ export class GenerateOwesV2Command extends CommandRunner {
     const totals = this.db.getOwesTotalsByNetwork(CompoundVersion.V2);
     for (const n of Object.keys(owes)) owes[n] = totals[n] ?? 0n;
 
-    return owes;
+    return { owes, incompleteNetworks };
   }
 
   private saveDetailedOwesV2() {
@@ -189,9 +346,20 @@ export class GenerateOwesV2Command extends CommandRunner {
       await this.db.assemble();
       this.db.resetOwes(CompoundVersion.V2);
 
-      const resultsV2 = await this.calcOwesV2();
+      const { owes, incompleteNetworks } = await this.calcOwesV2();
 
-      const owesV2 = this.rewards.formatOwes(resultsV2);
+      // A degraded RPC yields a snapshot that is silently too low, and CI
+      // commits whatever is on disk. Leave the previous artifact in place
+      // rather than publishing a number nobody can tell is wrong.
+      if (incompleteNetworks.length > 0) {
+        throw new Error(
+          `refusing to publish incomplete V2 owes for: ${incompleteNetworks.join(
+            ', ',
+          )}`,
+        );
+      }
+
+      const owesV2 = this.rewards.formatOwes(owes);
       this.json.writeOwes(owesV2, CompoundVersion.V2);
 
       this.exp.exportDetailedOwes(CompoundVersion.V2);
@@ -204,6 +372,8 @@ export class GenerateOwesV2Command extends CommandRunner {
         'An error occurred while generating owes V2:',
         error as any,
       );
+      // Fail the CI step instead of leaving a green run behind a stale file.
+      process.exitCode = 1;
       try {
         this.db.closeRuntime();
       } catch {}
