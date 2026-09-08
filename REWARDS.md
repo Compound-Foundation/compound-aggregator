@@ -21,9 +21,9 @@
 
 | Network   | Rewards at contract |      Rewards owed | Rewards delta (at contract - owed) |
 | :-------- | ------------------: | ----------------: | ---------------------------------: |
-| mainnet   |           0.00 COMP |     37556.09 COMP |                     -37556.09 COMP |
-| **TOTAL** |       **0.00 COMP** | **37556.09 COMP** |                 **-37556.09 COMP** |
+| mainnet   |           0.00 COMP |     37562.61 COMP |                     -37562.61 COMP |
+| **TOTAL** |       **0.00 COMP** | **37562.61 COMP** |                 **-37562.61 COMP** |
 
 ---
 
-*Last updated:* 2026-09-07 18:45:56.820 UTC
+*Last updated:* 2026-09-08 17:46:10.027 UTC
