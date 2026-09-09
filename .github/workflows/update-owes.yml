@@ -3,7 +3,7 @@ name: Update owes
 on:
   workflow_dispatch:
   schedule:
-    - cron: '5 13 * * *' # daily 13:05 UTC
+    - cron: "5 13 * * *" # daily 13:05 UTC
 
 permissions:
   contents: write
@@ -83,7 +83,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
       - name: Enable Corepack (Yarn)
         run: corepack enable
@@ -183,10 +183,6 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
 
-          # ranges.json carries the snapshot block the owes numbers were read
-          # at. Without it the refreshed block is discarded with the runner and
-          # the next run starts from the stale one, so the file has to land in
-          # the same commit as the numbers it explains.
           git add owes-v2.json owes-v3.json REWARDS.md ranges.json
 
           git diff --cached --quiet || git commit -m "chore: auto-update owes"
