@@ -3,7 +3,7 @@ name: Update owes
 on:
   workflow_dispatch:
   schedule:
-    - cron: '5 13 * * *' # daily 13:05 UTC
+    - cron: "5 13 * * *" # daily 13:05 UTC
 
 permissions:
   contents: write
@@ -83,7 +83,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
       - name: Enable Corepack (Yarn)
         run: corepack enable
@@ -100,6 +100,26 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
+      # Must run BEFORE indexing. Owes read chain state at the ranges.json
+      # endBlock, so that block has to be one the indexer has already covered.
+      # Refreshing it after indexing would pin the snapshot ahead of the
+      # indexer cursor, and users who opened a position in the gap would be on
+      # chain but missing from the users table -- a silently understated debt
+      # that nothing downstream checks.
+      - name: Refresh V3 range endBlocks
+        env:
+          RPC_MAINNET: ${{ secrets.RPC_MAINNET }}
+          RPC_ARBITRUM: ${{ secrets.RPC_ARBITRUM }}
+          RPC_BASE: ${{ secrets.RPC_BASE }}
+          RPC_OPTIMISM: ${{ secrets.RPC_OPTIMISM }}
+          RPC_POLYGON: ${{ secrets.RPC_POLYGON }}
+          RPC_SCROLL: ${{ secrets.RPC_SCROLL }}
+          RPC_LINEA: ${{ secrets.RPC_LINEA }}
+          RPC_MANTLE: ${{ secrets.RPC_MANTLE }}
+          RPC_UNICHAIN: ${{ secrets.RPC_UNICHAIN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn cli:ranges:update:v3
 
       - name: Run indexing
         env:
@@ -163,7 +183,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
 
-          git add owes-v2.json owes-v3.json REWARDS.md
+          git add owes-v2.json owes-v3.json REWARDS.md ranges.json
 
           git diff --cached --quiet || git commit -m "chore: auto-update owes"
           git pull --rebase
