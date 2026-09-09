@@ -14,7 +14,7 @@ import { MerklAirdropExportService } from '../src/generation/merkl-airdrop-expor
 import { ResolvedRewardRange } from '../src/generation/period-rewards.types';
 
 describe('MerklAirdropExportService', () => {
-  it('writes full remaining debt by default', () => {
+  it('writes full remaining debt by default', async () => {
     const temp = mkdtempSync(join(tmpdir(), 'compound-merkl-'));
     const originalCwd = process.cwd();
     process.chdir(temp);
@@ -32,7 +32,7 @@ describe('MerklAirdropExportService', () => {
       const user = ethers.getAddress(
         '0x00000000000000000000000000000000000000c3',
       );
-      const [file] = service.export({
+      const [file] = await service.export({
         version: CompoundVersion.V2,
         ranges: [range],
         userTotals: [
@@ -109,7 +109,7 @@ describe('MerklAirdropExportService', () => {
     }
   });
 
-  it('writes the effective V3 start range for each market to the audit', () => {
+  it('writes the effective V3 start range for each market to the audit', async () => {
     const temp = mkdtempSync(join(tmpdir(), 'compound-merkl-'));
     const originalCwd = process.cwd();
     process.chdir(temp);
@@ -144,7 +144,7 @@ describe('MerklAirdropExportService', () => {
       const rewardToken = ethers.getAddress(
         '0x00000000000000000000000000000000000000b2',
       );
-      const [file] = service.export(
+      const [file] = await service.export(
         {
           version: CompoundVersion.V3,
           ranges: [range],
@@ -229,7 +229,7 @@ describe('MerklAirdropExportService', () => {
     }
   });
 
-  it('marks a filtered V2 market export as partial', () => {
+  it('marks a filtered V2 market export as partial', async () => {
     const temp = mkdtempSync(join(tmpdir(), 'compound-merkl-'));
     const originalCwd = process.cwd();
     process.chdir(temp);
@@ -257,7 +257,7 @@ describe('MerklAirdropExportService', () => {
       const user = ethers.getAddress(
         '0x00000000000000000000000000000000000000c3',
       );
-      const [file] = service.export({
+      const [file] = await service.export({
         version: CompoundVersion.V2,
         ranges: [range],
         userTotals: [
@@ -311,7 +311,7 @@ describe('MerklAirdropExportService', () => {
     }
   });
 
-  it('does not publish an earlier group when a later group is invalid', () => {
+  it('does not publish an earlier group when a later group is invalid', async () => {
     const temp = mkdtempSync(join(tmpdir(), 'compound-merkl-'));
     const originalCwd = process.cwd();
     process.chdir(temp);
@@ -395,7 +395,7 @@ describe('MerklAirdropExportService', () => {
         ],
       };
 
-      expect(() => service.export(result as any)).toThrow(
+      await expect(service.export(result as any)).rejects.toThrow(
         'V3 debt fields are missing',
       );
       const resultDir = join(temp, 'result');

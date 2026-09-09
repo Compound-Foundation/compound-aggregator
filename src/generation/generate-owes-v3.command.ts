@@ -9,6 +9,7 @@ import { fmtPct } from 'common/utils/fmt-pct';
 import { NetworkConfig } from 'network/network.types';
 import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { OwesExportService } from './owes-export.service';
+import { RangesService } from './ranges.service';
 
 @Command({ name: 'owes:generate-v3', description: 'Generate V3 owes' })
 export class GenerateOwesV3Command extends CommandRunner {
@@ -29,6 +30,7 @@ export class GenerateOwesV3Command extends CommandRunner {
     private readonly rewards: RewardsService,
     private readonly exp: OwesExportService,
     private readonly config: ConfigService,
+    private readonly ranges: RangesService,
   ) {
     super();
   }
@@ -60,9 +62,23 @@ export class GenerateOwesV3Command extends CommandRunner {
     await Promise.all(workers);
   }
 
-  private async calcOwesV3(): Promise<Record<string, bigint>> {
+  private async calcOwesV3(): Promise<{
+    owes: Record<string, bigint>;
+    incompleteNetworks: string[];
+  }> {
     const owes = this.rewards.zeroOwes(CompoundVersion.V3);
     const networks = this.networksList.map((n) => n.network);
+    const incompleteNetworks: string[] = [];
+
+    // Snapshot each network at its fixed reward-range endBlock (from
+    // ranges.json) instead of the live chain head. getRewardOwed is a live
+    // on-chain balance that shrinks whenever a user claims (even dust), so a
+    // fixed block is required for reproducible owes. endBlock is inclusive.
+    // Resolved before any RPC work, so a gap in ranges.json fails immediately.
+    const endBlockByNetwork = await this.ranges.snapshotBlocks(
+      CompoundVersion.V3,
+      networks,
+    );
 
     const PAGE = this.pageSize;
 
@@ -70,9 +86,16 @@ export class GenerateOwesV3Command extends CommandRunner {
       networks,
       this.maxParallelNetworks,
       async (network) => {
+        // Non-null: snapshotBlocks throws unless every network resolved.
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const blockTag = endBlockByNetwork.get(network)!;
         const totalUsers = this.db.countUsersForNetwork(
           CompoundVersion.V3,
           network,
+        );
+        let failedPages = 0;
+        this.logger.log(
+          `[V3][${network}] owed at block=${blockTag} (ranges.json) users=${totalUsers}`,
         );
 
         let offset = 0;
@@ -107,6 +130,7 @@ export class GenerateOwesV3Command extends CommandRunner {
               network,
               users: batch,
               chunkSize: this.multicallChunkSize,
+              blockTag,
             });
 
             this.db.upsertOwesBatch({
@@ -115,15 +139,25 @@ export class GenerateOwesV3Command extends CommandRunner {
               rows: owedRows,
             });
           } catch (err) {
+            // A skipped page silently lowers the network total, and the number
+            // is indistinguishable from a genuine drop in debt. Count it and
+            // let the caller refuse to publish, as V2 already does.
+            failedPages += 1;
             this.logger.error(
               `[V3][owes][${network}][page=${page}] owedForUsers failed`,
               err as any,
             );
-            // Skip this page and continue
           }
 
           offset += batch.length;
           if (batch.length < PAGE) break;
+        }
+
+        if (failedPages > 0) {
+          incompleteNetworks.push(network);
+          this.logger.error(
+            `[V3][owes][${network}] result is incomplete: ${failedPages} page(s) failed`,
+          );
         }
       },
     );
@@ -132,7 +166,7 @@ export class GenerateOwesV3Command extends CommandRunner {
     const totals = this.db.getOwesTotalsByNetwork(CompoundVersion.V3);
     for (const n of Object.keys(owes)) owes[n] = totals[n] ?? 0n;
 
-    return owes;
+    return { owes, incompleteNetworks };
   }
 
   async run(): Promise<void> {
@@ -142,14 +176,23 @@ export class GenerateOwesV3Command extends CommandRunner {
       await this.db.assemble();
       this.db.resetOwes(CompoundVersion.V3);
 
-      const resultsV3 = await this.calcOwesV3();
+      const { owes, incompleteNetworks } = await this.calcOwesV3();
 
-      const owesV3 = this.rewards.formatOwes(resultsV3);
+      // A degraded RPC yields a snapshot that is silently too low, and CI
+      // commits whatever is on disk. Leave the previous artifact in place
+      // rather than publishing a number nobody can tell is wrong.
+      if (incompleteNetworks.length > 0) {
+        throw new Error(
+          `refusing to publish incomplete V3 owes for: ${incompleteNetworks.join(
+            ', ',
+          )}`,
+        );
+      }
+
+      const owesV3 = this.rewards.formatOwes(owes);
       this.json.writeOwes(owesV3, CompoundVersion.V3);
 
       this.exp.exportDetailedOwes(CompoundVersion.V3);
-
-      this.db.closeRuntime();
 
       this.logger.log('Generating of totalOwesV3 completed.');
     } catch (error) {
@@ -157,9 +200,18 @@ export class GenerateOwesV3Command extends CommandRunner {
         'An error occurred while generating owes V3:',
         error as any,
       );
+      // Fail the CI step instead of leaving a green run behind a stale file.
+      process.exitCode = 1;
+    } finally {
       try {
         this.db.closeRuntime();
-      } catch {}
+      } catch (error) {
+        // The artifact is already on disk by now, so a failed close is not
+        // worth failing the run over -- but it should not vanish either.
+        this.logger.warn(
+          `failed to close the runtime DB: ${(error as Error).message}`,
+        );
+      }
     }
   }
 }

@@ -142,7 +142,7 @@ export default registerAs('networks', (): NetworkConfig[] => [
     configuratorV3: '0xecab0beea3e5dea0c35d3e69468eac20098032d7',
     rewardsV3: '0x70167d30964cbfdc315ecae02441af747be0c5ee',
     startBlock: 3397679,
-    rewardsCalcEnabled: true,
+    rewardsCalcEnabled: false,
   },
   {
     network: 'linea',

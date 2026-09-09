@@ -38,7 +38,7 @@ export class GenerateRewardsV2MerklCommand extends CommandRunner {
     try {
       const ranges = await this.ranges.load(CompoundVersion.V2, useTestRanges);
       const result = await this.rewards.calculate(ranges);
-      this.merkl.export(result, { period: periodOnly });
+      await this.merkl.export(result, { period: periodOnly });
       this.logger.log('V2 Merkl generation completed.');
     } finally {
       this.db.closeRuntime();

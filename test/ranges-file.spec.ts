@@ -125,4 +125,72 @@ describe('ranges.json', () => {
     expect(testRange!.end.number).toBe(testFile.v2[0]!.endBlock);
     expect(testRange!.markets).toHaveLength(3);
   });
+
+  describe('snapshotBlocks', () => {
+    const build = () => {
+      const configuredV2Range = (
+        JSON.parse(
+          readFileSync(join(process.cwd(), 'ranges.json'), 'utf8'),
+        ) as RangeFile
+      ).v2[0]!;
+      const provider = {
+        getBlockNumber: jest
+          .fn()
+          .mockResolvedValue(configuredV2Range.endBlock + 1000),
+        getBlock: jest.fn().mockImplementation(async (number: number) => ({
+          number,
+          hash: `0x${number.toString(16).padStart(64, '0')}`,
+          timestamp: number,
+        })),
+      };
+      const config = {
+        getOrThrow: jest.fn().mockReturnValue([
+          {
+            network: 'mainnet',
+            chainId: 1,
+            reorgWindow: 64,
+            comptrollerV2: '0x0000000000000000000000000000000000000001',
+            comp: '0x0000000000000000000000000000000000000002',
+            rewardsCalcEnabled: true,
+          },
+        ]),
+      };
+      const providers = { get: jest.fn().mockReturnValue(provider) };
+      return {
+        service: new RangesService(config as never, providers as never),
+        endBlock: configuredV2Range.endBlock,
+      };
+    };
+
+    it('pins every requested network to its range endBlock', async () => {
+      const { service, endBlock } = build();
+
+      const blocks = await service.snapshotBlocks(CompoundVersion.V2, [
+        'mainnet',
+      ]);
+
+      expect(blocks.get('mainnet')).toBe(endBlock);
+    });
+
+    // The whole point of pinning is reproducibility, so a network with no
+    // entry must abort the run rather than quietly fall back to the live head.
+    it('throws instead of falling back when a network has no entry', async () => {
+      const { service } = build();
+
+      await expect(
+        service.snapshotBlocks(CompoundVersion.V2, ['mainnet', 'scroll']),
+      ).rejects.toThrow('no V2 snapshot block for [scroll]');
+    });
+
+    it('propagates a ranges.json load failure', async () => {
+      const { service } = build();
+      jest
+        .spyOn(service, 'load')
+        .mockRejectedValue(new Error('endBlock is not finalized'));
+
+      await expect(
+        service.snapshotBlocks(CompoundVersion.V2, ['mainnet']),
+      ).rejects.toThrow('endBlock is not finalized');
+    });
+  });
 });

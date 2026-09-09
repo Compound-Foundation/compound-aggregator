@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ethers } from 'ethers';
+import { once } from 'node:events';
 import {
+  createWriteStream,
   existsSync,
   mkdirSync,
   renameSync,
   rmSync,
-  writeFileSync,
 } from 'node:fs';
 import { join } from 'node:path';
 
@@ -55,8 +56,8 @@ interface ExportGroup {
 
 interface PreparedExport {
   file: MerklExportedFile;
-  merklContent: string;
-  auditContent: string;
+  merkl: unknown;
+  audit: unknown;
   partial: boolean;
   selectedMarketCount: number;
 }
@@ -78,10 +79,10 @@ export interface MerklExportOptions {
 export class MerklAirdropExportService {
   private readonly logger = new Logger(MerklAirdropExportService.name);
 
-  public export(
+  public async export(
     result: PeriodRewardsResult,
     options: MerklExportOptions = {},
-  ): MerklExportedFile[] {
+  ): Promise<MerklExportedFile[]> {
     const groups = this.groupRows(result);
     if (groups.length === 0) {
       this.logger.warn(`[${result.version}] no positive rewards to export`);
@@ -91,7 +92,7 @@ export class MerklAirdropExportService {
     const prepared = groups.map((group) =>
       this.prepareGroup(group, periodOnly),
     );
-    this.writePreparedExports(prepared);
+    await this.writePreparedExports(prepared);
     for (const item of prepared) {
       if (item.partial) {
         this.logger.warn(
@@ -443,20 +444,22 @@ export class MerklAirdropExportService {
         allocationTotalRaw: allocationTotalRaw.toString(10),
         recipientCount: Object.keys(merklRewards).length,
       },
-      merklContent: JSON.stringify(merkl, null, 2) + '\n',
-      auditContent: JSON.stringify(audit, null, 2) + '\n',
+      merkl,
+      audit,
       partial,
       selectedMarketCount: group.range.markets.length,
     };
   }
 
-  private writePreparedExports(prepared: PreparedExport[]): void {
+  private async writePreparedExports(
+    prepared: PreparedExport[],
+  ): Promise<void> {
     const transactionId = `${process.pid}-${Date.now()}-${Math.random()
       .toString(16)
       .slice(2)}`;
     const files = prepared.flatMap((item) => [
-      { target: item.file.merklPath, content: item.merklContent },
-      { target: item.file.auditPath, content: item.auditContent },
+      { target: item.file.merklPath, value: item.merkl },
+      { target: item.file.auditPath, value: item.audit },
     ]);
     const staged = files.map((file, index) => ({
       ...file,
@@ -469,7 +472,7 @@ export class MerklAirdropExportService {
 
     try {
       for (const file of staged) {
-        writeFileSync(file.temp, file.content, 'utf8');
+        await this.writeJsonFile(file.temp, file.value);
       }
       for (const file of staged) {
         file.hadTarget = existsSync(file.target);
@@ -495,6 +498,21 @@ export class MerklAirdropExportService {
         rmSync(file.temp, { force: true });
         if (committed) rmSync(file.backup, { force: true });
       }
+    }
+  }
+
+  private async writeJsonFile(path: string, value: unknown): Promise<void> {
+    const stream = createWriteStream(path, { encoding: 'utf8' });
+    try {
+      const writer = new StreamingJsonWriter(stream);
+      await writer.write(value);
+      await new Promise<void>((resolve, reject) => {
+        stream.once('error', reject);
+        stream.end(resolve);
+      });
+    } catch (error) {
+      stream.destroy();
+      throw error;
     }
   }
 
@@ -679,5 +697,106 @@ export class MerklAirdropExportService {
   private ceilDiv(numerator: bigint, denominator: bigint): bigint {
     if (denominator <= 0n) throw new Error('ceilDiv denominator must be > 0');
     return (numerator + denominator - 1n) / denominator;
+  }
+}
+
+function isSerializable(value: unknown): boolean {
+  return (
+    value !== undefined &&
+    typeof value !== 'function' &&
+    typeof value !== 'symbol'
+  );
+}
+
+/**
+ * Serializes a value to a writable stream using the same output as
+ * `JSON.stringify(value, null, 2) + '\n'`, but without ever materializing the
+ * whole document as a single string. This avoids the V8 max string length
+ * (~512 MB) `RangeError: Invalid string length` on very large exports.
+ */
+class StreamingJsonWriter {
+  private buffer = '';
+  private static readonly FLUSH_THRESHOLD = 1 << 20; // 1 MiB
+
+  constructor(private readonly stream: NodeJS.WritableStream) {}
+
+  public async write(value: unknown): Promise<void> {
+    await this.writeValue(value, '');
+    await this.append('\n');
+    await this.flush();
+  }
+
+  private async writeValue(value: unknown, indent: string): Promise<void> {
+    if (typeof value === 'string') {
+      await this.append(JSON.stringify(value));
+      return;
+    }
+    if (value === null || typeof value === 'number' || typeof value === 'boolean') {
+      await this.append(JSON.stringify(value));
+      return;
+    }
+    if (Array.isArray(value)) {
+      await this.writeArray(value, indent);
+      return;
+    }
+    if (typeof value === 'object') {
+      await this.writeObject(value as Record<string, unknown>, indent);
+      return;
+    }
+    // undefined / function / symbol never reach here (filtered by callers).
+    await this.append('null');
+  }
+
+  private async writeObject(
+    obj: Record<string, unknown>,
+    indent: string,
+  ): Promise<void> {
+    const keys = Object.keys(obj).filter((key) => isSerializable(obj[key]));
+    if (keys.length === 0) {
+      await this.append('{}');
+      return;
+    }
+    const childIndent = `${indent}  `;
+    await this.append('{\n');
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i]!;
+      await this.append(`${childIndent}${JSON.stringify(key)}: `);
+      await this.writeValue(obj[key], childIndent);
+      await this.append(i < keys.length - 1 ? ',\n' : '\n');
+    }
+    await this.append(`${indent}}`);
+  }
+
+  private async writeArray(arr: unknown[], indent: string): Promise<void> {
+    if (arr.length === 0) {
+      await this.append('[]');
+      return;
+    }
+    const childIndent = `${indent}  `;
+    await this.append('[\n');
+    for (let i = 0; i < arr.length; i++) {
+      await this.append(childIndent);
+      const value = arr[i];
+      await this.writeValue(isSerializable(value) ? value : null, childIndent);
+      await this.append(i < arr.length - 1 ? ',\n' : '\n');
+    }
+    await this.append(`${indent}]`);
+  }
+
+  private async append(text: string): Promise<void> {
+    this.buffer += text;
+    if (this.buffer.length >= StreamingJsonWriter.FLUSH_THRESHOLD) {
+      await this.flush();
+    }
+  }
+
+  private async flush(): Promise<void> {
+    if (this.buffer.length === 0) return;
+    const chunk = this.buffer;
+    this.buffer = '';
+    if (!this.stream.write(chunk)) {
+      // `once` rejects if the stream emits 'error' while we await drain.
+      await once(this.stream, 'drain');
+    }
   }
 }

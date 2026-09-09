@@ -10,6 +10,7 @@ import { fmtPct } from 'common/utils/fmt-pct';
 import { RuntimeDbService } from 'indexer/runtime-db.service';
 import { NetworkConfig } from 'network/network.types';
 import { OwesExportService } from './owes-export.service';
+import { RangesService } from './ranges.service';
 import {
   V2CompStateService,
   V2MarketRewardBoundary,
@@ -37,6 +38,7 @@ export class GenerateOwesV2Command extends CommandRunner {
     private readonly exp: OwesExportService,
     private readonly v2State: V2CompStateService,
     private readonly config: ConfigService,
+    private readonly ranges: RangesService,
   ) {
     super();
 
@@ -81,6 +83,15 @@ export class GenerateOwesV2Command extends CommandRunner {
     const networks = this.networksList.map((n) => n.network);
     const incompleteNetworks: string[] = [];
 
+    // Snapshot each network at its fixed reward-range endBlock (from
+    // ranges.json) instead of the live chain head, so repeated runs are
+    // reproducible. Reading state at `endBlock` is inclusive of that block.
+    // Resolved before any RPC work, so a gap in ranges.json fails immediately.
+    const endBlockByNetwork = await this.ranges.snapshotBlocks(
+      CompoundVersion.V2,
+      networks,
+    );
+
     const PAGE = this.pageSize;
 
     await this.runWithConcurrency(
@@ -98,13 +109,15 @@ export class GenerateOwesV2Command extends CommandRunner {
           CompoundVersion.V2,
           network,
         );
-        const blockTag = await this.v2State.latestBlock(network);
+        // Non-null: snapshotBlocks throws unless every network resolved.
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const blockTag = endBlockByNetwork.get(network)!;
         const pendingByUser = new Map<string, bigint>();
         const boundaryCache = new Map<string, V2MarketRewardBoundary>();
         const stats = emptyPendingStats();
 
         this.logger.log(
-          `[V2][${network}] remaining = compAccrued + pending at block=${blockTag} users=${totalUsers}`,
+          `[V2][${network}] remaining = compAccrued + pending at block=${blockTag} (ranges.json) users=${totalUsers}`,
         );
 
         let offset = 0;
@@ -364,8 +377,6 @@ export class GenerateOwesV2Command extends CommandRunner {
 
       this.exp.exportDetailedOwes(CompoundVersion.V2);
 
-      this.db.closeRuntime();
-
       this.logger.log('Generating of totalOwesV2 completed.');
     } catch (error) {
       this.logger.error(
@@ -374,9 +385,16 @@ export class GenerateOwesV2Command extends CommandRunner {
       );
       // Fail the CI step instead of leaving a green run behind a stale file.
       process.exitCode = 1;
+    } finally {
       try {
         this.db.closeRuntime();
-      } catch {}
+      } catch (error) {
+        // The artifact is already on disk by now, so a failed close is not
+        // worth failing the run over -- but it should not vanish either.
+        this.logger.warn(
+          `failed to close the runtime DB: ${(error as Error).message}`,
+        );
+      }
     }
   }
 }

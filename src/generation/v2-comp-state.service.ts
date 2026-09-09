@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ethers } from 'ethers';
 
-import { withRetries } from 'common/helpers/with-retries';
 import { ProviderFactory } from 'network/provider.factory';
 import { HistoricalCallService } from './historical-call.service';
 import {
@@ -96,14 +95,6 @@ export class V2CompStateService {
     private readonly providers: ProviderFactory,
     private readonly historical: HistoricalCallService,
   ) {}
-
-  public async latestBlock(network: string): Promise<number> {
-    const provider = this.providers.get(network);
-    return withRetries(() => provider.getBlockNumber(), {
-      attempts: 3,
-      baseDelayMs: 250,
-    });
-  }
 
   public async readMarketBoundary(params: {
     network: string;
