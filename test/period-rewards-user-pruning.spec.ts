@@ -227,6 +227,9 @@ describe('period reward start-snapshot pruning', () => {
           users.map((user) => [user.toLowerCase(), blockTag === 99 ? 10n : 0n]),
         );
       });
+    jest
+      .spyOn(service as any, 'readClaimedTransfers')
+      .mockResolvedValue(new Map([[oldUser.toLowerCase(), 10n]]));
 
     const result = await service.calculate([range]);
 
@@ -253,6 +256,116 @@ describe('period reward start-snapshot pruning', () => {
         claimedRaw: 0n,
         remainingRaw: 100n,
         remainingForPeriodRaw: 100n,
+      }),
+    ]);
+  });
+
+  it('V2 caps phantom accrual at the real COMP transferred out of the Comptroller', async () => {
+    const phantomMarket = ethers.getAddress(
+      '0x00000000000000000000000000000000000000e5',
+    );
+    const marketRange = {
+      symbol: 'cLEGIT',
+      address: market,
+      startBoundary: block(99, 1000),
+      start: block(100, 1001),
+      end: block(200, 2000),
+    };
+    const range = {
+      network: 'mainnet',
+      chainId: 1,
+      config: {
+        comptrollerV2: '0x0000000000000000000000000000000000000011',
+        comp: rewardToken,
+      } as any,
+      startBoundary: marketRange.startBoundary,
+      start: marketRange.start,
+      end: marketRange.end,
+      markets: [],
+    } satisfies ResolvedRewardRange;
+    const db = {
+      getIndexedCursor: jest.fn().mockReturnValue(200),
+      listIndexedMarketsForNetwork: jest.fn().mockReturnValue([
+        { marketAddress: market, firstSeenBlock: 50 },
+        { marketAddress: phantomMarket, firstSeenBlock: 50 },
+      ]),
+      fetchIndexedUsersForNetwork: jest.fn().mockReturnValue([
+        { marketAddress: market, userAddress: oldUser, createdAt: 900 },
+        { marketAddress: phantomMarket, userAddress: oldUser, createdAt: 900 },
+      ]),
+    };
+    const service = new V2PeriodRewardsService(
+      db as never,
+      {} as never,
+      {} as never,
+    );
+    jest
+      .spyOn(service as any, 'assertRewardTokenDeployed')
+      .mockResolvedValue(undefined);
+    jest.spyOn(service as any, 'readMetadataString').mockResolvedValue('COMP');
+    jest.spyOn(service as any, 'readMetadataUint').mockResolvedValue(18n);
+    // Legit market pays 6 COMP on the supply side; phantom market emits a
+    // gigantic borrow-side delta that was never actually credited/paid.
+    jest.spyOn(service as any, 'readDistributedRewards').mockResolvedValue(
+      new Map([
+        [`${market.toLowerCase()}:${oldUser.toLowerCase()}`, { supply: 6n, borrow: 0n }],
+        [
+          `${phantomMarket.toLowerCase()}:${oldUser.toLowerCase()}`,
+          { supply: 0n, borrow: 70_000_000n },
+        ],
+      ]),
+    );
+    jest
+      .spyOn(service as any, 'readMarketSymbol')
+      .mockImplementation(async (...args: any[]) =>
+        String(args[1]).toLowerCase() === market.toLowerCase()
+          ? 'cLEGIT'
+          : 'cPHANTOM',
+      );
+    jest
+      .spyOn(service as any, 'readMarketBoundary')
+      .mockImplementation(async (...args: any[]) => {
+        const blockTag = Number(args[3]);
+        return {
+          projectedSupplyIndex: blockTag === 200 ? 2n : 1n,
+          projectedBorrowIndex: blockTag === 200 ? 2n : 1n,
+          marketBorrowIndex: 1n,
+        };
+      });
+    jest
+      .spyOn(service as any, 'readUserPending')
+      .mockImplementation(async (...args: any[]) => {
+        const params = args[0] as { users: string[] };
+        return new Map(
+          params.users.map((user) => [
+            user.toLowerCase(),
+            { supply: 0n, borrow: 0n },
+          ]),
+        );
+      });
+    jest
+      .spyOn(service as any, 'readCompAccrued')
+      .mockResolvedValue(new Map([[oldUser.toLowerCase(), 0n]]));
+    // The Comptroller only ever transferred 6 COMP to this account.
+    jest
+      .spyOn(service as any, 'readClaimedTransfers')
+      .mockResolvedValue(new Map([[oldUser.toLowerCase(), 6n]]));
+
+    const result = await service.calculate([range]);
+
+    // Event-derived earned would have been 70_000_006; it is capped to the
+    // 6 COMP that were actually paid out, and the phantom row is dropped.
+    expect(result.rows).toHaveLength(1);
+    expect(result.rows[0]!.market).toBe(market);
+    expect(result.rows[0]!.supplyRewardRaw).toBe(6n);
+    expect(result.rows[0]!.totalRewardRaw).toBe(6n);
+    expect(result.userTotals).toEqual([
+      expect.objectContaining({
+        user: oldUser,
+        earnedRaw: 6n,
+        claimedRaw: 6n,
+        remainingRaw: 0n,
+        remainingForPeriodRaw: 0n,
       }),
     ]);
   });

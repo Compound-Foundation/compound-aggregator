@@ -142,6 +142,7 @@ export class V2PeriodRewardsService {
       }
     }
     const out: V2PeriodRewardRow[] = [];
+    const rowsByUser = new Map<string, V2PeriodRewardRow[]>();
     const totalsByUser = new Map<string, UserTotalAccumulator>();
     let hasStartRewardBoundary = false;
 
@@ -271,7 +272,7 @@ export class V2PeriodRewardsService {
         totalsByUser.set(userLower, total);
         if (totalRewardRaw === 0n) continue;
 
-        out.push({
+        const rewardRow: V2PeriodRewardRow = {
           version: CompoundVersion.V2,
           network: range.network,
           chainId: range.chainId,
@@ -286,7 +287,11 @@ export class V2PeriodRewardsService {
           supplyRewardRaw,
           borrowRewardRaw,
           totalRewardRaw,
-        });
+        };
+        out.push(rewardRow);
+        const userRows = rowsByUser.get(userLower);
+        if (userRows) userRows.push(rewardRow);
+        else rowsByUser.set(userLower, [rewardRow]);
       }
     }
 
@@ -298,17 +303,59 @@ export class V2PeriodRewardsService {
         : Array.from(totalsByUser.values())
             .filter((total) => total.createdAt <= range.startBoundary.timestamp)
             .map((total) => total.user);
-    const [compAccruedAtEnd, compAccruedBeforeStart] = await Promise.all([
-      this.readCompAccrued(range, comptroller, users, range.end.number),
-      startUsers.length > 0
-        ? this.readCompAccrued(
-            range,
-            comptroller,
-            startUsers,
-            range.startBoundary.number,
-          )
-        : Promise.resolve(new Map<string, bigint>()),
-    ]);
+    const [compAccruedAtEnd, compAccruedBeforeStart, claimedByUser] =
+      await Promise.all([
+        this.readCompAccrued(range, comptroller, users, range.end.number),
+        startUsers.length > 0
+          ? this.readCompAccrued(
+              range,
+              comptroller,
+              startUsers,
+              range.startBoundary.number,
+            )
+          : Promise.resolve(new Map<string, bigint>()),
+        partial
+          ? Promise.resolve(new Map<string, bigint>())
+          : this.readClaimedTransfers(range, rewardToken, comptroller),
+      ]);
+
+    // Reconcile the event-derived `earned` against real COMP transfers out of
+    // the Comptroller. Compound's Comptroller can emit phantom
+    // DistributedSupplier/BorrowerComp deltas that were never credited to
+    // `compAccrued` nor paid out (e.g. the Sep-2021 cTUSD borrow-index blow-up,
+    // which minted a single ~70M COMP delta — 7x the entire COMP supply). The
+    // accounting identity
+    //   earned = claimed + remaining - debtBeforeStart
+    // holds to the wei on-chain for every honest account (the projected pending
+    // terms cancel between `earned` and `remaining`/`debtBeforeStart`), so the
+    // transfer-based value is an exact upper bound that only ever reduces
+    // phantom-inflated accounts and leaves all others byte-identical.
+    if (!partial) {
+      for (const total of totalsByUser.values()) {
+        const userLower = total.user.toLowerCase();
+        const remainingRaw =
+          (compAccruedAtEnd.get(userLower) ?? 0n) + total.pendingAtEndRaw;
+        const debtBeforeStart =
+          (compAccruedBeforeStart.get(userLower) ?? 0n) +
+          total.pendingBeforeStartRaw;
+        const claimedRaw = claimedByUser.get(userLower) ?? 0n;
+        const transferEarnedRaw = claimedRaw + remainingRaw - debtBeforeStart;
+        if (transferEarnedRaw < 0n || transferEarnedRaw >= total.earnedRaw) {
+          continue;
+        }
+        this.logger.warn(
+          `[V2][${range.network}] phantom accrual corrected user=${total.user} ` +
+            `eventEarned=${total.earnedRaw} transferEarned=${transferEarnedRaw} ` +
+            `claimed=${claimedRaw} remaining=${remainingRaw} debtBeforeStart=${debtBeforeStart}`,
+        );
+        this.reduceUserRows(
+          rowsByUser.get(userLower) ?? [],
+          total.earnedRaw - transferEarnedRaw,
+        );
+        total.earnedRaw = transferEarnedRaw;
+      }
+    }
+
     const userTotals = Array.from(totalsByUser.values())
       .map((total): V2PeriodRewardUserTotal => {
         const userLower = total.user.toLowerCase();
@@ -351,7 +398,80 @@ export class V2PeriodRewardsService {
           total.remainingRaw > 0n,
       );
 
-    return { rows: out, userTotals };
+    return { rows: out.filter((row) => row.totalRewardRaw > 0n), userTotals };
+  }
+
+  /**
+   * Removes `reduceByRaw` of phantom reward from a user's per-market rows,
+   * draining the largest rows first (phantom accrual is concentrated in a
+   * single blown-up market/side, so this leaves honest rows untouched when the
+   * excess fits within the inflated row). Borrow reward is drained before
+   * supply because the known blow-ups are borrow-index driven. Rows that reach
+   * zero are dropped later by the caller.
+   */
+  private reduceUserRows(
+    rows: V2PeriodRewardRow[],
+    reduceByRaw: bigint,
+  ): void {
+    let remaining = reduceByRaw;
+    if (remaining <= 0n) return;
+    const ordered = [...rows].sort((a, b) =>
+      b.totalRewardRaw > a.totalRewardRaw
+        ? 1
+        : b.totalRewardRaw < a.totalRewardRaw
+          ? -1
+          : 0,
+    );
+    for (const row of ordered) {
+      if (remaining === 0n) break;
+      const take =
+        row.totalRewardRaw < remaining ? row.totalRewardRaw : remaining;
+      if (take === 0n) continue;
+      const fromBorrow =
+        row.borrowRewardRaw < take ? row.borrowRewardRaw : take;
+      row.borrowRewardRaw -= fromBorrow;
+      row.supplyRewardRaw -= take - fromBorrow;
+      row.totalRewardRaw -= take;
+      remaining -= take;
+    }
+  }
+
+  /**
+   * Sums COMP actually transferred out of the Comptroller to each holder over
+   * (startBoundary, end]. This is the ground-truth `claimed` amount: rewards are
+   * paid via `Comp.transfer(holder, amount)` from the Comptroller, so filtering
+   * Transfer logs by `from == comptroller` captures every claim while ignoring
+   * reservoir top-ups (which move COMP *into* the Comptroller).
+   */
+  private async readClaimedTransfers(
+    range: ResolvedRewardRange,
+    rewardToken: string,
+    comptroller: string,
+  ): Promise<Map<string, bigint>> {
+    const fromBlock = range.startBoundary.number + 1;
+    const toBlock = range.end.number;
+    const claimed = new Map<string, bigint>();
+    if (fromBlock > toBlock) return claimed;
+
+    const transferTopic = ethers.id('Transfer(address,address,uint256)');
+    const fromTopic = ethers
+      .zeroPadValue(ethers.getAddress(comptroller), 32)
+      .toLowerCase();
+    const logs = await this.getLogsAdaptive(range, {
+      address: ethers.getAddress(rewardToken),
+      fromBlock,
+      toBlock,
+      topics: [transferTopic, fromTopic],
+    });
+    for (const log of logs) {
+      const toTopic = log.topics[2];
+      if (!toTopic) continue;
+      const holder = ethers.getAddress(`0x${toTopic.slice(-40)}`).toLowerCase();
+      const value = BigInt(log.data);
+      if (value === 0n) continue;
+      claimed.set(holder, (claimed.get(holder) ?? 0n) + value);
+    }
+    return claimed;
   }
 
   private loadUsersByMarket(

@@ -123,6 +123,29 @@ named `*.partial.merkl.json` and its audit contains `partial: true` plus
 `selectedMarkets`. Remove the V2 `markets` field before a production all-market run.
 V2 ignores the V3 section and V3 ignores the V2 section.
 
+### Why these blocks?
+
+Both ends of every range are inclusive. The boundaries follow the legacy
+COMP reward accrual, which was stopped by [Compound governance proposal 602](https://www.tally.xyz/gov/compound/proposal/602?govId=eip155:1:0x309a862bbC1A00e45506cB8A802D1ff10004c8C0)
+(executed at Ethereum block `25904935`).
+
+**V2**
+
+- **Start block** — the block at which the Comptroller was deployed. COMP rewards
+  turned on later, but the script collects users from the start of the market so no
+  eligible user is missed.
+- **End block** — the block at which proposal 602 was executed, when the remaining
+  legacy reward speeds were set to zero.
+
+**V3**
+
+- **Start block** — the deployment block of each Comet market (the network
+  `startBlock` equals the earliest market start).
+- **End block** — the block at which the snapshots were generated. This is after
+  proposal 602 executed and sits well after it — right before the Merkl campaigns are
+  created — because the owed rewards still rely on the legacy on-chain reward
+  calculation up to the snapshot block.
+
 ---
 
 ## Generate files
