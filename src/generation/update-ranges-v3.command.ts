@@ -77,6 +77,26 @@ export class UpdateRangesV3Command extends CommandRunner {
           );
         }
 
+        // A reward range may only ever grow. A node behind a load balancer can
+        // answer from a lagging replica, and writing its head back would narrow
+        // the range: rewards already computed for the dropped blocks would
+        // vanish from the next run, and owes would silently report less debt
+        // than the previous snapshot. Equality is fine -- that is just a re-run
+        // before the chain moved. Moving a range backwards is a deliberate act
+        // and belongs in a hand edit, not in an automated refresh.
+        if (endBlock < entry.endBlock) {
+          throw new Error(
+            `${entry.network}: refusing to move endBlock backwards ` +
+              `${entry.endBlock} -> ${endBlock} (head=${head}, ` +
+              `reorgWindow=${config.reorgWindow}). The recorded endBlock is ` +
+              `${entry.endBlock - endBlock} blocks ahead of what this node ` +
+              `reports, so either the RPC answered from a lagging replica, or ` +
+              `an earlier --head run recorded a block that is not finalized ` +
+              `yet. Re-run once the chain has advanced past it; only a block ` +
+              `set far in the future needs a hand edit of ranges.json.`,
+          );
+        }
+
         const previous = entry.endBlock;
         entry.endBlock = endBlock;
         return { network: entry.network, head, endBlock, previous };
@@ -97,9 +117,7 @@ export class UpdateRangesV3Command extends CommandRunner {
       } else {
         failures += 1;
         this.logger.error(
-          `[${network}] failed to update: ${
-            (result.reason as Error).message
-          }`,
+          `[${network}] failed to update: ${(result.reason as Error).message}`,
         );
       }
     }
