@@ -146,6 +146,30 @@ This command will:
 5. Update the indexer cursor/state to support resumable runs
 6. Write updated DB back to `src/indexer/storage/` (which CI then syncs to the artifacts repo)
 
+### Block step (`--BLOCK_STEP`)
+
+Each network is indexed in windows of blocks. The default window is **1000 blocks**;
+pass the optional `--BLOCK_STEP` flag to use another one:
+
+```bash
+yarn cli:index --BLOCK_STEP=5000
+```
+
+The value must be a positive integer — anything else fails fast, before any indexing
+starts. Without the flag the default of 1000 is used.
+
+A larger step means fewer `eth_getLogs` round-trips per network, but the window is only
+an upper bound: if the provider rejects the range, the indexer splits it in half and
+retries the halves, so an over-large step is paid back in extra retries rather than in
+failed runs. The window is also cut short when a new market is discovered inside it, so
+that the market's first blocks are re-scanned with the market already known.
+
+The step in effect is logged per network at the start of a run:
+
+```
+[mainnet (99.99%)] Indexing: head=25939507 finalizedTo=25939443 startFrom=25939062 blockStep=5000
+```
+
 ### Full local sync with retries
 
 For long-running local indexing (fresh sync / flaky RPC), use:
@@ -153,6 +177,9 @@ For long-running local indexing (fresh sync / flaky RPC), use:
 ```bash
 yarn full-index
 ```
+
+> This wrapper does **not** forward `--BLOCK_STEP`: `src/retry.ts` always respawns a
+> plain `yarn cli:index`, so retried runs use the default step of 1000.
 
 ### Cold start (no artifacts snapshot)
 
@@ -287,6 +314,9 @@ yarn cli:generate:md
 
 # Index users across configured networks (writes updated DB into src/indexer/storage/)
 yarn cli:index
+
+# Same, with a custom block window (default: 1000 blocks per step)
+yarn cli:index --BLOCK_STEP=5000
 
 # Generate owes snapshots
 yarn cli:generate:owes:v2
