@@ -77,6 +77,27 @@ export class RangesService {
     );
   }
 
+  public async snapshotBlocks(
+    version: CompoundVersion,
+    networks: string[],
+  ): Promise<Map<string, number>> {
+    const ranges = await this.load(version);
+    const blocks = new Map(
+      ranges.map((range) => [range.network, range.end.number]),
+    );
+    const missing = networks.filter((network) => !blocks.has(network));
+
+    if (missing.length > 0) {
+      throw new Error(
+        `ranges.json has no ${version.toUpperCase()} snapshot block for [${missing.join(
+          ', ',
+        )}]; add an entry or clear rewardsCalcEnabled for those networks`,
+      );
+    }
+
+    return blocks;
+  }
+
   private parseFile(rangesPath: string, fileName: string): RangeFile {
     let raw: string;
     try {

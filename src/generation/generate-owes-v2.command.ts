@@ -86,7 +86,11 @@ export class GenerateOwesV2Command extends CommandRunner {
     // Snapshot each network at its fixed reward-range endBlock (from
     // ranges.json) instead of the live chain head, so repeated runs are
     // reproducible. Reading state at `endBlock` is inclusive of that block.
-    const endBlockByNetwork = await this.resolveEndBlocks();
+    // Resolved before any RPC work, so a gap in ranges.json fails immediately.
+    const endBlockByNetwork = await this.ranges.snapshotBlocks(
+      CompoundVersion.V2,
+      networks,
+    );
 
     const PAGE = this.pageSize;
 
@@ -105,15 +109,15 @@ export class GenerateOwesV2Command extends CommandRunner {
           CompoundVersion.V2,
           network,
         );
-        const endBlock = endBlockByNetwork.get(network);
-        const blockTag = endBlock ?? (await this.v2State.latestBlock(network));
-        const blockSource = endBlock == null ? 'latestBlock' : 'ranges.json';
+        // Non-null: snapshotBlocks throws unless every network resolved.
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const blockTag = endBlockByNetwork.get(network)!;
         const pendingByUser = new Map<string, bigint>();
         const boundaryCache = new Map<string, V2MarketRewardBoundary>();
         const stats = emptyPendingStats();
 
         this.logger.log(
-          `[V2][${network}] remaining = compAccrued + pending at block=${blockTag} (${blockSource}) users=${totalUsers}`,
+          `[V2][${network}] remaining = compAccrued + pending at block=${blockTag} (ranges.json) users=${totalUsers}`,
         );
 
         let offset = 0;
@@ -314,26 +318,6 @@ export class GenerateOwesV2Command extends CommandRunner {
     return { owes, incompleteNetworks };
   }
 
-  /**
-   * Fixed snapshot block per network, taken from the V2 reward range endBlock
-   * in ranges.json. Networks absent from ranges.json fall back to the live head
-   * (logged), so a missing entry degrades gracefully instead of aborting owes.
-   */
-  private async resolveEndBlocks(): Promise<Map<string, number>> {
-    const out = new Map<string, number>();
-    try {
-      const ranges = await this.ranges.load(CompoundVersion.V2);
-      for (const range of ranges) out.set(range.network, range.end.number);
-    } catch (err) {
-      this.logger.warn(
-        `[V2][owes] could not resolve endBlocks from ranges.json; falling back to latestBlock: ${
-          (err as Error).message
-        }`,
-      );
-    }
-    return out;
-  }
-
   private saveDetailedOwesV2() {
     const writer = this.json.startDetailedOwes(CompoundVersion.V2); // или V3
 
@@ -393,8 +377,6 @@ export class GenerateOwesV2Command extends CommandRunner {
 
       this.exp.exportDetailedOwes(CompoundVersion.V2);
 
-      this.db.closeRuntime();
-
       this.logger.log('Generating of totalOwesV2 completed.');
     } catch (error) {
       this.logger.error(
@@ -403,9 +385,16 @@ export class GenerateOwesV2Command extends CommandRunner {
       );
       // Fail the CI step instead of leaving a green run behind a stale file.
       process.exitCode = 1;
+    } finally {
       try {
         this.db.closeRuntime();
-      } catch {}
+      } catch (error) {
+        // The artifact is already on disk by now, so a failed close is not
+        // worth failing the run over -- but it should not vanish either.
+        this.logger.warn(
+          `failed to close the runtime DB: ${(error as Error).message}`,
+        );
+      }
     }
   }
 }
