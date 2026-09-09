@@ -43,7 +43,9 @@ yarn full-index
 ```
 
 `yarn cli:index` is the same command without automatic retries. Use `yarn full-index`
-for a long first sync (RPC timeouts are common).
+for a long first sync (RPC timeouts are common). `yarn cli:index` also accepts
+`--BLOCK_STEP=<blocks>` to widen the default 1000-block indexing window — see
+[block step](./HOWTO-OPS.md#block-step---block_step) in the ops guide.
 
 With no prior cursor, each `indexingEnabled` network in
 `src/config/networks.config.ts` starts at that network's `startBlock`

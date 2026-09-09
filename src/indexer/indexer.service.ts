@@ -21,6 +21,13 @@ import { withRetries } from '../common/helpers/with-retries';
 
 type SqliteApi = ReturnType<typeof createSqliteApi>;
 
+export const DEFAULT_BLOCK_STEP = 1_000;
+
+export type IndexRunOptions = {
+  /** Blocks per indexing step. Defaults to DEFAULT_BLOCK_STEP. */
+  blockStep?: number;
+};
+
 const normAddr = (a: string) => getAddress(a).toLowerCase();
 const topicToAddress = (topic: string) => normAddr('0x' + topic.slice(-40));
 
@@ -39,7 +46,6 @@ export class IndexerService {
 
   // Tuning knobs
   private readonly maxParallelNetworks = 2;
-  private readonly blockStep = 1_000;
   private readonly addressBatchSize = 30;
   // Retry knobs
   private readonly rpcRetryAttempts = 3;
@@ -95,7 +101,9 @@ export class IndexerService {
    * Index all enabled versions (V2+V3) with ONE cursor per network.
    * This MUST be the only indexing entrypoint if you want cursor correctness.
    */
-  public async run(): Promise<void> {
+  public async run(options?: IndexRunOptions): Promise<void> {
+    const blockStep = options?.blockStep ?? DEFAULT_BLOCK_STEP;
+
     await this.runtimeDb.assemble();
     this.sqlite = this.runtimeDb.api;
     const targets = this.networks.filter((n) => {
@@ -113,7 +121,7 @@ export class IndexerService {
       this.maxParallelNetworks,
       async (n) => {
         try {
-          await this.indexNetwork(n);
+          await this.indexNetwork(n, blockStep);
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err);
           const trace = err instanceof Error ? err.stack : undefined;
@@ -135,7 +143,10 @@ export class IndexerService {
   // Core indexing (ONE cursor)
   // ============================
 
-  private async indexNetwork(n: NetworkConfig): Promise<void> {
+  private async indexNetwork(
+    n: NetworkConfig,
+    blockStep: number,
+  ): Promise<void> {
     const provider = this.providerFactory.get(n.network);
     const head = await this.rpc(`[${n.network}] getBlockNumber`, () =>
       provider.getBlockNumber(),
@@ -178,7 +189,7 @@ export class IndexerService {
     const startTag = setTag(startFrom - 1);
 
     this.logger.log(
-      `${startTag} Indexing: head=${head} finalizedTo=${finalizedTo} startFrom=${startFrom}`,
+      `${startTag} Indexing: head=${head} finalizedTo=${finalizedTo} startFrom=${startFrom} blockStep=${blockStep}`,
     );
 
     // Load known markets (to detect "new market discovered in the middle of chunk")
@@ -193,7 +204,7 @@ export class IndexerService {
 
     let from = startFrom;
     while (from <= finalizedTo) {
-      const plannedTo = Math.min(finalizedTo, from + this.blockStep - 1);
+      const plannedTo = Math.min(finalizedTo, from + blockStep - 1);
 
       const minNewMarketBlock = await this.discoverMarketsInRange({
         network: n.network,
