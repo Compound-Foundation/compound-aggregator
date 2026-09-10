@@ -12,7 +12,7 @@
       "network": "mainnet",
       "chainId": 1,
       "startBlock": 15331586,
-      "endBlock": 25941144,
+      "endBlock": 25948271,
       "markets": [
         {
           "symbol": "cUSDCv3",
@@ -50,7 +50,7 @@
       "network": "arbitrum",
       "chainId": 42161,
       "startBlock": 87335214,
-      "endBlock": 503432522,
+      "endBlock": 503773188,
       "markets": [
         {
           "symbol": "cUSDCev3",
@@ -78,7 +78,7 @@
       "network": "base",
       "chainId": 8453,
       "startBlock": 2197588,
-      "endBlock": 51092147,
+      "endBlock": 51135056,
       "markets": [
         {
           "symbol": "cAEROv3",
@@ -111,7 +111,7 @@
       "network": "optimism",
       "chainId": 10,
       "startBlock": 118406276,
-      "endBlock": 156687432,
+      "endBlock": 156730341,
       "markets": [
         {
           "symbol": "cUSDCv3",
@@ -134,7 +134,7 @@
       "network": "polygon",
       "chainId": 137,
       "startBlock": 39412367,
-      "endBlock": 93512192,
+      "endBlock": 93569404,
       "markets": [
         {
           "symbol": "cUSDCv3",
@@ -152,7 +152,7 @@
       "network": "linea",
       "chainId": 59144,
       "startBlock": 15197719,
-      "endBlock": 31984206,
+      "endBlock": 31994315,
       "markets": [
         {
           "symbol": "cUSDCv3",
@@ -170,7 +170,7 @@
       "network": "mantle",
       "chainId": 5000,
       "startBlock": 70789050,
-      "endBlock": 100421664,
+      "endBlock": 100464573,
       "markets": [
         {
           "symbol": "cUSDev3",
@@ -183,7 +183,7 @@
       "network": "unichain",
       "chainId": 130,
       "startBlock": 9170496,
-      "endBlock": 58225314,
+      "endBlock": 58311132,
       "markets": [
         {
           "symbol": "cUSDCv3",
